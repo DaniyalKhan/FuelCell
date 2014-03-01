@@ -3,14 +3,11 @@ package com.fuelcell;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.http.cookie.CookieSpecFactory;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.Window;
 
 import com.fuelcell.util.CSVFileUtils;
@@ -21,6 +18,20 @@ public class FuelCellActivity extends Activity {
 	ProgressDialog progressDialog;
 	ContextWrapper wrapper;
 	
+	private void deleteContents() {
+		File[] filesArray = wrapper.getFilesDir().listFiles();
+		for (int i = 0; i < filesArray.length; i++) {
+			filesArray[i].delete();
+		}
+	}
+	
+	private void printContents() {
+		File[] filesArray = wrapper.getFilesDir().listFiles();
+		for (int i = 0; i < filesArray.length; i++) {
+			System.out.println(filesArray[i]);
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,24 +39,21 @@ public class FuelCellActivity extends Activity {
 		setContentView(R.layout.activity_fuel_cell);
 		wrapper = new ContextWrapper(this);
 		
+		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
-		ArrayList<File> files = new ArrayList<File>();
+		//list of all files that need currently in the folder
+		ArrayList<String> files = new ArrayList<String>();
 		
 		{
 			File[] filesArray = wrapper.getFilesDir().listFiles();
 			for (int i = 0; i < filesArray.length; i++) {
-				files.add(filesArray[i]);
+				String name = filesArray[i].getName();
+				//add the file names (without parent directory to the file list)
+				files.add(name.substring(name.lastIndexOf("/")+1, name.length()));
 			}
 		}
 		
-		
-		{
-			File[] filesArray = wrapper.getFilesDir().listFiles();
-			for (int i = 0; i < filesArray.length; i++) {
-				filesArray[i].delete();
-			}
-		}
-		
+		//construct a list of missing files
 		String[] csvURLs = CSVFileUtils.getAllCSV();
 		for (int i = 0; i < csvURLs.length; i++) {
 			String url = csvURLs[i];
@@ -53,15 +61,14 @@ public class FuelCellActivity extends Activity {
 			if (!files.contains(canonName)) toDownload.add(url);
 		}
 		
-		if (toDownload != null) {
-			// instantiate it within the onCreate method
+		if (!toDownload.isEmpty()) {
 			progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage("Downloading Fuel Data From Government of Canada Site");
 			progressDialog.setIndeterminate(true);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setCancelable(true);
 			
-			// execute this when the downloader must be fired
+			//download for each file
 			final DownloadTask downloadTask = new DownloadTask(this, progressDialog);
 			downloadTask.execute(toDownload.toArray(new String[toDownload.size()]));
 	
@@ -71,13 +78,6 @@ public class FuelCellActivity extends Activity {
 			        downloadTask.cancel(true);
 			    }
 			});
-		}
-		
-		{
-			File[] filesArray = wrapper.getFilesDir().listFiles();
-			for (int i = 0; i < filesArray.length; i++) {
-				System.out.println(filesArray[i]);
-			}
 		}
 		
 	}
