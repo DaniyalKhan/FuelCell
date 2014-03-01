@@ -8,9 +8,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FuelCellActivity" >
 
+    <ImageView
+        android:id="@+id/mainicon"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:contentDescription="desc"
+        android:src="@drawable/fuelcellicon" />
+    
     <TextView
+        android:id="@+id/author1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="authornames"
+        android:text="Daniyal Khan" />
+    
+    <TextView
+        android:id="@+id/author2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="authornames"
+        android:text="Ryan Nhieu" />
 
 </RelativeLayout>

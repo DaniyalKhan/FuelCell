@@ -11,6 +11,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.Window;
 
 import com.fuelcell.util.CSVFileUtils;
 import com.fuelcell.util.DownloadTask;
@@ -23,6 +24,7 @@ public class FuelCellActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
 		wrapper = new ContextWrapper(this);
 		
@@ -78,13 +80,6 @@ public class FuelCellActivity extends Activity {
 			}
 		}
 		
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.fuel_cell, menu);
-		return true;
 	}
 
 }
