@@ -6,88 +6,103 @@
     tools:context="SearchActivity" >
 
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-        <LinearLayout
-            android:layout_width="0px"
-            android:layout_height="0px"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
 
-        <!--
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <!--
              :nextFocusUp and :nextFocusLeft have been set to the id of this component
     	     to prevent the dummy from receiving focus again
-        -->
+    -->
 
-        <AutoCompleteTextView
-            android:id="@+id/autotext"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:nextFocusLeft="@id/autotext"
-            android:nextFocusUp="@id/autotext"
-            android:visibility="gone" />
+    <AutoCompleteTextView
+        android:id="@+id/autotext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:nextFocusLeft="@id/autotext"
+        android:nextFocusUp="@id/autotext"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/mainicon"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="desc"
-            android:nextFocusLeft="@id/autotext"
-            android:nextFocusUp="@id/autotext"
-            android:src="@drawable/fuelcellicon" />
+    <ImageView
+        android:id="@+id/mainicon"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="desc"
+        android:nextFocusLeft="@id/autotext"
+        android:nextFocusUp="@id/autotext"
+        android:src="@drawable/fuelcellicon" />
 
-        <view
-  			class="com.fuelcell.SearchActivity$MyEditText"
-            android:id="@+id/searchCorp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/mainicon"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/textbarwhite"
-            android:contentDescription="desc"
-            android:gravity="center"
-            android:hint="Manufacturer" />
+    <view
+        android:id="@+id/searchCorp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/mainicon"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/textbarwhite"
+        android:contentDescription="desc"
+        android:gravity="center"
+        android:hint="Manufacturer" />
 
-        <view
-  			class="com.fuelcell.SearchActivity$MyEditText"
-            android:id="@+id/searchYear"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/searchCorp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/textbarwhite"
-            android:contentDescription="desc"
-            android:gravity="center"
-            android:hint="Year" />
+    <view
+        android:id="@+id/searchYear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchCorp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/textbarwhite"
+        android:contentDescription="desc"
+        android:gravity="center"
+        android:hint="Year" />
 
-       <view
-  			class="com.fuelcell.SearchActivity$MyEditText"
-            android:id="@+id/searchModel"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/searchYear"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/textbarwhite"
-            android:contentDescription="desc"
-            android:gravity="center"
-            android:hint="Model" />
+    <view
+        android:id="@+id/searchModel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchYear"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/textbarwhite"
+        android:contentDescription="desc"
+        android:gravity="center"
+        android:hint="Model" />
 
-       <ListView
-           android:id="@+id/searchList"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_below="@+id/searchModel"
-           android:layout_marginTop="10dp" 
-           android:visibility="gone">
-       </ListView>
-   
+    <ListView
+        android:id="@+id/searchList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchModel"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" >
+    </ListView>
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/searchList"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_press"
+        android:contentDescription="desc"
+        android:gravity="center" 
+        android:text="Search"
+        android:textSize="12sp"/>
+
 </RelativeLayout>

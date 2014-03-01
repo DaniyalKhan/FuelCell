@@ -27,6 +27,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +42,10 @@ public class SearchActivity extends Activity {
 	ListView searchList;
 	RelativeLayout layout;
 	ArrayAdapter<Integer> yearAdapter;
+	ArrayAdapter<String> manufactureAdapter;
+	ArrayAdapter<String> modelAdapter;
 	ContextWrapper wrapper;
+	static Button search;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class SearchActivity extends Activity {
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		logo = (ImageView) findViewById(R.id.mainicon);
+		search = (Button) findViewById(R.id.searchButton);
 
 		searchList = (ListView) findViewById(R.id.searchList);
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
@@ -68,14 +73,18 @@ public class SearchActivity extends Activity {
 			}
 		}
 		Set<Integer> year = new HashSet<Integer>();
+		Set<String> manufacture = new HashSet<String>();
+		Set<String> model = new HashSet<String>();
 		
 		for (int i = 0; i < cars.size(); i++) {
 			year.add(cars.get(i).getYear());
+			manufacture.add(cars.get(i).getManufacturer());
+			model.add(cars.get(i).getModel());
 		}
 
-		// String[] carList = { "a", "b", "c" ,"d","e","f","g","h","i","j"};
 		yearAdapter = new ArrayAdapter<Integer>(this, R.layout.list_item, year.toArray(new Integer[year.size()]));
-		searchList.setAdapter(yearAdapter);
+		manufactureAdapter = new ArrayAdapter<String>(this, R.layout.list_item, manufacture.toArray(new String[manufacture.size()]));
+		modelAdapter = new ArrayAdapter<String>(this, R.layout.list_item, model.toArray(new String[model.size()]));
 
 		// need these so the text fields can reshow everything when user presses
 		// back,
@@ -104,12 +113,14 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				makeInVisible(v);
+				searchList.setAdapter(manufactureAdapter);
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				makeInVisible(v);
+				searchList.setAdapter(manufactureAdapter);
 			}
 		});
 	}
@@ -149,6 +160,8 @@ public class SearchActivity extends Activity {
 			if (!v.equals(searchModel))
 				searchModel.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
+			search.setVisibility(View.GONE);
+			
 		}
 	}
 
@@ -194,6 +207,7 @@ public class SearchActivity extends Activity {
 								}
 								views[views.length - 1]
 										.setVisibility(View.GONE);
+								search.setVisibility(View.VISIBLE);
 							}
 						}
 					});
