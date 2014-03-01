@@ -52,8 +52,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	            // might be -1: server did not report the length
 	            int fileLength = connection.getContentLength();
 	            
-	            String canonName = stringUrl.substring(stringUrl.lastIndexOf("/")+1, stringUrl.length());
-	            canonName = canonName.substring(0, canonName.indexOf("-"));
+	            String canonName = CSVFileUtils.getNameFromURL(stringUrl);
 	            System.out.println("Downloading: " + canonName);
 	            
 	            // download the file
@@ -106,7 +105,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         if (result != null)
             Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context,"File downloaded", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Files downloaded", Toast.LENGTH_LONG).show();
     }
 
 	@Override

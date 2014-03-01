@@ -1,38 +1,82 @@
 package com.fuelcell;
 
-import com.fuelcell.util.DownloadTask;
+import java.io.File;
+import java.util.ArrayList;
+
+import org.apache.http.cookie.CookieSpecFactory;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 
-public class FuelCellActivity extends Activity {
+import com.fuelcell.util.CSVFileUtils;
+import com.fuelcell.util.DownloadTask;
 
+public class FuelCellActivity extends Activity {
+	
 	ProgressDialog progressDialog;
+	ContextWrapper wrapper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fuel_cell);
-		// instantiate it within the onCreate method
-		progressDialog = new ProgressDialog(this);
-		progressDialog.setMessage("Downloading cat data for 2013");
-		progressDialog.setIndeterminate(true);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		progressDialog.setCancelable(true);
+		wrapper = new ContextWrapper(this);
 		
-		// execute this when the downloader must be fired
-		final DownloadTask downloadTask = new DownloadTask(this, progressDialog);
-		downloadTask.execute("http://oee.nrcan.gc.ca/sites/oee.nrcan.gc.ca/files/files/csv/MY2013-Fuel-Consumption-Ratings.csv");
-
-		progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-		        downloadTask.cancel(true);
-		    }
-		});
+		ArrayList<String> toDownload = new ArrayList<String>();
+		ArrayList<File> files = new ArrayList<File>();
+		
+		{
+			File[] filesArray = wrapper.getFilesDir().listFiles();
+			for (int i = 0; i < filesArray.length; i++) {
+				files.add(filesArray[i]);
+			}
+		}
+		
+		
+		{
+			File[] filesArray = wrapper.getFilesDir().listFiles();
+			for (int i = 0; i < filesArray.length; i++) {
+				filesArray[i].delete();
+			}
+		}
+		
+		String[] csvURLs = CSVFileUtils.getAllCSV();
+		for (int i = 0; i < csvURLs.length; i++) {
+			String url = csvURLs[i];
+			String canonName = CSVFileUtils.getNameFromURL(url);
+			if (!files.contains(canonName)) toDownload.add(url);
+		}
+		
+		if (toDownload != null) {
+			// instantiate it within the onCreate method
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage("Downloading Fuel Data From Government of Canada Site");
+			progressDialog.setIndeterminate(true);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setCancelable(true);
+			
+			// execute this when the downloader must be fired
+			final DownloadTask downloadTask = new DownloadTask(this, progressDialog);
+			downloadTask.execute(toDownload.toArray(new String[toDownload.size()]));
+	
+			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			    @Override
+			    public void onCancel(DialogInterface dialog) {
+			        downloadTask.cancel(true);
+			    }
+			});
+		}
+		
+		{
+			File[] filesArray = wrapper.getFilesDir().listFiles();
+			for (int i = 0; i < filesArray.length; i++) {
+				System.out.println(filesArray[i]);
+			}
+		}
 		
 	}
 
