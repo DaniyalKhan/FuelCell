@@ -25,9 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.fuelcell.SearchActivity" android:screenOrientation="portrait">
-            
-        </activity>
+        <activity android:name="com.fuelcell.SearchActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.fuelcell.DirectionsActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

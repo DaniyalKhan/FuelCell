@@ -2,27 +2,21 @@ package com.fuelcell;
 
 import java.io.File;
 import java.io.IOException;
-
-import com.fuelcell.google.Directions;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.fuelcell.csvutils.CSVParser;
-import com.fuelcell.models.Car;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +32,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.fuelcell.csvutils.CSVParser;
+import com.fuelcell.models.Car;
+
 public class SearchActivity extends Activity {
 
 	MyEditText searchCorp;
@@ -50,7 +47,7 @@ public class SearchActivity extends Activity {
 	ArrayAdapter<String> manufactureAdapter;
 	ArrayAdapter<String> modelAdapter;
 	ContextWrapper wrapper;
-	static Button search;
+	Button search;
 	ArrayList<Car> cars;
 
 	@Override
@@ -65,16 +62,23 @@ public class SearchActivity extends Activity {
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
 
+		search.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(cars != null) startDirectionsActivity(cars.get(0));
+			}
+		});
+		
 		searchList = (ListView) findViewById(R.id.searchList);
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
 		wrapper = new ContextWrapper(this);
 
-		// need these so the text fields can reshow everything when user presses
-		// back,
+		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, logo, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, logo, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, logo, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, logo, search, searchList);
+		searchYear.set(searchCorp, searchModel, searchYear, logo, search, searchList);
+		searchModel.set(searchCorp, searchModel, searchYear, logo, search, searchList);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -83,6 +87,17 @@ public class SearchActivity extends Activity {
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
+		
+//		 Directions d = new Directions("toronto", "vancouver", new DirectionCallback() {			
+//			@Override
+//			public void onDirectionsReceived(String result) {
+//				startDirectionsActivity(cars.get(0), result);
+//			}
+//		});
+//		 d.setPoints("toronto", "vancouver");
+//		 d.makeRequest();
+//		 d.routesExist();
+//		 new Directions().setPoints("toronto", "vancouver");
 
 //		searchList.setOnItemClickListener(new OnItemClickListener(){
 
@@ -91,12 +106,13 @@ public class SearchActivity extends Activity {
 //					long arg3) {
 //				v.get
 //			}});
-		
-		// Directions d = new Directions();
-		// d.setPoints("toronto", "vancouver");
-		// d.makeRequest();
-		// new Directions().setPoints("toronto", "vancouver");
 
+	}
+	
+	private void startDirectionsActivity(Car car) {
+		Intent intent = new Intent(this, DirectionsActivity.class);
+		intent.putExtra("car", car);
+		startActivity(intent);
 	}
 
 	@Override
@@ -299,7 +315,6 @@ public class SearchActivity extends Activity {
 								}
 								views[views.length - 1]
 										.setVisibility(View.GONE);
-								search.setVisibility(View.VISIBLE);
 							}
 						}
 					});

@@ -1,6 +1,9 @@
 package com.fuelcell.models;
 
-public class Car {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Car implements Parcelable {
 	
 	public static enum FuelType {Diesel, Ethanol, Natural, Regular, Premium};
 	
@@ -27,6 +30,35 @@ public class Car {
 	//kg/year
 	private final double emissions;
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeDouble(cityEffL);
+		dest.writeDouble(highwayEffL);
+		dest.writeDouble(cityEffM);
+		dest.writeDouble(highwayEffM);
+		dest.writeDouble(fuelUsage);
+		dest.writeDouble(emissions);
+		
+	}
+	
+	public static final Parcelable.Creator<Car> CREATOR = new Parcelable.Creator<Car>() {
+		public Car createFromParcel(Parcel in) {
+			return new Car(in); 
+	    }
+		public Car[] newArray(int size) {
+			return new Car[size];
+		}
+	};
+	
+	public Car(Parcel in) {
+		this(0, "", "", "", 0, 0, "", null, in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble());
+	}
+	
 	public Car(int year, String manufacturer, String model,
 			String vehicleClass, double engineSize, int cylinders,
 			String transmission, FuelType fuelType, double cityEffL,

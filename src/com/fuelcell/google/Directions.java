@@ -1,12 +1,7 @@
 package com.fuelcell.google;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -18,20 +13,21 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fuelcell.SearchActivity;
-
-import android.app.Activity;
 import android.os.AsyncTask;
 
 public class Directions {
 
 	private String origin;
 	private String destination;
-	
-	
-	private JSONObject jsonResult;
+	private DirectionCallback callback;
 	
 	private final String DIRECTIONS_URL = "http://maps.googleapis.com/maps/api/directions/json";
+	
+	public Directions(String origin, String destination, DirectionCallback callback) {
+		this.origin = origin;
+		this.destination = destination;
+		this.callback = callback;
+	}
 	
 	public void setPoints(String origin, String destination) {
 		this.origin = origin;
@@ -43,8 +39,9 @@ public class Directions {
 	}
 	
 	public boolean routesExist() {
-//		if (jsonResult != null) 
 		return false;
+//		JSONArray routes = JSONUtil.getJSONArray(jsonResult, "routes");
+//		return (JSONUtil.getJSONArray(jsonResult, "routes") == null) ? false : routes.length() > 0;
 	}
 	
 	public Double getDistanceKm() {
@@ -52,11 +49,14 @@ public class Directions {
 		return null;
 	}
 	
+	public interface DirectionCallback {
+		void onDirectionsReceived(String result);
+	}
+	
 	public class DirectionTask extends AsyncTask<String, String, String> {
 
 		public DirectionTask() {
 			super();
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -97,12 +97,7 @@ public class Directions {
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
 	        if (result != null) {
-				try {
-					jsonResult = new JSONObject(result);
-				} catch (JSONException e) {
-					jsonResult = null;
-					e.printStackTrace();
-				}
+				if (callback != null) callback.onDirectionsReceived(result);
 	        }
 	    }
 		
