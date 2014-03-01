@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
+import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
 
 public class SearchActivity extends Activity {
 
@@ -48,6 +49,14 @@ public class SearchActivity extends Activity {
 	Button search;
 	ArrayList<Car> cars;
 
+	TextCallback callback = new TextCallback() {
+		
+		@Override
+		public void onClick(CharSequence text) {
+			System.out.println(text);
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -152,9 +161,9 @@ public class SearchActivity extends Activity {
 							progress.incrementProgressBy(addProgress(cars.size()/200f *100f));
 						}
 
-						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(year));
-						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(manufacture));
-						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(model));
+						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(year), callback);
+						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(manufacture), callback);
+						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(model), callback);
 						return true;
 					} catch (Exception unfinishedException) {
 						return false;
@@ -186,6 +195,8 @@ public class SearchActivity extends Activity {
 			}.execute();
 		}
 	}
+	
+	
 
 	protected void setClick(EditText textField) {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
