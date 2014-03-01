@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.fuelcell.csvutils.CSVFileUtils;
+import com.fuelcell.csvutils.CSVParser;
+import com.fuelcell.models.Car;
 import com.fuelcell.util.DownloadTask;
 
 public class FuelCellActivity extends Activity {
@@ -41,7 +43,7 @@ public class FuelCellActivity extends Activity {
 		
 		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
-		//list of all files that need currently in the folder
+		//list of all files that are currently in the folder
 		ArrayList<String> files = new ArrayList<String>();
 		
 		{
@@ -79,6 +81,8 @@ public class FuelCellActivity extends Activity {
 			    }
 			});
 		}
+		
+		ArrayList<Car> cars = new CSVParser(wrapper.getFilesDir().listFiles()[0]).parse();
 		
 	}
 
