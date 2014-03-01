@@ -1,6 +1,7 @@
 package com.fuelcell;
 
 import java.io.File;
+import com.fuelcell.google.Directions;
 
 import android.app.Activity;
 import android.content.Context;
@@ -53,8 +54,7 @@ public class SearchActivity extends Activity {
 //		}
 		
 		String[] carList = { "a", "b", "c" ,"d","e","f","g","h","i","j"};
-		adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, carList);
+		adapter = new ArrayAdapter<String>(this, R.layout.list_item, carList);
 		searchList.setAdapter(adapter);
 
 		// need these so the text fields can reshow everything when user presses
@@ -64,12 +64,9 @@ public class SearchActivity extends Activity {
 		searchYear.set(searchCorp, searchModel, searchYear, logo, searchList);
 		searchModel.set(searchCorp, searchModel, searchYear, logo, searchList);
 
-		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
-		searchYear.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
-		searchModel.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
+		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
+		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
+		searchModel.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -78,6 +75,11 @@ public class SearchActivity extends Activity {
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
+		
+//		Directions d = new Directions();
+//		d.setPoints("toronto", "vancouver");
+//		d.makeRequest();
+//		new Directions().setPoints("toronto", "vancouver");
 		
 	}
 
@@ -105,15 +107,13 @@ public class SearchActivity extends Activity {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				searchList.setVisibility(View.GONE);
 
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				searchList.setVisibility(View.VISIBLE);
 				adapter.getFilter().filter(s);
 			}
@@ -125,12 +125,9 @@ public class SearchActivity extends Activity {
 	public void makeInVisible(View v) {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
-			if (!v.equals(searchCorp))
-				searchCorp.setVisibility(View.GONE);
-			if (!v.equals(searchYear))
-				searchYear.setVisibility(View.GONE);
-			if (!v.equals(searchModel))
-				searchModel.setVisibility(View.GONE);
+			if (!v.equals(searchCorp)) searchCorp.setVisibility(View.GONE);
+			if (!v.equals(searchYear)) searchYear.setVisibility(View.GONE);
+			if (!v.equals(searchModel)) searchModel.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
 		}
 	}
@@ -141,22 +138,23 @@ public class SearchActivity extends Activity {
 		Context context;
 		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
-			this.context=context;
+			this.context = context;
 		}
 
 		public MyEditText(Context context, AttributeSet attrs) {
 			super(context, attrs);
-			this.context=context;
+			this.context = context;
 		}
 
 		public MyEditText(Context context) {
 			super(context);
-			this.context=context;
+			this.context = context;
 		}
 
 		public void set(View... v) {
 			this.views = v;
 		}
+		
 		public boolean onKeyPreIme (final int keyCode, KeyEvent event) {
 			new Thread(new Runnable() {
 				@Override
