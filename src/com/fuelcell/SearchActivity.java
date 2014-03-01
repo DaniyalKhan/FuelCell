@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 
 import com.fuelcell.google.Directions;
+import com.fuelcell.google.Directions.DirectionCallback;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.json.JSONObject;
 
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
@@ -15,6 +18,7 @@ import com.fuelcell.models.Car;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,7 +46,8 @@ public class SearchActivity extends Activity {
 	RelativeLayout layout;
 	ArrayAdapter<Integer> yearAdapter;
 	ContextWrapper wrapper;
-
+	ArrayList<Car> cars = new ArrayList<Car>();;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,10 +64,11 @@ public class SearchActivity extends Activity {
 		wrapper = new ContextWrapper(this);
 
 		File[] filesArray = wrapper.getFilesDir().listFiles();
-		ArrayList<Car> cars = new ArrayList<Car>();
+		
 		for (int i = 0; i < filesArray.length; i++) {
 			try {
 				cars.addAll(new CSVParser(filesArray[i]).parse());
+				System.out.println(i);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -92,11 +98,25 @@ public class SearchActivity extends Activity {
 		setTextChange(searchYear);
 		setTextChange(searchModel);
 
-		// Directions d = new Directions();
-		// d.setPoints("toronto", "vancouver");
-		// d.makeRequest();
-		// new Directions().setPoints("toronto", "vancouver");
+		startDirectionsActivity(cars.get(0));
+		
+//		 Directions d = new Directions("toronto", "vancouver", new DirectionCallback() {			
+//			@Override
+//			public void onDirectionsReceived(String result) {
+//				startDirectionsActivity(cars.get(0), result);
+//			}
+//		});
+//		 d.setPoints("toronto", "vancouver");
+//		 d.makeRequest();
+//		 d.routesExist();
+//		 new Directions().setPoints("toronto", "vancouver");
 
+	}
+	
+	private void startDirectionsActivity(Car car) {
+		Intent intent = new Intent(this, DirectionsActivity.class);
+		intent.putExtra("car", car);
+		startActivity(intent);
 	}
 
 	protected void setClick(EditText textField) {
