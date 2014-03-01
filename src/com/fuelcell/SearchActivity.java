@@ -49,6 +49,7 @@ public class SearchActivity extends Activity {
 	Button search;
 	ArrayList<Car> cars;
 	int lastClicked;
+	public static ArrayList<Car> filtered;
 
 	TextCallback callback = new TextCallback() {
 		
@@ -80,12 +81,14 @@ public class SearchActivity extends Activity {
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
+		filtered = new ArrayList<Car>();
 
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(cars != null) startDirectionsActivity(cars.get(0));
+//				if(cars != null) startStatsActivity();
+				startDirectionsActivity(cars.get(0));
 			}
 		});
 		
@@ -127,6 +130,26 @@ public class SearchActivity extends Activity {
 		intent.putExtra("year", searchYear.getText());
 		intent.putExtra("model", searchModel.getText());
 		startActivity(intent);
+	}
+	private void startStatsActivity() {
+		Intent intent = new Intent(this, StatsActivity.class);
+		filtered = filterList();
+		startActivity(intent);
+	}
+	
+	private ArrayList<Car> filterList()
+	{
+		ArrayList<Car> filtered = new ArrayList<Car>();
+			for (int i = 0 ; i < cars.size(); i++) {
+				if ( (searchCorp.getText().toString().contains(cars.get(i).getManufacturer())  || searchCorp.getText().toString().equals(""))
+						&& (searchYear.getText().toString().contains(Integer.toString(cars.get(i).getYear())) || searchYear.getText().toString().equals(""))
+						&& (searchModel.getText().toString().contains(cars.get(i).getModel())  || searchModel.getText().toString().equals(""))) {
+					filtered.add(cars.get(i));
+					System.out.println(cars.get(i).getModel());
+				}
+			}
+		
+		return filtered;
 	}
 
 	@Override
