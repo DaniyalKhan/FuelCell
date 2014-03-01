@@ -22,9 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +31,7 @@ import android.widget.RelativeLayout;
 
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
+import com.fuelcell.util.DynamicArrayAdapter;
 
 public class SearchActivity extends Activity {
 
@@ -43,9 +41,9 @@ public class SearchActivity extends Activity {
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
-	ArrayAdapter<Integer> yearAdapter;
-	ArrayAdapter<String> manufactureAdapter;
-	ArrayAdapter<String> modelAdapter;
+	DynamicArrayAdapter yearAdapter;
+	DynamicArrayAdapter manufactureAdapter;
+	DynamicArrayAdapter modelAdapter;
 	ContextWrapper wrapper;
 	Button search;
 	ArrayList<Car> cars;
@@ -143,27 +141,20 @@ public class SearchActivity extends Activity {
 								e.printStackTrace();
 							}
 						}
-						Set<Integer> year = new HashSet<Integer>();
+						Set<String> year = new HashSet<String>();
 						Set<String> manufacture = new HashSet<String>();
 						Set<String> model = new HashSet<String>();
 
 						for (int i = 0; i < cars.size(); i++) {
-							year.add(cars.get(i).getYear());
+							year.add(Integer.toString(cars.get(i).getYear()));
 							manufacture.add(cars.get(i).getManufacturer());
 							model.add(cars.get(i).getModel());
 							progress.incrementProgressBy(addProgress(cars.size()/200f *100f));
 						}
 
-						yearAdapter = new ArrayAdapter<Integer>(
-								SearchActivity.this, R.layout.list_item,
-								year.toArray(new Integer[year.size()]));
-						manufactureAdapter = new ArrayAdapter<String>(
-								SearchActivity.this, R.layout.list_item,
-								manufacture.toArray(new String[manufacture
-										.size()]));
-						modelAdapter = new ArrayAdapter<String>(
-								SearchActivity.this, R.layout.list_item,
-								model.toArray(new String[model.size()]));
+						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(year));
+						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(manufacture));
+						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(model));
 						return true;
 					} catch (Exception unfinishedException) {
 						return false;
