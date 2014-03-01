@@ -7,11 +7,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
 import com.fuelcell.util.CSVFileUtils;
 import com.fuelcell.util.DownloadTask;
+import com.fuelcell.util.DownloadTask.DownloadCallback;
 
 public class FuelCellActivity extends Activity {
 	
@@ -38,6 +40,7 @@ public class FuelCellActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
 		wrapper = new ContextWrapper(this);
+		deleteContents();
 		
 		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
@@ -69,17 +72,30 @@ public class FuelCellActivity extends Activity {
 			progressDialog.setCancelable(true);
 			
 			//download for each file
-			final DownloadTask downloadTask = new DownloadTask(this, progressDialog);
+			final DownloadTask downloadTask = new DownloadTask(this, progressDialog, new DownloadCallback() {
+				@Override
+				public void onDownloadComplete() {
+					startSearch();
+				}
+			});
 			downloadTask.execute(toDownload.toArray(new String[toDownload.size()]));
 	
 			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			    @Override
 			    public void onCancel(DialogInterface dialog) {
 			        downloadTask.cancel(true);
+			        startSearch();
 			    }
 			});
+		} else {
+			startSearch();
 		}
 		
+	}
+	
+	private void startSearch() {
+		Intent intent = new Intent(this, SearchActivity.class);
+		startActivity(intent);
 	}
 
 }

@@ -23,11 +23,13 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	Context context;
 	ProgressDialog dialog;
 	WakeLock wakeLock;
+	DownloadCallback callback;
 	
-	public DownloadTask(Context context, ProgressDialog dialog) {
+	public DownloadTask(Context context, ProgressDialog dialog, DownloadCallback callback) {
 		this.context = context;
 		this.httpclient = new DefaultHttpClient();
 		this.dialog = dialog;
+		this.callback = callback;
 	}
 	
 	protected String doInBackground(String... stringUrls) {
@@ -106,6 +108,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
         else
             Toast.makeText(context,"Files downloaded", Toast.LENGTH_LONG).show();
+        if (callback != null) callback.onDownloadComplete();
     }
 
 	@Override
@@ -117,6 +120,10 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
         wakeLock.acquire();
         dialog.show();
+	}
+	
+	public interface DownloadCallback {
+		void onDownloadComplete();
 	}
     
 }
