@@ -70,9 +70,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_directions=0x7f030000;
         public static final int activity_fuel_cell=0x7f030001;
         public static final int activity_search=0x7f030002;
-        public static final int directions_fragment=0x7f030003;
-        public static final int list_item=0x7f030004;
-        public static final int search_list=0x7f030005;
+        public static final int activity_stats=0x7f030003;
+        public static final int directions_fragment=0x7f030004;
+        public static final int list_item=0x7f030005;
+        public static final int search_list=0x7f030006;
     }
     public static final class menu {
         public static final int fuel_cell=0x7f090000;
@@ -138,7 +139,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:buttonBarButtonStyle
+          @attr name com.fuelcell:buttonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
         /**
@@ -148,7 +149,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:buttonBarStyle
+          @attr name com.fuelcell:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
     };

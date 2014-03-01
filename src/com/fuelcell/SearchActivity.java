@@ -48,12 +48,24 @@ public class SearchActivity extends Activity {
 	ContextWrapper wrapper;
 	Button search;
 	ArrayList<Car> cars;
+	int lastClicked;
 
 	TextCallback callback = new TextCallback() {
 		
 		@Override
 		public void onClick(CharSequence text) {
-			System.out.println(text);
+			if(lastClicked == searchCorp.getId()) {
+				searchCorp.setText(text);
+				searchCorp.setBackgroundResource((R.drawable.textbargreen));
+			}
+			else if(lastClicked == searchYear.getId()){
+				searchYear.setText(text);
+				searchYear.setBackgroundResource((R.drawable.textbargreen));
+			}
+			else if(lastClicked == searchModel.getId()){
+				searchModel.setText(text);
+				searchModel.setBackgroundResource((R.drawable.textbargreen));
+			}
 		}
 	};
 	
@@ -106,19 +118,14 @@ public class SearchActivity extends Activity {
 //		 d.routesExist();
 //		 new Directions().setPoints("toronto", "vancouver");
 
-//		searchList.setOnItemClickListener(new OnItemClickListener(){
-
-//			@Override
-//			public void onItemClick(AdapterView<?> adapter, View v, int arg2,
-//					long arg3) {
-//				v.get
-//			}});
-
 	}
 	
 	private void startDirectionsActivity(Car car) {
 		Intent intent = new Intent(this, DirectionsActivity.class);
 		intent.putExtra("car", car);
+		intent.putExtra("corp", searchCorp.getText());
+		intent.putExtra("year", searchYear.getText());
+		intent.putExtra("model", searchModel.getText());
 		startActivity(intent);
 	}
 
@@ -204,6 +211,7 @@ public class SearchActivity extends Activity {
 			public void onFocusChange(View v, boolean hasFocus) {
 				makeInVisible(v);
 				setListAdapter(v);
+				lastClicked = v.getId();
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
@@ -211,6 +219,7 @@ public class SearchActivity extends Activity {
 			public void onClick(View v) {
 				makeInVisible(v);
 				setListAdapter(v);
+				lastClicked = v.getId();
 			}
 		});
 	}
@@ -235,6 +244,12 @@ public class SearchActivity extends Activity {
 					int count) {
 				searchList.setVisibility(View.VISIBLE);
 				filter(s);
+				if (searchCorp.getVisibility() == View.VISIBLE)
+					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+				if (searchYear.getVisibility() == View.VISIBLE)
+					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+				if (searchModel.getVisibility() == View.VISIBLE)
+					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
 			}
 
 			public void filter(CharSequence s) {
