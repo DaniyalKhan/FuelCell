@@ -10,6 +10,8 @@ import java.net.URL;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.fuelcell.csvutils.CSVFileUtils;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;

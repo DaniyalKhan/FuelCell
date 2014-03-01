@@ -10,7 +10,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.fuelcell.util.CSVFileUtils;
+import com.fuelcell.csvutils.CSVFileUtils;
 import com.fuelcell.util.DownloadTask;
 
 public class FuelCellActivity extends Activity {
