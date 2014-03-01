@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.Window;
 
 public class FuelCellActivity extends Activity {
 
@@ -15,6 +16,7 @@ public class FuelCellActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
 		// instantiate it within the onCreate method
 		progressDialog = new ProgressDialog(this);
@@ -34,13 +36,6 @@ public class FuelCellActivity extends Activity {
 		    }
 		});
 		
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.fuel_cell, menu);
-		return true;
 	}
 
 }
