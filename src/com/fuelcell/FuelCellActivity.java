@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.fuelcell.csvutils.CSVFileUtils;
-import com.fuelcell.csvutils.CSVParser;
-import com.fuelcell.models.Car;
 import com.fuelcell.util.DownloadTask;
 import com.fuelcell.util.DownloadTask.DownloadCallback;
 
@@ -91,8 +89,6 @@ public class FuelCellActivity extends Activity {
 		} else {
 			startSearch();
 		}
-		
-		ArrayList<Car> cars = new CSVParser(wrapper.getFilesDir().listFiles()[0]).parse();
 		
 	}
 	

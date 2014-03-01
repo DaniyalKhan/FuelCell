@@ -1,5 +1,9 @@
 package com.fuelcell;
 
+import java.util.ArrayList;
+
+import com.fuelcell.models.Car;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -7,6 +11,8 @@ import android.view.Window;
 import android.widget.EditText;
 
 public class SearchActivity extends Activity {
+	
+	ArrayList<Car> masterList = new CSVParser(wrapper.getFilesDir().listFiles()[0]).parse();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +26,6 @@ public class SearchActivity extends Activity {
 		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchModel.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
-		
-		
 		
 	}
 	

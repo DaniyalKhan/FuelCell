@@ -109,7 +109,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         if (result != null)
             Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context,"Files downloaded", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Data downloaded", Toast.LENGTH_LONG).show();
         if (callback != null) callback.onDownloadComplete();
     }
 
