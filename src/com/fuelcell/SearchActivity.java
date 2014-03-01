@@ -27,25 +27,13 @@ public class SearchActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_search);
 
-		EditText searchCorp = (EditText) findViewById(R.id.searchCorp);
-		EditText searchYear = (EditText) findViewById(R.id.searchYear);
-		EditText searchModel = (EditText) findViewById(R.id.searchModel);
+		searchCorp = (EditText) findViewById(R.id.searchCorp);
+		searchYear = (EditText) findViewById(R.id.searchYear);
+		searchModel = (EditText) findViewById(R.id.searchModel);
 		
 		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchModel.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
-
-		searchCorp = (EditText) findViewById(R.id.searchCorp);
-		searchYear = (EditText) findViewById(R.id.searchYear);
-		searchModel = (EditText) findViewById(R.id.searchModel);
-		logo = (ImageView) findViewById(R.id.mainicon);
-
-		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
-		searchYear.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
-		searchModel.setGravity(Gravity.CENTER_HORIZONTAL
-				+ Gravity.CENTER_VERTICAL);
 		
 		setClick(searchCorp);
 		setClick(searchYear);
