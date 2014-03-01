@@ -94,10 +94,10 @@
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/searchList"
-        android:layout_marginLeft="200dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginRight="90dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_press"
         android:contentDescription="desc"
