@@ -30,6 +30,7 @@ public class SearchActivity extends Activity {
 		searchCorp = (EditText) findViewById(R.id.searchCorp);
 		searchYear = (EditText) findViewById(R.id.searchYear);
 		searchModel = (EditText) findViewById(R.id.searchModel);
+		logo = (ImageView) findViewById(R.id.mainicon);
 		
 		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
@@ -40,18 +41,18 @@ public class SearchActivity extends Activity {
 		setClick(searchModel);
 	}
 
-	protected void setClick(final EditText textField) {
+	protected void setClick(EditText textField) {
 		textField.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 					logo.setVisibility(View.GONE);
 					
-					if (textField != searchCorp)
+					if (!v.equals(searchCorp))
 						searchCorp.setVisibility(View.GONE);
-					if (textField != searchYear)
+					if (!v.equals(searchYear))
 						searchYear.setVisibility(View.GONE);
-					if (textField != searchModel)
+					if (!v.equals(searchModel))
 						searchModel.setVisibility(View.GONE);
 					
 			}
