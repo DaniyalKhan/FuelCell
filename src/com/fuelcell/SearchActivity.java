@@ -29,6 +29,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,6 +84,14 @@ public class SearchActivity extends Activity {
 		setTextChange(searchYear);
 		setTextChange(searchModel);
 
+//		searchList.setOnItemClickListener(new OnItemClickListener(){
+
+//			@Override
+//			public void onItemClick(AdapterView<?> adapter, View v, int arg2,
+//					long arg3) {
+//				v.get
+//			}});
+		
 		// Directions d = new Directions();
 		// d.setPoints("toronto", "vancouver");
 		// d.makeRequest();
