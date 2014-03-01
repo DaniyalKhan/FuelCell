@@ -2,39 +2,35 @@ package com.fuelcell;
 
 import java.io.File;
 import java.io.IOException;
-
-import com.fuelcell.google.Directions;
-import com.fuelcell.google.Directions.DirectionCallback;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.json.JSONObject;
-
-import com.fuelcell.csvutils.CSVParser;
-import com.fuelcell.models.Car;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.fuelcell.csvutils.CSVParser;
+import com.fuelcell.models.Car;
 
 public class SearchActivity extends Activity {
 
@@ -45,9 +41,12 @@ public class SearchActivity extends Activity {
 	ListView searchList;
 	RelativeLayout layout;
 	ArrayAdapter<Integer> yearAdapter;
+	ArrayAdapter<String> manufactureAdapter;
+	ArrayAdapter<String> modelAdapter;
 	ContextWrapper wrapper;
-	ArrayList<Car> cars = new ArrayList<Car>();;
-	
+	Button search;
+	ArrayList<Car> cars;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,37 +57,25 @@ public class SearchActivity extends Activity {
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		logo = (ImageView) findViewById(R.id.mainicon);
+		search = (Button) findViewById(R.id.searchButton);
 
+		search.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(cars != null) startDirectionsActivity(cars.get(0));
+			}
+		});
+		
 		searchList = (ListView) findViewById(R.id.searchList);
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
 		wrapper = new ContextWrapper(this);
 
-		File[] filesArray = wrapper.getFilesDir().listFiles();
-		
-		for (int i = 0; i < filesArray.length; i++) {
-			try {
-				cars.addAll(new CSVParser(filesArray[i]).parse());
-				System.out.println(i);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		Set<Integer> year = new HashSet<Integer>();
-		
-		for (int i = 0; i < cars.size(); i++) {
-			year.add(cars.get(i).getYear());
-		}
-
-		// String[] carList = { "a", "b", "c" ,"d","e","f","g","h","i","j"};
-		yearAdapter = new ArrayAdapter<Integer>(this, R.layout.list_item, year.toArray(new Integer[year.size()]));
-		searchList.setAdapter(yearAdapter);
-
-		// need these so the text fields can reshow everything when user presses
-		// back,
+		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, logo, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, logo, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, logo, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, logo, search, searchList);
+		searchYear.set(searchCorp, searchModel, searchYear, logo, search, searchList);
+		searchModel.set(searchCorp, searchModel, searchYear, logo, search, searchList);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -97,8 +84,6 @@ public class SearchActivity extends Activity {
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
-
-		startDirectionsActivity(cars.get(0));
 		
 //		 Directions d = new Directions("toronto", "vancouver", new DirectionCallback() {			
 //			@Override
@@ -119,17 +104,100 @@ public class SearchActivity extends Activity {
 		startActivity(intent);
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (cars == null) {
+			new AsyncTask<Integer, Integer, Boolean>() {
+
+				ProgressDialog progress;
+				float exactProgress = 0;
+
+				protected int addProgress(float increment) {
+					exactProgress = exactProgress + increment;
+					return (int) exactProgress;
+				}
+
+				@Override
+				protected Boolean doInBackground(Integer... arg0) {
+					try {
+						File[] filesArray = wrapper.getFilesDir().listFiles();
+						cars = new ArrayList<Car>();
+						for (int i = 0; i < filesArray.length; i++) {
+							try {
+								cars.addAll(new CSVParser(filesArray[i])
+										.parse());
+								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						Set<Integer> year = new HashSet<Integer>();
+						Set<String> manufacture = new HashSet<String>();
+						Set<String> model = new HashSet<String>();
+
+						for (int i = 0; i < cars.size(); i++) {
+							year.add(cars.get(i).getYear());
+							manufacture.add(cars.get(i).getManufacturer());
+							model.add(cars.get(i).getModel());
+							progress.incrementProgressBy(addProgress(cars.size()/200f *100f));
+						}
+
+						yearAdapter = new ArrayAdapter<Integer>(
+								SearchActivity.this, R.layout.list_item,
+								year.toArray(new Integer[year.size()]));
+						manufactureAdapter = new ArrayAdapter<String>(
+								SearchActivity.this, R.layout.list_item,
+								manufacture.toArray(new String[manufacture
+										.size()]));
+						modelAdapter = new ArrayAdapter<String>(
+								SearchActivity.this, R.layout.list_item,
+								model.toArray(new String[model.size()]));
+						return true;
+					} catch (Exception unfinishedException) {
+						return false;
+					}
+				}
+
+				@Override
+				protected void onPreExecute() {
+					progress = new ProgressDialog(SearchActivity.this);
+					progress.setMessage("Loading");
+					progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+					progress.setProgress(0);
+					progress.setMax(100);
+					progress.setIndeterminate(false);
+					progress.show();
+				}
+
+				@Override
+				protected void onPostExecute(Boolean result) {
+					progress.dismiss();
+					if (result == false) {
+						AlertDialog.Builder failure = new AlertDialog.Builder(
+								SearchActivity.this);
+						failure.setMessage("Loading Failed");
+					}
+
+				}
+
+			}.execute();
+		}
+	}
+
 	protected void setClick(EditText textField) {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				makeInVisible(v);
+				setListAdapter(v);
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				makeInVisible(v);
+				setListAdapter(v);
 			}
 		});
 	}
@@ -146,14 +214,23 @@ public class SearchActivity extends Activity {
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				searchList.setVisibility(View.GONE);
-
+				filter(s);
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				searchList.setVisibility(View.VISIBLE);
-				yearAdapter.getFilter().filter(s);
+				filter(s);
+			}
+
+			public void filter(CharSequence s) {
+				if (searchCorp.getVisibility() == View.VISIBLE)
+					manufactureAdapter.getFilter().filter(s);
+				if (searchYear.getVisibility() == View.VISIBLE)
+					yearAdapter.getFilter().filter(s);
+				if (searchModel.getVisibility() == View.VISIBLE)
+					modelAdapter.getFilter().filter(s);
 			}
 
 		});
@@ -169,6 +246,19 @@ public class SearchActivity extends Activity {
 			if (!v.equals(searchModel))
 				searchModel.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
+			search.setVisibility(View.GONE);
+
+		}
+	}
+
+	public void setListAdapter(View v) {
+		if (v.hasFocus()) {
+			if (v.equals(searchCorp))
+				searchList.setAdapter(manufactureAdapter);
+			if (v.equals(searchYear))
+				searchList.setAdapter(yearAdapter);
+			if (v.equals(searchModel))
+				searchList.setAdapter(modelAdapter);
 		}
 	}
 
