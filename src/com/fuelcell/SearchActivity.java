@@ -1,7 +1,16 @@
 package com.fuelcell;
 
 import java.io.File;
+import java.io.IOException;
+
 import com.fuelcell.google.Directions;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fuelcell.csvutils.CSVParser;
+import com.fuelcell.models.Car;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +40,7 @@ public class SearchActivity extends Activity {
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
-	ArrayAdapter<String> adapter;
+	ArrayAdapter<Integer> yearAdapter;
 	ContextWrapper wrapper;
 
 	@Override
@@ -47,15 +56,26 @@ public class SearchActivity extends Activity {
 
 		searchList = (ListView) findViewById(R.id.searchList);
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
+		wrapper = new ContextWrapper(this);
 
-//		File[] filesArray = wrapper.getFilesDir().listFiles();
-//		for(int i = 0 ; i < filesArray.length ; i++){
-//			new CSVParser(filesArray[i]);
-//		}
+		File[] filesArray = wrapper.getFilesDir().listFiles();
+		ArrayList<Car> cars = new ArrayList<Car>();
+		for (int i = 0; i < filesArray.length; i++) {
+			try {
+				cars.addAll(new CSVParser(filesArray[i]).parse());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		Set<Integer> year = new HashSet<Integer>();
 		
-		String[] carList = { "a", "b", "c" ,"d","e","f","g","h","i","j"};
-		adapter = new ArrayAdapter<String>(this, R.layout.list_item, carList);
-		searchList.setAdapter(adapter);
+		for (int i = 0; i < cars.size(); i++) {
+			year.add(cars.get(i).getYear());
+		}
+
+		// String[] carList = { "a", "b", "c" ,"d","e","f","g","h","i","j"};
+		yearAdapter = new ArrayAdapter<Integer>(this, R.layout.list_item, year.toArray(new Integer[year.size()]));
+		searchList.setAdapter(yearAdapter);
 
 		// need these so the text fields can reshow everything when user presses
 		// back,
@@ -64,10 +84,6 @@ public class SearchActivity extends Activity {
 		searchYear.set(searchCorp, searchModel, searchYear, logo, searchList);
 		searchModel.set(searchCorp, searchModel, searchYear, logo, searchList);
 
-		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
-		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
-		searchModel.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
-
 		setClick(searchCorp);
 		setClick(searchYear);
 		setClick(searchModel);
@@ -75,12 +91,12 @@ public class SearchActivity extends Activity {
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
-		
-//		Directions d = new Directions();
-//		d.setPoints("toronto", "vancouver");
-//		d.makeRequest();
-//		new Directions().setPoints("toronto", "vancouver");
-		
+
+		// Directions d = new Directions();
+		// d.setPoints("toronto", "vancouver");
+		// d.makeRequest();
+		// new Directions().setPoints("toronto", "vancouver");
+
 	}
 
 	protected void setClick(EditText textField) {
@@ -97,7 +113,7 @@ public class SearchActivity extends Activity {
 			}
 		});
 	}
-	
+
 	protected void setTextChange(EditText textField) {
 		textField.addTextChangedListener(new TextWatcher() {
 
@@ -107,17 +123,18 @@ public class SearchActivity extends Activity {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 				searchList.setVisibility(View.GONE);
 
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				searchList.setVisibility(View.VISIBLE);
-				adapter.getFilter().filter(s);
+				yearAdapter.getFilter().filter(s);
 			}
-			
 
 		});
 	}
@@ -125,9 +142,12 @@ public class SearchActivity extends Activity {
 	public void makeInVisible(View v) {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
-			if (!v.equals(searchCorp)) searchCorp.setVisibility(View.GONE);
-			if (!v.equals(searchYear)) searchYear.setVisibility(View.GONE);
-			if (!v.equals(searchModel)) searchModel.setVisibility(View.GONE);
+			if (!v.equals(searchCorp))
+				searchCorp.setVisibility(View.GONE);
+			if (!v.equals(searchYear))
+				searchYear.setVisibility(View.GONE);
+			if (!v.equals(searchModel))
+				searchModel.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
 		}
 	}
@@ -136,6 +156,7 @@ public class SearchActivity extends Activity {
 
 		View[] views;
 		Context context;
+
 		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
 			this.context = context;
@@ -154,8 +175,8 @@ public class SearchActivity extends Activity {
 		public void set(View... v) {
 			this.views = v;
 		}
-		
-		public boolean onKeyPreIme (final int keyCode, KeyEvent event) {
+
+		public boolean onKeyPreIme(final int keyCode, KeyEvent event) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -168,10 +189,11 @@ public class SearchActivity extends Activity {
 						@Override
 						public void run() {
 							if (keyCode == KeyEvent.KEYCODE_BACK) {
-								for (View v: views) {
-						    		v.setVisibility(View.VISIBLE);
-						    	}
-								views[views.length - 1].setVisibility(View.GONE);
+								for (View v : views) {
+									v.setVisibility(View.VISIBLE);
+								}
+								views[views.length - 1]
+										.setVisibility(View.GONE);
 							}
 						}
 					});
@@ -179,7 +201,6 @@ public class SearchActivity extends Activity {
 			}).start();
 			return false;
 		}
-
 
 	}
 

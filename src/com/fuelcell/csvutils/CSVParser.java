@@ -22,16 +22,19 @@ public class CSVParser {
 		}
 	}
 	
-	public ArrayList<Car> parse() {
+	public ArrayList<Car> parse() throws IOException {
 		ArrayList<Car> cars = new ArrayList<Car>();
 		if (csvReader != null) {
-			try {
-				cars.add(new Car(csvReader.readNext()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				String[] line = csvReader.readNext();
+				while (line != null) {
+					try {
+						cars.add(new Car(csvReader.readNext()));
+					} catch (Exception e) {
+//						e.printStackTrace();
+					}
+					line = csvReader.readNext();	
+				}
+				
 		}
 		return cars;
 	}

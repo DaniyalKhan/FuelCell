@@ -50,6 +50,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/textbarwhite"
             android:contentDescription="desc"
+            android:gravity="center"
             android:hint="Manufacturer" />
 
         <view
@@ -63,6 +64,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/textbarwhite"
             android:contentDescription="desc"
+            android:gravity="center"
             android:hint="Year" />
 
        <view
@@ -76,6 +78,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/textbarwhite"
             android:contentDescription="desc"
+            android:gravity="center"
             android:hint="Model" />
 
        <ListView
