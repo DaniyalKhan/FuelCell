@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="SearchActivity" >
@@ -77,4 +78,13 @@
             android:contentDescription="desc"
             android:hint="Model" />
 
+       <ListView
+           android:id="@+id/searchList"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/searchModel"
+           android:layout_marginTop="10dp" 
+           android:visibility="gone">
+       </ListView>
+   
 </RelativeLayout>
