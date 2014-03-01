@@ -1,11 +1,11 @@
 package com.fuelcell;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.content.res.Configuration;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -13,14 +13,11 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fuelcell.csvutils.CSVParser;
-import com.fuelcell.models.Car;
-
 public class SearchActivity extends Activity {
 
-	EditText searchCorp;
-	EditText searchYear;
-	EditText searchModel;
+	MyEditText searchCorp;
+	MyEditText searchYear;
+	MyEditText searchModel;
 	ImageView logo;
 
 	@Override
@@ -29,11 +26,16 @@ public class SearchActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_search);
 		
-		searchCorp = (EditText) findViewById(R.id.searchCorp);
-		searchYear = (EditText) findViewById(R.id.searchYear);
-		searchModel = (EditText) findViewById(R.id.searchModel);
+		searchCorp = (MyEditText) findViewById(R.id.searchCorp);
+		searchYear = (MyEditText) findViewById(R.id.searchYear);
+		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		logo = (ImageView) findViewById(R.id.mainicon);
-	
+		
+		//need these so the text fields can reshow everything when user presses back, 
+		//needs a reference to everything that needs to show back up
+		searchCorp.set(searchCorp, searchModel, searchYear, logo);
+		searchYear.set(searchCorp, searchModel, searchYear, logo);
+		searchModel.set(searchCorp, searchModel, searchYear, logo);
 		
 		searchCorp.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
 		searchYear.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.CENTER_VERTICAL);
@@ -43,41 +45,64 @@ public class SearchActivity extends Activity {
 		setClick(searchYear);
 		setClick(searchModel);
 	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-	    // Checks whether a hardware keyboard is available
-	    if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
-	    	mainViewVisibility();
-	    } 
-	}
-
 	protected void setClick(EditText textField) {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				searchViewVisibility(v);				
+				makeInVisible(v);
+			}
+		});
+		textField.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				makeInVisible(v);
 			}
 		});
 	}
 	
-	private void searchViewVisibility(View v){
-		logo.setVisibility(View.GONE);
-		
-		if (!v.equals(searchCorp))
-			searchCorp.setVisibility(View.GONE);
-		if (!v.equals(searchYear))
-			searchYear.setVisibility(View.GONE);
-		if (!v.equals(searchModel))
-			searchModel.setVisibility(View.GONE);
+	public void makeInVisible(View v) {
+		if (v.hasFocus()) {
+			logo.setVisibility(View.GONE);
+			if (!v.equals(searchCorp)) searchCorp.setVisibility(View.GONE);
+			if (!v.equals(searchYear)) searchYear.setVisibility(View.GONE);
+			if (!v.equals(searchModel)) searchModel.setVisibility(View.GONE);				
+		}
 	}
 	
-	private void mainViewVisibility(){
-		logo.setVisibility(View.VISIBLE);
-		searchCorp.setVisibility(View.VISIBLE);
-		searchYear.setVisibility(View.VISIBLE);
-		searchModel.setVisibility(View.VISIBLE);
+	public static class MyEditText extends EditText {
+
+		View[] views;
+		
+		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
+			super(context, attrs, defStyle);
+			// TODO Auto-generated constructor stub
+		}
+
+		public MyEditText(Context context, AttributeSet attrs) {
+			super(context, attrs);
+			// TODO Auto-generated constructor stub
+		}
+
+		public MyEditText(Context context) {
+			super(context);
+			// TODO Auto-generated constructor stub
+		}
+		
+		public void set(View ... v) {
+			this.views = v;
+		}
+		
+		public boolean onKeyPreIme (int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_BACK) {
+				for (View v: views) {
+		    		v.setVisibility(View.VISIBLE);
+		    	}
+			}
+			return false;
+		}
+		
 	}
+	
+
+	
 }

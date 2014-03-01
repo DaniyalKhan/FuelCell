@@ -4,52 +4,77 @@
     android:layout_height="match_parent"
     tools:context="SearchActivity" >
 
-    <ImageView
-        android:id="@+id/mainicon"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:contentDescription="desc"
-        android:src="@drawable/fuelcellicon" />
-    
-    <EditText 
-        android:id="@+id/searchCorp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/mainicon"
-        android:contentDescription="desc"
-        android:background="@drawable/textbarwhite"
-        android:hint="Manufacturer"/>
-    
-    <EditText 
-        android:id="@+id/searchYear"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/searchCorp"
-        android:contentDescription="desc"
-        android:background="@drawable/textbarwhite"
-        android:hint="Year"/>
-    
-    <EditText 
-        android:id="@+id/searchModel"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/searchYear"
-        android:contentDescription="desc"
-        android:background="@drawable/textbarwhite"
-        android:hint="Model"/>
-    
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <!--
+             :nextFocusUp and :nextFocusLeft have been set to the id of this component
+    	     to prevent the dummy from receiving focus again
+        -->
+
+        <AutoCompleteTextView
+            android:id="@+id/autotext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:nextFocusLeft="@id/autotext"
+            android:nextFocusUp="@id/autotext"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/mainicon"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="desc"
+            android:nextFocusLeft="@id/autotext"
+            android:nextFocusUp="@id/autotext"
+            android:src="@drawable/fuelcellicon" />
+
+        <view
+  			class="com.fuelcell.SearchActivity$MyEditText"
+            android:id="@+id/searchCorp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/mainicon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/textbarwhite"
+            android:contentDescription="desc"
+            android:hint="Manufacturer" />
+
+        <view
+  			class="com.fuelcell.SearchActivity$MyEditText"
+            android:id="@+id/searchYear"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/searchCorp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/textbarwhite"
+            android:contentDescription="desc"
+            android:hint="Year" />
+
+       <view
+  			class="com.fuelcell.SearchActivity$MyEditText"
+            android:id="@+id/searchModel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/searchYear"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/textbarwhite"
+            android:contentDescription="desc"
+            android:hint="Model" />
+
 </RelativeLayout>
