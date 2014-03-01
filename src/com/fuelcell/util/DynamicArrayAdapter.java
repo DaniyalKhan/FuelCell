@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import android.app.Activity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +17,7 @@ import com.fuelcell.R;
 
 public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	
-	private Filter filter;
+	private DynamicFilter filter;
 	private ArrayList<String> objects;
 	private Activity context;
 	private TextCallback callback;
@@ -46,24 +47,34 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		View rowView = convertView;
 	    // reuse views
 	    if (rowView == null) {
-	      LayoutInflater inflater = context.getLayoutInflater();
-	      rowView = inflater.inflate(R.layout.list_item, null);
-	      // configure view holder
-	      final ViewHolder viewHolder = new ViewHolder();
-	      viewHolder.text = (TextView) rowView.findViewById(R.id.text);
-	      rowView.setTag(viewHolder);
-	      rowView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				callback.onClick(viewHolder.text.getText());
-			}
-	      });
+			LayoutInflater inflater = context.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.list_item, null);
+			// configure view holder
+			final ViewHolder viewHolder = new ViewHolder();
+			viewHolder.text = (TextView) rowView.findViewById(R.id.text);
+			rowView.setTag(viewHolder);
+			rowView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					callback.onClick(viewHolder.text.getText());
+				}
+			});
 	    }
 
 	    // fill data
 	    ViewHolder holder = (ViewHolder) rowView.getTag();
 	    String s = getItem(position);
-	    holder.text.setText(s);
+	    
+	    String lower = s.toLowerCase();
+	    if (filter != null && !filter.constraint.equals("") && lower.contains(filter.constraint.toString())) {
+		    int indexStart = lower.indexOf(filter.constraint.toString(), 0);
+	    	int indexEnd = indexStart + filter.constraint.length();
+	    	holder.text.setText(Html.fromHtml(s.substring(0, indexStart) + 
+	    			"<b>" + s.substring(indexStart, indexEnd) + "</b>" + 
+	    			s.substring(indexEnd, s.length())));
+    	} else {
+    		holder.text.setText(s);
+    	}
 	    return rowView;
 	}
 	
@@ -73,17 +84,22 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		return filter;
 	}
 
-	public class DynamicFilter extends Filter{
+	public class DynamicFilter extends Filter {
 
+		CharSequence constraint ="";
+		
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
             constraint = constraint.toString().toLowerCase();
+            this.constraint = constraint;
             FilterResults result = new FilterResults();
             if (constraint != null && constraint.toString().length() > 0) {
                 ArrayList<String> filtered = new ArrayList<String>();
                 for(int i = 0; i < objects.size(); i++) {
                     String s = objects.get(i);
-                    if (s.toLowerCase().contains(constraint)) filtered.add(s);
+                    if (s.toLowerCase().contains(constraint)) {
+                    	filtered.add(s);
+                    }
                 }
                 result.values = filtered;
                 result.count = filtered.size();

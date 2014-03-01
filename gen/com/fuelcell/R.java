@@ -48,23 +48,28 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textbarwhite=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0010;
+        public static final int LinearLayout=0x7f0a000f;
+        public static final int action_settings=0x7f0a0015;
         public static final int author1=0x7f0a0005;
         public static final int author2=0x7f0a0006;
         public static final int autotext=0x7f0a0008;
-        public static final int button1=0x7f0a000e;
         public static final int destination=0x7f0a0002;
+        public static final int distance=0x7f0a0013;
         public static final int find_routes=0x7f0a0003;
+        public static final int left=0x7f0a0010;
         public static final int mainicon=0x7f0a0004;
         public static final int origin=0x7f0a0001;
+        public static final int right=0x7f0a0012;
         public static final int root=0x7f0a0000;
+        public static final int route=0x7f0a0011;
         public static final int searchButton=0x7f0a000d;
         public static final int searchCorp=0x7f0a0009;
         public static final int searchLayout=0x7f0a0007;
         public static final int searchList=0x7f0a000c;
         public static final int searchModel=0x7f0a000b;
         public static final int searchYear=0x7f0a000a;
-        public static final int text=0x7f0a000f;
+        public static final int text=0x7f0a000e;
+        public static final int time=0x7f0a0014;
     }
     public static final class layout {
         public static final int activity_directions=0x7f030000;
@@ -73,7 +78,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_stats=0x7f030003;
         public static final int directions_fragment=0x7f030004;
         public static final int list_item=0x7f030005;
-        public static final int search_list=0x7f030006;
+        public static final int route_item=0x7f030006;
+        public static final int search_list=0x7f030007;
     }
     public static final class menu {
         public static final int fuel_cell=0x7f090000;
@@ -139,7 +145,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fuelcell:buttonBarButtonStyle
+          @attr name android:buttonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
         /**
@@ -149,7 +155,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fuelcell:buttonBarStyle
+          @attr name android:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
     };

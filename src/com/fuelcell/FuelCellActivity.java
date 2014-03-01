@@ -40,6 +40,7 @@ public class FuelCellActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
 		wrapper = new ContextWrapper(this);
+//		deleteContents();
 		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
 		//list of all files that are currently in the folder

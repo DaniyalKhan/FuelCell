@@ -10,23 +10,34 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+
+import com.fuelcell.util.JSONUtil;
 
 public class Directions {
 
 	private String origin;
 	private String destination;
 	private DirectionCallback callback;
+	private Activity activity;
 	
 	private final String DIRECTIONS_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	
-	public Directions(String origin, String destination, DirectionCallback callback) {
+	public Directions(Activity activity, String origin, String destination, DirectionCallback callback) {
 		this.origin = origin;
 		this.destination = destination;
 		this.callback = callback;
+		this.activity = activity;
+	}
+	
+	public Directions(Activity activity, DirectionCallback callback) {
+		this.callback = callback;
+		this.activity = activity;
 	}
 	
 	public void setPoints(String origin, String destination) {
@@ -49,12 +60,46 @@ public class Directions {
 		return null;
 	}
 	
+	public static class Route {
+		public final String summary;
+		public final double distance;
+		public final double time;
+		public final String cDistance;
+		public final String cTime;
+		public Route(String summary, double distance, double time) {
+			this.summary = summary;
+			this.distance = distance;
+			this.time = time;
+			this.cDistance = "";
+			this.cTime = "";
+		}
+		public Route(JSONObject routeJSON) {
+			if (routeJSON != null) summary = JSONUtil.getString(routeJSON, "summary");
+			else summary = "No Route Summary Available";
+			JSONArray legs = JSONUtil.getJSONArray(routeJSON, "legs");
+			JSONObject leg = JSONUtil.getJSONObject(legs, 0);//only one leg for no waypoints
+			if (leg != null) {
+				distance = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "distance"), "value"));
+				time = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "duration"), "value"));
+				cDistance = JSONUtil.getString(JSONUtil.getJSONObject(leg, "distance"), "text");
+				cTime = JSONUtil.getString(JSONUtil.getJSONObject(leg, "duration"), "text");
+			} else {
+				distance = 0;
+				time = 0;
+				cDistance = null;
+				cTime = null;
+			}
+		}
+	}
+	
 	public interface DirectionCallback {
 		void onDirectionsReceived(String result);
 	}
 	
-	public class DirectionTask extends AsyncTask<String, String, String> {
+	private class DirectionTask extends AsyncTask<String, String, String> {
 
+		ProgressDialog progress;
+		
 		public DirectionTask() {
 			super();
 		}
@@ -83,23 +128,26 @@ public class Directions {
 	            //TODO Handle problems..
 	        }
 	        return responseString;
-//			try {
-//				return new BufferedReader(new InputStreamReader(c.getAssets().open("test.json"))).readLine();
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			return null;
 		}
 		
 		@Override
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
+	        progress.dismiss();
 	        if (result != null) {
 				if (callback != null) callback.onDirectionsReceived(result);
 	        }
 	    }
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progress = new ProgressDialog(activity);
+			progress.setMessage("Finding routes");
+			progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progress.setIndeterminate(false);
+			progress.show();
+		}
 		
 	}
 	

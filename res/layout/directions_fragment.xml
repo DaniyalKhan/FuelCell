@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
-        android:layout_marginLeft="90dp"
-        android:layout_marginRight="90dp"
-        android:text="Button" 
-        android:background="@drawable/button_press"
-        android:textSize="12sp"/>
-
-</RelativeLayout>
+</ListView>

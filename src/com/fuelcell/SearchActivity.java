@@ -148,15 +148,20 @@ public class SearchActivity extends Activity {
 					try {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
-						for (int i = 0; i < filesArray.length; i++) {
+//						for (int i = 0; i < filesArray.length; i++) {
+//							try {
+//								cars.addAll(new CSVParser(filesArray[i]).parse());
+//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//						}
 							try {
-								cars.addAll(new CSVParser(filesArray[i])
-										.parse());
+								cars.addAll(new CSVParser(filesArray[0]).parse());
 								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-						}
 						Set<String> year = new HashSet<String>();
 						Set<String> manufacture = new HashSet<String>();
 						Set<String> model = new HashSet<String>();
@@ -192,8 +197,7 @@ public class SearchActivity extends Activity {
 				protected void onPostExecute(Boolean result) {
 					progress.dismiss();
 					if (result == false) {
-						AlertDialog.Builder failure = new AlertDialog.Builder(
-								SearchActivity.this);
+						AlertDialog.Builder failure = new AlertDialog.Builder(SearchActivity.this);
 						failure.setMessage("Loading Failed");
 					}
 
