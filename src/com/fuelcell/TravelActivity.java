@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.fuelcell.google.Directions.Route;
@@ -46,6 +49,9 @@ public class TravelActivity extends FragmentActivity {
 	
 	private GMapV2Direction md;
 	private GoogleMap map;
+	
+	private Button expand;
+	private boolean isExpanded;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +146,29 @@ public class TravelActivity extends FragmentActivity {
 				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
 				
 				startActivity(homeIntent);
+			}
+			
+		});
+		
+		expand = (Button) findViewById(R.id.expandButton);
+		isExpanded = false;
+		expand.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				View map = TravelActivity.this.findViewById(R.id.map);
+				if(!isExpanded){
+					map.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					isExpanded = true;
+					expand.setBackgroundResource(R.drawable.shrink);
+				}
+				else {
+					LayoutParams params = (LayoutParams) map.getLayoutParams();
+					params.height = 200;
+					map.setLayoutParams(params);
+					isExpanded = false;
+					expand.setBackgroundResource(R.drawable.expand);
+				}
 			}
 			
 		});

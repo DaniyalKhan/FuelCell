@@ -249,15 +249,15 @@ containing a value of this type.
     }
     public static final class id {
         public static final int LinearLayout=0x7f06002e;
-        public static final int action_settings=0x7f06003c;
+        public static final int action_settings=0x7f06003d;
         public static final int answer=0x7f060011;
         public static final int author1=0x7f06001f;
         public static final int author2=0x7f060020;
         public static final int autotext=0x7f060022;
         public static final int carIcon=0x7f060007;
         public static final int carName=0x7f060008;
-        public static final int co2_key=0x7f060038;
-        public static final int co2_value=0x7f06003b;
+        public static final int co2_key=0x7f060039;
+        public static final int co2_value=0x7f06003c;
         public static final int cylinderInfo=0x7f060012;
         public static final int cylinderName=0x7f06000c;
         public static final int destination=0x7f06001c;
@@ -265,7 +265,8 @@ containing a value of this type.
         public static final int divider1=0x7f060009;
         public static final int engineInfo=0x7f060013;
         public static final int engineName=0x7f06000d;
-        public static final int estimates=0x7f060035;
+        public static final int estimates=0x7f060036;
+        public static final int expandButton=0x7f060035;
         public static final int fields=0x7f06000b;
         public static final int find_routes=0x7f06001d;
         public static final int fuelInfo=0x7f060014;
@@ -301,12 +302,12 @@ containing a value of this type.
         public static final int time=0x7f060033;
         public static final int tranInfo=0x7f060015;
         public static final int tranName=0x7f06000f;
-        public static final int travel_keys=0x7f060036;
+        public static final int travel_keys=0x7f060037;
         public static final int travel_root=0x7f060034;
-        public static final int travel_values=0x7f060039;
+        public static final int travel_values=0x7f06003a;
         public static final int tripButton=0x7f060017;
-        public static final int usage_key=0x7f060037;
-        public static final int usage_value=0x7f06003a;
+        public static final int usage_key=0x7f060038;
+        public static final int usage_value=0x7f06003b;
         public static final int vehicleInfo=0x7f060016;
         public static final int vehicleName=0x7f060010;
     }
