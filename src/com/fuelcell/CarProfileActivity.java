@@ -47,7 +47,7 @@ public class CarProfileActivity extends Activity {
 				
 		carName.setText(car.getYear() + " " + car.getManufacturer() + " " + car.getModel());
 		cylinderInfo.setText(Integer.toString(car.getCylinders()));
-		engineInfo.setText(Double.toString(car.getEngineSize()));
+		engineInfo.setText(Float.toString((float) ((int) (car.getEngineSize()*100)/100)));
 		tranInfo.setText(car.getTransmission());
 		fuelInfo.setText(car.getFuelType().toString());
 		vehicleInfo.setText(car.getVehicleClass());
