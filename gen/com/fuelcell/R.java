@@ -257,7 +257,7 @@ containing a value of this type.
         public static final int TextView01=0x7f060044;
         public static final int TextView02=0x7f060043;
         public static final int TextView03=0x7f060045;
-        public static final int action_settings=0x7f06005b;
+        public static final int action_settings=0x7f06005c;
         public static final int answer=0x7f060013;
         public static final int author1=0x7f06002a;
         public static final int author2=0x7f06002b;
@@ -328,7 +328,8 @@ containing a value of this type.
         public static final int stars=0x7f06001c;
         public static final int statsLayout=0x7f060037;
         public static final int step_dialog_root=0x7f060041;
-        public static final int steps=0x7f06005a;
+        public static final int steps=0x7f06005b;
+        public static final int stepsHeader=0x7f06005a;
         public static final int summary=0x7f060042;
         public static final int terrain=0x7f060003;
         public static final int text=0x7f06003a;
