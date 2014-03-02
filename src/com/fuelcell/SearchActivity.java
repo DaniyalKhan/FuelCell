@@ -309,6 +309,7 @@ public class SearchActivity extends Activity {
 				makeInVisible(v);
 				setListAdapter(v);
 				lastClicked = v.getId();
+				filter(((EditText)v).getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
@@ -396,8 +397,6 @@ public class SearchActivity extends Activity {
 				searchList.setAdapter(modelAdapter);
 			if (v.equals(searchVType))
 				searchList.setAdapter(vTypeAdapter);
-			//first time filter so when we click the button it populates list
-//			filter("");
 		}
 	}
 
