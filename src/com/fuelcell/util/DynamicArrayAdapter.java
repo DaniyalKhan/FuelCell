@@ -21,7 +21,8 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	private ArrayList<String> objects;
 	private Activity context;
 	private TextCallback callback;
-	private final Comparator<String> stringComparator = new Comparator<String>() {
+	
+	final Comparator<String> stringComparator = new Comparator<String>() {
 		@Override
 		public int compare(String lhs, String rhs) {
 			return lhs.compareTo(rhs);
@@ -114,10 +115,10 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			ArrayList<String> filtered = (ArrayList<String>) results.values;
-            clear();
-            for(int i = 0, l = filtered.size(); i < l; i++) add(filtered.get(i));
-            sort(stringComparator);
-            notifyDataSetChanged();
+	        clear();
+	        for(int i = 0, l = filtered.size(); i < l; i++) add(filtered.get(i));
+	        sort(stringComparator);
+	        notifyDataSetChanged();
 		}
 		
 	}

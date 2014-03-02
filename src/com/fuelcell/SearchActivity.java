@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +33,7 @@ import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
+import com.fuelcell.util.ModelAdapter;
 
 public class SearchActivity extends Activity {
 
@@ -242,7 +242,7 @@ public class SearchActivity extends Activity {
 			}
 		});
 	}
-
+	
 	protected void setTextChange(EditText textField) {
 		textField.addTextChangedListener(new TextWatcher() {
 
@@ -271,16 +271,20 @@ public class SearchActivity extends Activity {
 					searchModel.setBackgroundResource(R.drawable.textbarwhite);
 			}
 
-			public void filter(CharSequence s) {
-				if (searchCorp.getVisibility() == View.VISIBLE)
-					manufactureAdapter.getFilter().filter(s);
-				if (searchYear.getVisibility() == View.VISIBLE)
-					yearAdapter.getFilter().filter(s);
-				if (searchModel.getVisibility() == View.VISIBLE)
-					modelAdapter.getFilter().filter(s);
-			}
 
 		});
+	}
+	
+	public void filter(CharSequence s) {
+		if (searchCorp.getVisibility() == View.VISIBLE) {
+			manufactureAdapter.getFilter().filter(s);
+		}
+		if (searchYear.getVisibility() == View.VISIBLE) {
+			yearAdapter.getFilter().filter(s);
+		}
+		if (searchModel.getVisibility() == View.VISIBLE) {
+			modelAdapter.getFilter().filter(s);
+		}
 	}
 
 	public void makeInVisible(View v) {
@@ -305,8 +309,10 @@ public class SearchActivity extends Activity {
 				searchList.setAdapter(manufactureAdapter);
 			if (v.equals(searchYear))
 				searchList.setAdapter(yearAdapter);
-			if (v.equals(searchModel))
+			if (v.equals(searchModel)) {
 				searchList.setAdapter(modelAdapter);
+				filter("");
+			}
 		}
 	}
 
