@@ -39,7 +39,7 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	
 	static class ViewHolder {
 	    public TextView text;
-	  }
+	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

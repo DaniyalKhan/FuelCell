@@ -87,8 +87,8 @@ public class SearchActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				if(cars != null) startStatsActivity();
-				startDirectionsActivity(cars.get(0));
+				if(cars != null) startStatsActivity();
+//				startDirectionsActivity(cars.get(0));
 			}
 		});
 		
@@ -126,9 +126,6 @@ public class SearchActivity extends Activity {
 	private void startDirectionsActivity(Car car) {
 		Intent intent = new Intent(this, DirectionsActivity.class);
 		intent.putExtra("car", car);
-		intent.putExtra("corp", searchCorp.getText());
-		intent.putExtra("year", searchYear.getText());
-		intent.putExtra("model", searchModel.getText());
 		startActivity(intent);
 	}
 	private void startStatsActivity() {
@@ -141,9 +138,9 @@ public class SearchActivity extends Activity {
 	{
 		ArrayList<Car> filtered = new ArrayList<Car>();
 			for (int i = 0 ; i < cars.size(); i++) {
-				if ( (searchCorp.getText().toString().contains(cars.get(i).getManufacturer())  || searchCorp.getText().toString().equals(""))
-						&& (searchYear.getText().toString().contains(Integer.toString(cars.get(i).getYear())) || searchYear.getText().toString().equals(""))
-						&& (searchModel.getText().toString().contains(cars.get(i).getModel())  || searchModel.getText().toString().equals(""))) {
+				if ( (cars.get(i).getManufacturer().toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
+						&& (Integer.toString(cars.get(i).getYear()).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
+						&& (cars.get(i).getModel().toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))) {
 					filtered.add(cars.get(i));
 					System.out.println(cars.get(i).getModel());
 				}
@@ -171,20 +168,22 @@ public class SearchActivity extends Activity {
 					try {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
-//						for (int i = 0; i < filesArray.length; i++) {
-//							try {
-//								cars.addAll(new CSVParser(filesArray[i]).parse());
-//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//						}
+						
+						for (int i = 0; i < filesArray.length; i++) {
 							try {
-								cars.addAll(new CSVParser(filesArray[0]).parse());
+								cars.addAll(new CSVParser(filesArray[i]).parse());
 								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
+						}
+//							try {
+//								cars.addAll(new CSVParser(filesArray[0]).parse());
+//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+						
 						Set<String> year = new HashSet<String>();
 						Set<String> manufacture = new HashSet<String>();
 						Set<String> model = new HashSet<String>();
