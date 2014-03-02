@@ -44,8 +44,8 @@ public class Directions {
 	}
 	
 	public void setPoints(String origin, String destination) {
-		this.origin = origin;
-		this.destination = destination;
+		this.origin = origin.trim();
+		this.destination = destination.trim();
 	}
 	
 	public void makeRequest() {
