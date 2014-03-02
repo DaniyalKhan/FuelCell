@@ -206,25 +206,19 @@ public class SearchActivity extends Activity {
 		super.onStart();
 		if (cars == null) {
 			new AsyncTask<Integer, Integer, Boolean>() {
-
 				ProgressDialog progress;
 				@Override
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
-//						for (int i = 0; i < filesArray.length; i++) {
-//							try {
-//								cars.addAll(new CSVParser(filesArray[i]).parse());
-//								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//						}
-						try {
-							cars.addAll(new CSVParser(filesArray[0]).parse());
-						} catch (IOException e) {
-							e.printStackTrace();
+						for (int i = 0; i < filesArray.length; i++) {
+							try {
+								cars.addAll(new CSVParser(filesArray[i]).parse());
+								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 						determineFuel();
 						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {

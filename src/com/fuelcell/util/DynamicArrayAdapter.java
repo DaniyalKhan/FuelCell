@@ -48,14 +48,6 @@ public abstract class DynamicArrayAdapter extends ArrayAdapter<String>{
 		notifyDataSetChanged();
 	}
 	
-//	private ArrayList<String> firstCall(ArrayList<Car> cars) {
-//		ArrayList<String> toReturn = new ArrayList<String>();
-//		for(Car c: cars) {
-//	        toReturn.add(getFieldForCar(c));
-//	    } 
-//		return toReturn;
-//	}
-	
 	static class ViewHolder {
 	    public TextView text;
 	}
@@ -128,7 +120,6 @@ public abstract class DynamicArrayAdapter extends ArrayAdapter<String>{
             constraint = constraint.toString().toLowerCase();
             this.constraint = constraint;
             FilterResults result = new FilterResults();
-            Set<String> filtered = new HashSet<String>();
             toFields(constraint);
             result.values = fields;
             result.count = fields.size();
