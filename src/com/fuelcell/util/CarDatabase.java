@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CarDatabase extends SQLiteOpenHelper {
 
 	private Context context;
-	private CarDatabase instance;
+	private static CarDatabase instance;
 	
 	private static final String DATABASE_NAME = "FUEL_CELL_DB";
 	private static final int DATABASE_VERSION = 1;
-    private static final String CAR_TABLE_NAME = "cars";
-    private static final String[] COLUMNS_NAMES = {
+    public static final String CAR_TABLE_NAME = "cars";
+    public static final String[] COLUMNS_NAMES = {
     	"YEAR", "MANUFACTURER", "MODEL", "VEHICLECLASS", 
     	"ENGINESIZE", "CYLINDERS", "TRANSMISSION", "FUELTYPE",
     	"CITYEFFL", "HIGHWAYEFFL", "CITYEFFM", "HIGHWAYEFFM",
@@ -20,13 +20,13 @@ public class CarDatabase extends SQLiteOpenHelper {
     };
     
 	private static final String[] COLUMNS_TYPES = {
-		"INTEGER", "TEXT", "TEXT", "TEXT", 
+		"INTEGER", "TEXT", "TEXT", "FLOAT", 
 		"TEXT", "INTEGER", "TRANSMISSION", "TEXT",
 		"FLOAT", "FLOAT", "FLOAT", "FLOAT",
 		"FLOAT", "FLOAT"
 	};
 
-	public CarDatabase obtain(Context c) {
+	public static CarDatabase obtain(Context c) {
 		if (instance == null) instance = new CarDatabase(c);
 		return instance;
 	}

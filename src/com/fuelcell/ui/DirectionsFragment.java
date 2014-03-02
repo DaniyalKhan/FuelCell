@@ -16,16 +16,22 @@ import android.widget.TextView;
 
 import com.fuelcell.R;
 import com.fuelcell.google.Directions.Route;
+import com.fuelcell.models.Car;
 
 
 public class DirectionsFragment extends ListFragment {
 	
 	ArrayList<Route> routes = new ArrayList<Route>();
+	RouteCallback callback;
+	
+	public void setCallback(RouteCallback callback) {
+		this.callback = callback;
+	}
 	
 	public void addRoute(Route r) {
 		this.routes.add(r);
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
@@ -46,7 +52,7 @@ public class DirectionsFragment extends ListFragment {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View rowView = convertView;
 		    // reuse views
 		    if (rowView == null) {
@@ -61,7 +67,7 @@ public class DirectionsFragment extends ListFragment {
 				rowView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-
+						if (callback != null) callback.onRouteSelect(routes.get(position));
 					}
 				});
 		    }
@@ -75,6 +81,10 @@ public class DirectionsFragment extends ListFragment {
 		    return rowView;
 		}
 		
+	}
+	
+	public interface RouteCallback {
+		void onRouteSelect(Route r);
 	}
 	
 }

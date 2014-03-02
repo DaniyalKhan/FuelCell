@@ -69,13 +69,15 @@ public class Directions {
 		public final double time;
 		public final String cDistance;
 		public final String cTime;
-		public Route(String summary, double distance, double time) {
-			this.summary = summary;
-			this.distance = distance;
-			this.time = time;
-			this.cDistance = "";
-			this.cTime = "";
-		}
+		public final String stepString;
+//		public Route(String summary, double distance, double time) {
+//			this.summary = summary;
+//			this.distance = distance;
+//			this.time = time;
+//			this.cDistance = "";
+//			this.cTime = "";
+//			this.stepString = "";
+//		}
 		public Route(JSONObject routeJSON) {
 			if (routeJSON != null) summary = JSONUtil.getString(routeJSON, "summary");
 			else summary = "No Route Summary Available";
@@ -86,15 +88,22 @@ public class Directions {
 				time = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "duration"), "value"));
 				cDistance = JSONUtil.getString(JSONUtil.getJSONObject(leg, "distance"), "text");
 				cTime = JSONUtil.getString(JSONUtil.getJSONObject(leg, "duration"), "text");
+				stepString = JSONUtil.getJSONArray(leg, "steps").toString();
 			} else {
 				distance = 0;
 				time = 0;
 				cDistance = null;
 				cTime = null;
+				stepString = null;
 			}
 		}
 		public Route(Parcel in) {
-			
+			this.summary = in.readString();
+			this.distance = in.readDouble();
+			this.time = in.readDouble();
+			this.cDistance = in.readString();
+			this.cTime = in.readString();
+			this.stepString = in.readString();
 		}
 		
 		@Override
@@ -104,10 +113,11 @@ public class Directions {
 		@Override
 		public void writeToParcel(Parcel dest, int flags) {
 			dest.writeString(summary);
-			dest.writeString(cTime);
 			dest.writeDouble(distance);
 			dest.writeDouble(time);
 			dest.writeString(cDistance);
+			dest.writeString(cTime);
+			dest.writeString(stepString);
 		}
 		
 		public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {

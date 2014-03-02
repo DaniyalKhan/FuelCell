@@ -22,13 +22,25 @@ import com.fuelcell.google.Directions.DirectionCallback;
 import com.fuelcell.google.Directions.Route;
 import com.fuelcell.models.Car;
 import com.fuelcell.ui.DirectionsFragment;
+import com.fuelcell.ui.DirectionsFragment.RouteCallback;
 import com.fuelcell.util.JSONUtil;
 
 public class DirectionsActivity extends FragmentActivity {
 	
 	private Car car;
 	private Directions directions;
-
+	
+	private RouteCallback routeCallback = new RouteCallback() {
+		@Override
+		public void onRouteSelect(Route r) {
+			Intent intent = new Intent(DirectionsActivity.this, TravelActivity.class);
+			intent.putExtra("car", car);
+			intent.putExtra("route", r);
+			startActivity(intent);
+		}
+	};
+	
+	
 	private DirectionCallback callback = new DirectionCallback() {		
 		@Override
 		public void onDirectionsReceived(String result) {
@@ -84,9 +96,8 @@ public class DirectionsActivity extends FragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
         DirectionsFragment firstFragment = new DirectionsFragment();
-        for (Route r: routes) {
-        	firstFragment.addRoute(r);
-        }
+        for (Route r: routes) firstFragment.addRoute(r);
+        firstFragment.setCallback(routeCallback);
         firstFragment.setArguments(getIntent().getExtras());
         ft.add(R.id.root, firstFragment, "DIRECTION_TAG").addToBackStack(null).commit();
 	}

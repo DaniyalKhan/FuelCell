@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
@@ -47,9 +48,10 @@ public class SearchActivity extends Activity {
 	DynamicArrayAdapter modelAdapter;
 	ContextWrapper wrapper;
 	Button search;
+	Button saved;
 	ArrayList<Car> cars;
 	int lastClicked;
-	public static ArrayList<Car> filtered;
+	public static List<Car> filtered;
 
 	TextCallback callback = new TextCallback() {
 		
@@ -81,14 +83,18 @@ public class SearchActivity extends Activity {
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
+		saved = (Button) findViewById(R.id.saved);
+		
 		filtered = new ArrayList<Car>();
 
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(cars != null) startStatsActivity();
-//				startDirectionsActivity(cars.get(0));
+//				if(cars != null) startStatsActivity(filterList());
+//				cars.get(0).saveToProfile(SearchActivity.this);
+//				startDirectionsActivity(Car.getSavedCars(SearchActivity.this).get(0));
+				startDirectionsActivity(cars.get(0));
 			}
 		});
 		
@@ -98,9 +104,9 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, logo, search, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, logo, search, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, logo, search, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
+		searchYear.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
+		searchModel.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -109,18 +115,14 @@ public class SearchActivity extends Activity {
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
-		
-//		 Directions d = new Directions("toronto", "vancouver", new DirectionCallback() {			
-//			@Override
-//			public void onDirectionsReceived(String result) {
-//				startDirectionsActivity(cars.get(0), result);
-//			}
-//		});
-//		 d.setPoints("toronto", "vancouver");
-//		 d.makeRequest();
-//		 d.routesExist();
-//		 new Directions().setPoints("toronto", "vancouver");
 
+		saved.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				startStatsActivity(Car.getSavedCars(SearchActivity.this));
+			}
+		});
+		
 	}
 	
 	private void startDirectionsActivity(Car car) {
@@ -128,9 +130,10 @@ public class SearchActivity extends Activity {
 		intent.putExtra("car", car);
 		startActivity(intent);
 	}
-	private void startStatsActivity() {
+	
+	private void startStatsActivity(List<Car> cars) {
 		Intent intent = new Intent(this, StatsActivity.class);
-		filtered = filterList();
+		filtered = cars;
 		startActivity(intent);
 	}
 	
@@ -169,20 +172,20 @@ public class SearchActivity extends Activity {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
 						
-						for (int i = 0; i < filesArray.length; i++) {
-							try {
-								cars.addAll(new CSVParser(filesArray[i]).parse());
-								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+//						for (int i = 0; i < filesArray.length; i++) {
 //							try {
-//								cars.addAll(new CSVParser(filesArray[0]).parse());
+//								cars.addAll(new CSVParser(filesArray[i]).parse());
 //								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
 //							} catch (IOException e) {
 //								e.printStackTrace();
 //							}
+//						}
+							try {
+								cars.addAll(new CSVParser(filesArray[0]).parse());
+								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						
 						Set<String> year = new HashSet<String>();
 						Set<String> manufacture = new HashSet<String>();
@@ -301,6 +304,7 @@ public class SearchActivity extends Activity {
 				searchModel.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
+			saved.setVisibility(View.GONE);
 
 		}
 	}
@@ -356,8 +360,7 @@ public class SearchActivity extends Activity {
 								for (View v : views) {
 									v.setVisibility(View.VISIBLE);
 								}
-								views[views.length - 1]
-										.setVisibility(View.GONE);
+								views[views.length - 1].setVisibility(View.GONE);
 							}
 						}
 					});

@@ -1,7 +1,16 @@
 package com.fuelcell.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.fuelcell.util.CarDatabase;
 
 public class Car implements Parcelable {
 	
@@ -70,7 +79,7 @@ public class Car implements Parcelable {
 				in.readDouble(), in.readDouble());
 	}
 	
-	public Car(int year, String manufacturer, String model,
+	private Car(int year, String manufacturer, String model,
 			String vehicleClass, double engineSize, int cylinders,
 			String transmission, String fuelType, double cityEffL,
 			double highwayEffL, double cityEffM, double highwayEffM,
@@ -115,6 +124,49 @@ public class Car implements Parcelable {
 		highwayEffM = Double.parseDouble(car[11].trim());
 		fuelUsage = Double.parseDouble(car[12].trim());
 		emissions = Double.parseDouble(car[13].trim());
+	}
+	
+	public void saveToProfile(Context c) {
+		//to do dont write already saved cars
+		SQLiteDatabase db = CarDatabase.obtain(c).getWritableDatabase();
+		ContentValues values = new ContentValues();
+		String[] keys = CarDatabase.COLUMNS_NAMES;
+	    values.put(keys[0], year);
+	    values.put(keys[1], manufacturer);
+	    values.put(keys[2], model);
+	    values.put(keys[3], vehicleClass);
+	    values.put(keys[4], engineSize);
+	    values.put(keys[5], cylinders);
+	    values.put(keys[6], transmission);
+	    values.put(keys[7], fuelType.toString().charAt(0) + "");
+	    values.put(keys[8], cityEffL);
+	    values.put(keys[9], highwayEffL);
+	    values.put(keys[10], cityEffM);
+	    values.put(keys[11], highwayEffM);
+	    values.put(keys[12], fuelUsage);
+	    values.put(keys[13], emissions);
+	    db.insert(CarDatabase.CAR_TABLE_NAME, null, values);
+	}
+	
+	public static List<Car> getSavedCars(Context context) {
+		List<Car> saved = new ArrayList<Car>();
+		SQLiteDatabase db = CarDatabase.obtain(context).getReadableDatabase();
+		String selectQuery = "SELECT  * FROM " + CarDatabase.CAR_TABLE_NAME;
+		Cursor c = db.rawQuery(selectQuery, null);
+		String[] keys = CarDatabase.COLUMNS_NAMES;
+		
+		if (c.moveToFirst()) {
+		    while ( !c.isAfterLast() ) {
+		    	saved.add(new Car(
+		    			c.getInt(c.getColumnIndex(keys[0])), c.getString(c.getColumnIndex(keys[1])), c.getString(c.getColumnIndex(keys[2])), 
+		    			c.getString(c.getColumnIndex(keys[3])), (double)c.getFloat(c.getColumnIndex(keys[4])), c.getInt(c.getColumnIndex(keys[5])), 
+		    			c.getString(c.getColumnIndex(keys[6])), c.getString(c.getColumnIndex(keys[7])), (double)c.getFloat(c.getColumnIndex(keys[8])), 
+		    			(double)c.getFloat(c.getColumnIndex(keys[9])), (double)c.getFloat(c.getColumnIndex(keys[10])), (double)c.getFloat(c.getColumnIndex(keys[11])), 
+		    			(double)c.getFloat(c.getColumnIndex(keys[12])), (double)c.getFloat(c.getColumnIndex(keys[13]))));
+		    	c.moveToNext();
+		    }
+		}
+		return saved;
 	}
 
 	public int getYear() {
