@@ -23,7 +23,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:text="Car Name"
-        android:textSize="18sp" />
+        android:textSize="18sp" 
+        android:textStyle="bold"/>
 
     <View
         android:id="@+id/divider1"

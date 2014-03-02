@@ -39,6 +39,11 @@ public class StatsActivity extends Activity {
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
 				View row = convertView;
+				Intent intentLast = getIntent();
+				TextView header = (TextView) findViewById(R.id.header);
+				
+					header.setText(intentLast.getStringExtra("title"));
+				
 				if (row == null) {
 					LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
 					row = inflater.inflate(R.layout.list_item, null);
@@ -65,9 +70,6 @@ public class StatsActivity extends Activity {
 			
 		};
 		resultList.setAdapter(resultsAdapter);
-//		resultList.setOnItemClickListener() {
-			
-//		}
 	}
 	
 	static class ViewHolder {
