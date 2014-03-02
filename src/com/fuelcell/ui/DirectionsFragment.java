@@ -50,7 +50,6 @@ public class DirectionsFragment extends ListFragment {
 				Intent homeIntent = new Intent(getActivity(), SearchActivity.class);
 				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
 				startActivity(homeIntent);
-				System.out.println("ONCLICKDIRECTIONS");
 			}
 			
 		});

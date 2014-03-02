@@ -22,6 +22,7 @@ public class StatsActivity extends Activity {
 	
 	ListView resultList;
 	List<Car> filtered;
+	TextView hint;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class StatsActivity extends Activity {
 		TextView header = (TextView) findViewById(R.id.header);
 		header.setText(intentLast.getStringExtra("title"));
 		
+		hint = (TextView) findViewById(R.id.hint);
+		hint.setText(intentLast.getStringExtra("hint"));
 		resultList = (ListView) findViewById(R.id.searchedList);
 		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
 
@@ -57,6 +60,8 @@ public class StatsActivity extends Activity {
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
 				View row = convertView;
+				//Hide message when there are items
+				hint.setVisibility(View.GONE);
 				
 				if (row == null) {
 					LayoutInflater inflater = StatsActivity.this.getLayoutInflater();

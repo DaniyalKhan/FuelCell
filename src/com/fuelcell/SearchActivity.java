@@ -59,8 +59,6 @@ public class SearchActivity extends Activity {
 	public static List<Car> filtered;
 	public static Double bestFuelEfficiency;
 	public static Double worstFuelEfficiency;
-	private Context context;
-	
 
 	TextCallback callback = new TextCallback() {
 		
@@ -84,7 +82,6 @@ public class SearchActivity extends Activity {
 			}
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
-			context = getBaseContext();
 
 			new Thread(new Runnable() {
 				@Override
@@ -134,7 +131,12 @@ public class SearchActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				startStatsActivity(filterList(),"Results");
+				startStatsActivity(filterList(),"Results","There does not seem to be any cars with the given information: "
+						+ " Manufacturer: "+ (searchCorp.getText().toString().equals("") == true ? "Any" : searchCorp.getText().toString()) + " " 
+						+ " Year: "+ (searchYear.getText().toString().equals("") == true ? "Any" : searchYear.getText().toString()) + " " 
+						+ " Model: "+ (searchModel.getText().toString().equals("") == true ? "Any" : searchModel.getText().toString()) + " " 
+						+ " Vehicle Type: "+ (searchVType.getText().toString().equals("") == true ? "Any" : searchVType.getText().toString())
+						+ ". Maybe try leaving some parameters blank to broaden your search.");
 			}
 		});
 		
@@ -162,7 +164,8 @@ public class SearchActivity extends Activity {
 		saved.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved");
+				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved",
+						"You do not currently have any car profiles saved.");
 			}
 		});
 		
@@ -178,10 +181,11 @@ public class SearchActivity extends Activity {
 		
 	}
 	
-	private void startStatsActivity(List<Car> cars,String title) {
+	private void startStatsActivity(List<Car> cars,String title,String hint) {
 		Intent intent = new Intent(this, StatsActivity.class);
 		filtered = cars;
 		intent.putExtra("title", title);
+		intent.putExtra("hint", hint);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
