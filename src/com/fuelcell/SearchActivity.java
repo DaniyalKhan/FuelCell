@@ -33,7 +33,6 @@ import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
-import com.fuelcell.util.ModelAdapter;
 
 public class SearchActivity extends Activity {
 

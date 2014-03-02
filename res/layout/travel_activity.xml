@@ -5,7 +5,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="10dp"
+        >
+        
+        <Button
+        android:id="@+id/homeButton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/home_press"/>
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Travel Trip Planner"
+            android:textStyle="bold" 
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"/>
+        
+        </RelativeLayout>
+        
     <fragment
           android:id="@+id/map"
           android:layout_width="match_parent"

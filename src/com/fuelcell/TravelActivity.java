@@ -13,7 +13,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fuelcell.google.Directions.Route;
@@ -128,6 +131,18 @@ public class TravelActivity extends FragmentActivity {
 		
 		TextView co2Emission = (TextView) findViewById(R.id.co2_value);
 		co2Emission.setText(Double.toString(emissions));
+		
+		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(TravelActivity.this, SearchActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				
+				startActivity(homeIntent);
+			}
+			
+		});
 		
 	}
 
