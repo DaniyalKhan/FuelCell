@@ -150,48 +150,49 @@ public class SearchActivity extends Activity {
 			new AsyncTask<Integer, Integer, Boolean>() {
 
 				ProgressDialog progress;
-				float exactProgress = 0;
-
-				protected int addProgress(float increment) {
-					exactProgress = exactProgress + increment;
-					return (int) exactProgress;
-				}
-
 				@Override
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
 						
-						for (int i = 0; i < filesArray.length; i++) {
-							try {
-								cars.addAll(new CSVParser(filesArray[i]).parse());
-								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+//						for (int i = 0; i < filesArray.length; i++) {
 //							try {
-//								cars.addAll(new CSVParser(filesArray[0]).parse());
-//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+//								cars.addAll(new CSVParser(filesArray[i]).parse());
+//								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
 //							} catch (IOException e) {
 //								e.printStackTrace();
 //							}
-//						
-						Set<String> year = new HashSet<String>();
-						Set<String> manufacture = new HashSet<String>();
-						Set<String> model = new HashSet<String>();
-
-						for (int i = 0; i < cars.size(); i++) {
-							year.add(Integer.toString(cars.get(i).getYear()));
-							manufacture.add(cars.get(i).getManufacturer());
-							model.add(cars.get(i).getModel());
-							progress.incrementProgressBy(addProgress(cars.size()/200f *100f));
+//						}
+						try {
+							cars.addAll(new CSVParser(filesArray[0]).parse());
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
 
-						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(year), callback);
-						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(manufacture), callback);
-						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, new ArrayList<String>(model), callback);
+						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+							@Override
+							protected String getFieldForCar(Car c) {
+								return Integer.toString(c.getYear());
+							}							
+						};
+						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+							@Override
+							protected String getFieldForCar(Car c) {
+								return c.getManufacturer();
+							}
+						};
+						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+							@Override
+							protected String getFieldForCar(Car c) {
+								return c.getModel();
+							}
+							@Override
+							protected boolean shouldContain(Car c) {
+								return c.getManufacturer().contains(searchCorp.getText()) && 
+										Integer.toString(c.getYear()).contains(searchYear.getText());
+							}
+						};
 						return true;
 					} catch (Exception unfinishedException) {
 						return false;
@@ -310,10 +311,10 @@ public class SearchActivity extends Activity {
 				searchList.setAdapter(manufactureAdapter);
 			if (v.equals(searchYear))
 				searchList.setAdapter(yearAdapter);
-			if (v.equals(searchModel)) {
+			if (v.equals(searchModel))
 				searchList.setAdapter(modelAdapter);
-				filter("");
-			}
+			//first time filter so when we click the button it populates list
+			filter("");
 		}
 	}
 

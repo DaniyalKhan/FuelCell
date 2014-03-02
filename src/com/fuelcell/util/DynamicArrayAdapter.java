@@ -2,6 +2,8 @@ package com.fuelcell.util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.text.Html;
@@ -14,11 +16,13 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import com.fuelcell.R;
+import com.fuelcell.models.Car;
 
-public class DynamicArrayAdapter extends ArrayAdapter<String>{
+public abstract class DynamicArrayAdapter extends ArrayAdapter<String>{
 	
 	private DynamicFilter filter;
-	private ArrayList<String> objects;
+	private ArrayList<String> fields;
+	private ArrayList<Car> cars;
 	private Activity context;
 	private TextCallback callback;
 	
@@ -29,13 +33,13 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		}
 	};
 
-	public DynamicArrayAdapter(Activity context, int resource, ArrayList<String> objects, TextCallback callback) {
-		super(context, resource, objects);
+	public DynamicArrayAdapter(Activity context, int resource, ArrayList<Car> cars, TextCallback callback) {
+		super(context, resource, new ArrayList<String>());
 		sort(stringComparator);
 		this.callback = callback;
 		this.context = context;
-		//need to store copy so when we clear the adapter, we dont clear all objects by accident
-		this.objects = new ArrayList<String>(objects);
+		this.cars = cars;
+		this.fields = new ArrayList<String>();
 	}
 	
 	static class ViewHolder {
@@ -79,6 +83,21 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	    return rowView;
 	}
 	
+	private void toFields(CharSequence filter) {
+	    Set<String> filtered = new HashSet<String>();
+	    for(int i = 0; i < cars.size(); i++) {
+	        String s = getFieldForCar(cars.get(i));
+	        if (s.toLowerCase().contains(filter) && shouldContain(cars.get(i))) {
+	        	filtered.add(s);
+	        }
+	    }
+	    fields.addAll(filtered);
+	}
+	
+	protected boolean shouldContain(Car c) {
+		return true;
+	}
+	
 	@Override
 	public Filter getFilter() {
 		if (filter == null) filter = new DynamicFilter();
@@ -91,24 +110,14 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
+			fields.clear();
             constraint = constraint.toString().toLowerCase();
             this.constraint = constraint;
             FilterResults result = new FilterResults();
-            if (constraint != null && constraint.toString().length() > 0) {
-                ArrayList<String> filtered = new ArrayList<String>();
-                for(int i = 0; i < objects.size(); i++) {
-                    String s = objects.get(i);
-                    if (s.toLowerCase().contains(constraint)) {
-                    	filtered.add(s);
-                    }
-                }
-                result.values = filtered;
-                result.count = filtered.size();
-            }
-            else {
-            	result.values = objects;
-                result.count = getCount();
-            }
+            Set<String> filtered = new HashSet<String>();
+            toFields(constraint);
+            result.values = fields;
+            result.count = fields.size();
             return result;
 		}
 
@@ -126,5 +135,7 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	public interface TextCallback {
 		void onClick(CharSequence charSequence);
 	}
+	
+	protected abstract String getFieldForCar(Car c);
 	
 }
