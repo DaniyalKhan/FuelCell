@@ -44,8 +44,8 @@ public class Directions {
 	}
 	
 	public void setPoints(String origin, String destination) {
-		this.origin = origin.trim();
-		this.destination = destination.trim();
+		this.origin = origin.trim().replace(' ', ',');
+		this.destination = destination.trim().replace(' ', ',');
 	}
 	
 	public void makeRequest() {
@@ -155,9 +155,9 @@ public class Directions {
 	                throw new IOException(statusLine.getReasonPhrase());
 	            }
 	        } catch (ClientProtocolException e) {
-	            //TODO Handle problems..
+
 	        } catch (IOException e) {
-	            //TODO Handle problems..
+	            
 	        }
 	        return responseString;
 		}
@@ -166,9 +166,7 @@ public class Directions {
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
 	        progress.dismiss();
-	        if (result != null) {
-				if (callback != null) callback.onDirectionsReceived(result);
-	        }
+	        if (callback != null) callback.onDirectionsReceived(result);	
 	    }
 
 		@Override

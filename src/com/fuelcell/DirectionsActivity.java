@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fuelcell.google.Directions;
 import com.fuelcell.google.Directions.DirectionCallback;
@@ -50,6 +51,10 @@ public class DirectionsActivity extends FragmentActivity {
 	private DirectionCallback callback = new DirectionCallback() {		
 		@Override
 		public void onDirectionsReceived(String result) {
+			if (result == null) {
+				Toast.makeText(DirectionsActivity.this, "Unable to get route information, please check your internet connection.", Toast.LENGTH_LONG).show();
+				return;
+			}
 			List<Route> routes = new ArrayList<Route>();
 			JSONObject resultJSON = null;
 			try {

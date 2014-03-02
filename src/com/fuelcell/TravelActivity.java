@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -87,6 +88,11 @@ public class TravelActivity extends FragmentActivity {
 				TravelActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
+						if (doc == null) {
+							Toast.makeText(TravelActivity.this, "Unable to get route from Google Maps", Toast.LENGTH_LONG).show();
+							dialog.dismiss();
+							return;
+						}
 						ArrayList<LatLng> directionPoint = md.getDirection(doc);
 			            PolylineOptions rectLine = new PolylineOptions().width(3).color(Color.RED);
 			            for (int i = 0; i < directionPoint.size(); i++) {

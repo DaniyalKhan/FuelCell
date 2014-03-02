@@ -50,6 +50,7 @@ public class GMapV2Direction {
 					if (callback != null) callback.onFinished(doc);
 				} catch (Exception e) {
 					e.printStackTrace();
+					callback.onFinished(null);
 				}
 				
 			}

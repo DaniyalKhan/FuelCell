@@ -162,7 +162,8 @@
         android:id="@+id/stepsHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Trip Directions"
+        android:text="Trip Directions (click for more info)"
+         android:layout_marginBottom="10dp"
         android:textStyle="bold"
         android:textSize="12sp" 
         android:gravity="center"/>

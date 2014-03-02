@@ -130,7 +130,14 @@ public abstract class DynamicArrayAdapter extends ArrayAdapter<String>{
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			ArrayList<String> filtered = (ArrayList<String>) results.values;
 	        clear();
-	        for(int i = 0, l = filtered.size(); i < l; i++) add(filtered.get(i));
+	        for(int i = 0, l = filtered.size(); i < l; i++) {
+	        	try {
+					add(filtered.get(i));
+				} catch (IndexOutOfBoundsException e) {
+					clear();
+					break;
+				}
+	        }
 	        sort(stringComparator);
 	        notifyDataSetChanged();
 		}
