@@ -53,6 +53,7 @@ public class SearchActivity extends Activity {
 	ContextWrapper wrapper;
 	Button search;
 	Button saved;
+	Button refresh;
 	ArrayList<Car> cars;
 	int lastClicked;
 	public static List<Car> filtered;
@@ -84,26 +85,7 @@ public class SearchActivity extends Activity {
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
 			context = getBaseContext();
-//			new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					try {
-//						Thread.sleep(300);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//					(getActivity().runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//								searchVType.setVisibility(View.VISIBLE);
-//								searchModel.setVisibility(View.VISIBLE);
-//								searchYear.setVisibility(View.VISIBLE);
-//								searchCorp.setVisibility(View.VISIBLE);
-//								searchList.setVisibility(View.GONE);
-//						}
-//					}));
-//				}
-//			}).start();
+
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -119,7 +101,8 @@ public class SearchActivity extends Activity {
 							searchModel.setVisibility(View.VISIBLE);
 							searchYear.setVisibility(View.VISIBLE);
 							searchCorp.setVisibility(View.VISIBLE);
-							searchCorp.setVisibility(View.VISIBLE);
+							search.setVisibility(View.VISIBLE);
+							refresh.setVisibility(View.VISIBLE);
 							logo.setVisibility(View.VISIBLE);
 							saved.setVisibility(View.VISIBLE);
 							searchList.setVisibility(View.GONE);
@@ -143,6 +126,7 @@ public class SearchActivity extends Activity {
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
 		saved = (Button) findViewById(R.id.saved);
+		refresh = (Button) findViewById(R.id.refresh);
 		
 		filtered = new ArrayList<Car>();
 
@@ -160,10 +144,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -179,6 +163,16 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved");
+			}
+		});
+		
+		refresh.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				searchCorp.getText().clear();
+				searchModel.getText().clear();
+				searchYear.getText().clear();
+				searchVType.getText().clear();
 			}
 		});
 		
@@ -332,20 +326,17 @@ public class SearchActivity extends Activity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				searchList.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				searchList.setVisibility(View.GONE);
 				filter(s);
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				searchList.setVisibility(View.VISIBLE);
 				filter(s);
 				if (searchCorp.getVisibility() == View.VISIBLE)
 					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
@@ -379,6 +370,7 @@ public class SearchActivity extends Activity {
 	public void makeInVisible(View v) {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
+			refresh.setVisibility(View.GONE);
 			if (!v.equals(searchCorp))
 				searchCorp.setVisibility(View.GONE);
 			if (!v.equals(searchYear))

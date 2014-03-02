@@ -25,6 +25,16 @@
         android:nextFocusLeft="@id/autotext"
         android:nextFocusUp="@id/autotext"
         android:visibility="gone" />
+    
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/searchCorp"
+        android:layout_marginRight="20dp"
+        android:contentDescription="desc"
+        android:background="@drawable/refresh_press" />
 
     <ImageView
         android:id="@+id/mainicon"
