@@ -91,7 +91,7 @@ public class SearchActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-			if(cars != null) startStatsActivity(filterList());
+				if(cars != null) startStatsActivity(filterList());
 			}
 		});
 		

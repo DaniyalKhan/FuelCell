@@ -65,18 +65,9 @@ public class StatsActivity extends Activity {
 			
 		};
 		resultList.setAdapter(resultsAdapter);
-//		resultList.setOnItemClickListener() {
-			
-//		}
 	}
 	
 	static class ViewHolder {
 	    public TextView text;
-	}
-	
-	@Override
-	protected void onStart(){
-		super.onStart();
-		
 	}
 }

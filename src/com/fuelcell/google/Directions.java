@@ -70,6 +70,12 @@ public class Directions {
 		public final String cDistance;
 		public final String cTime;
 		public final String stepString;
+		
+		public double srcLat;
+		public double srcLng;
+		public double dstLat;
+		public double dstLng;
+		
 //		public Route(String summary, double distance, double time) {
 //			this.summary = summary;
 //			this.distance = distance;
@@ -81,9 +87,16 @@ public class Directions {
 		public Route(JSONObject routeJSON) {
 			if (routeJSON != null) summary = JSONUtil.getString(routeJSON, "summary");
 			else summary = "No Route Summary Available";
+			
+			
 			JSONArray legs = JSONUtil.getJSONArray(routeJSON, "legs");
 			JSONObject leg = JSONUtil.getJSONObject(legs, 0);//only one leg for no waypoints
 			if (leg != null) {
+				srcLat = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "start_location"), "lat"));
+				srcLng = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "start_location"), "lng"));
+				dstLat = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "end_location"), "lat"));
+				dstLng = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "end_location"), "lng"));
+				
 				distance = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "distance"), "value"));
 				time = Double.parseDouble(JSONUtil.getString(JSONUtil.getJSONObject(leg, "duration"), "value"));
 				cDistance = JSONUtil.getString(JSONUtil.getJSONObject(leg, "distance"), "text");

@@ -46,7 +46,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		for (int i = 0; i < COLUMNS_NAMES.length; i++) {
 			exec += ", '" + COLUMNS_NAMES[i] + "' " + COLUMNS_TYPES[i] + " NOT NULL";
 		}
-		exec += ");";
+		exec += "); ";
 		return exec;
 
 	}

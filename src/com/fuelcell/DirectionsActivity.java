@@ -36,6 +36,10 @@ public class DirectionsActivity extends FragmentActivity {
 			Intent intent = new Intent(DirectionsActivity.this, TravelActivity.class);
 			intent.putExtra("car", car);
 			intent.putExtra("route", r);
+			intent.putExtra("srcLat", r.srcLat);
+			intent.putExtra("srcLng", r.srcLng);
+			intent.putExtra("dstLat", r.dstLat);
+			intent.putExtra("dstLng", r.dstLng);
 			startActivity(intent);
 		}
 	};
