@@ -29,6 +29,10 @@ public class StatsActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_stats);
 		
+		Intent intentLast = getIntent();
+		TextView header = (TextView) findViewById(R.id.header);
+		header.setText(intentLast.getStringExtra("title"));
+		
 		resultList = (ListView) findViewById(R.id.searchedList);
 		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
 
@@ -53,10 +57,6 @@ public class StatsActivity extends Activity {
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
 				View row = convertView;
-				Intent intentLast = getIntent();
-				TextView header = (TextView) findViewById(R.id.header);
-				
-					header.setText(intentLast.getStringExtra("title"));
 				
 				if (row == null) {
 					LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
