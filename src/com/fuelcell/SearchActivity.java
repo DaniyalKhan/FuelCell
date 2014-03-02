@@ -56,15 +56,15 @@ public class SearchActivity extends Activity {
 		@Override
 		public void onClick(CharSequence text) {
 			if(lastClicked == searchCorp.getId()) {
-				searchCorp.setText(text);
+				searchCorp.setText(text.toString().replaceAll("<\\/?[b]>", ""));
 				searchCorp.setBackgroundResource((R.drawable.textbargreen));
 			}
 			else if(lastClicked == searchYear.getId()){
-				searchYear.setText(text);
+				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
 				searchYear.setBackgroundResource((R.drawable.textbargreen));
 			}
 			else if(lastClicked == searchModel.getId()){
-				searchModel.setText(text);
+				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
 				searchModel.setBackgroundResource((R.drawable.textbargreen));
 			}
 		}
@@ -142,7 +142,6 @@ public class SearchActivity extends Activity {
 						&& (Integer.toString(cars.get(i).getYear()).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
 						&& (cars.get(i).getModel().toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))) {
 					filtered.add(cars.get(i));
-					System.out.println(cars.get(i).getModel());
 				}
 			}
 		
@@ -273,9 +272,9 @@ public class SearchActivity extends Activity {
 				if (searchCorp.getVisibility() == View.VISIBLE)
 					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
 				if (searchYear.getVisibility() == View.VISIBLE)
-					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+					searchYear.setBackgroundResource(R.drawable.textbarwhite);
 				if (searchModel.getVisibility() == View.VISIBLE)
-					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+					searchModel.setBackgroundResource(R.drawable.textbarwhite);
 			}
 
 			public void filter(CharSequence s) {

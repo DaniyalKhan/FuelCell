@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Search"
+        android:text="Results"
         android:textSize="20sp" 
         android:gravity="center"/>
 

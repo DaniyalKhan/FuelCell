@@ -52,7 +52,6 @@ public class StatsActivity extends Activity {
 						public void onClick(View v) {
 							Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
 							intent.putExtra("car", filtered.get(position));
-//							car = (Car) intent.getParcelableExtra("car");
 							startActivity(intent);
 							
 						}
