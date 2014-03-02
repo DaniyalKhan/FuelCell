@@ -16,7 +16,10 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import com.fuelcell.models.Car;
 import com.fuelcell.util.JSONUtil;
 
 public class Directions {
@@ -60,7 +63,7 @@ public class Directions {
 		return null;
 	}
 	
-	public static class Route {
+	public static class Route implements Parcelable {
 		public final String summary;
 		public final double distance;
 		public final double time;
@@ -90,6 +93,32 @@ public class Directions {
 				cTime = null;
 			}
 		}
+		public Route(Parcel in) {
+			
+		}
+		
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(summary);
+			dest.writeString(cTime);
+			dest.writeDouble(distance);
+			dest.writeDouble(time);
+			dest.writeString(cDistance);
+		}
+		
+		public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
+			public Route createFromParcel(Parcel in) {
+				return new Route(in); 
+		    }
+			public Route[] newArray(int size) {
+				return new Route[size];
+			}
+		};
+		
 	}
 	
 	public interface DirectionCallback {

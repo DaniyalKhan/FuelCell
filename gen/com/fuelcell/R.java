@@ -49,10 +49,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int LinearLayout=0x7f0a0013;
-        public static final int action_settings=0x7f0a0019;
+        public static final int TextView03=0x7f0a0020;
+        public static final int action_settings=0x7f0a0021;
         public static final int author1=0x7f0a0006;
         public static final int author2=0x7f0a0007;
         public static final int autotext=0x7f0a0009;
+        public static final int co2_key=0x7f0a001b;
+        public static final int co2_value=0x7f0a001f;
         public static final int destination=0x7f0a0003;
         public static final int distance=0x7f0a0017;
         public static final int find_routes=0x7f0a0004;
@@ -73,7 +76,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int searchedList=0x7f0a0011;
         public static final int statsLayout=0x7f0a000f;
         public static final int text=0x7f0a0012;
+        public static final int textView3=0x7f0a001c;
         public static final int time=0x7f0a0018;
+        public static final int travel_keys=0x7f0a0019;
+        public static final int travel_values=0x7f0a001d;
+        public static final int usage_key=0x7f0a001a;
+        public static final int usage_value=0x7f0a001e;
     }
     public static final class layout {
         public static final int activity_car_profile=0x7f030000;
@@ -85,6 +93,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int list_item=0x7f030006;
         public static final int route_item=0x7f030007;
         public static final int search_list=0x7f030008;
+        public static final int travel_activity=0x7f030009;
     }
     public static final class menu {
         public static final int fuel_cell=0x7f090000;
@@ -150,7 +159,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fuelcell:buttonBarButtonStyle
+          @attr name android:buttonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
         /**
@@ -160,7 +169,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fuelcell:buttonBarStyle
+          @attr name android:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
     };

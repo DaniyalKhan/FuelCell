@@ -37,6 +37,14 @@ public class Car implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(year);
+		dest.writeString(manufacturer);
+		dest.writeString(model);
+		dest.writeString(vehicleClass);
+		dest.writeDouble(engineSize);
+		dest.writeInt(cylinders);
+		dest.writeString(vehicleClass);
+		dest.writeString(fuelType.toString().charAt(0) + "");
 		dest.writeDouble(cityEffL);
 		dest.writeDouble(highwayEffL);
 		dest.writeDouble(cityEffM);
@@ -56,12 +64,15 @@ public class Car implements Parcelable {
 	};
 	
 	public Car(Parcel in) {
-		this(0, "", "", "", 0, 0, "", null, in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble());
+		this(in.readInt(), in.readString(), in.readString(), in.readString(), 
+				in.readDouble(), in.readInt(), in.readString(), in.readString(), 
+				in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), 
+				in.readDouble(), in.readDouble());
 	}
 	
 	public Car(int year, String manufacturer, String model,
 			String vehicleClass, double engineSize, int cylinders,
-			String transmission, FuelType fuelType, double cityEffL,
+			String transmission, String fuelType, double cityEffL,
 			double highwayEffL, double cityEffM, double highwayEffM,
 			double fuelUsage, double emissions) {
 		super();
@@ -72,7 +83,11 @@ public class Car implements Parcelable {
 		this.engineSize = engineSize;
 		this.cylinders = cylinders;
 		this.transmission = transmission;
-		this.fuelType = fuelType;
+		if (fuelType.trim().equals("D")) this.fuelType = FuelType.Diesel;
+		else if (fuelType.trim().equals("E")) this.fuelType = FuelType.Ethanol;
+		else if (fuelType.trim().equals("N")) this.fuelType = FuelType.Natural;
+		else if (fuelType.trim().equals("X")) this.fuelType = FuelType.Regular;
+		else this.fuelType = FuelType.Premium;
 		this.cityEffL = cityEffL;
 		this.highwayEffL = highwayEffL;
 		this.cityEffM = cityEffM;
