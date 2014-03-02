@@ -7,12 +7,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +91,8 @@ public class DirectionsActivity extends FragmentActivity {
 				if (findViewById(R.id.root) != null) {
 					directions.setPoints(origin.getText().toString(), destination.getText().toString());
 					directions.makeRequest();
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		        }
 			}
 		});

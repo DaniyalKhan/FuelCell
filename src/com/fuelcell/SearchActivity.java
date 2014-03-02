@@ -279,7 +279,7 @@ public class SearchActivity extends Activity {
 				@Override
 				protected void onPreExecute() {
 					progress = new ProgressDialog(SearchActivity.this);
-					progress.setMessage("Loading");
+					progress.setMessage("Loading car data onto Fuel Cell.");
 					progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 					progress.setProgress(0);
 					progress.setMax(100);
