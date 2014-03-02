@@ -22,7 +22,7 @@
         android:layout_above="@+id/divider1"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:text="1992 Honda Civic"
+        android:text="Car Name"
         android:textSize="18sp" />
 
     <View
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Cylinder:"
+                android:text="Cylinders:"
                 android:textStyle="bold" />
 
             <View
@@ -210,6 +210,19 @@
         android:background="@drawable/button_press"
         android:layout_below="@+id/info"
         android:text="Plan Trip"
+        android:textSize="12sp" />
+    
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="90dp"
+        android:layout_marginRight="90dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_press"
+        android:layout_below="@+id/tripButton"
+        android:text="Save"
         android:textSize="12sp" />
 
 </RelativeLayout>

@@ -92,9 +92,6 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 			if(cars != null) startStatsActivity(filterList());
-//				cars.get(0).saveToProfile(SearchActivity.this);
-//				startDirectionsActivity(Car.getSavedCars(SearchActivity.this).get(0));
-//				startDirectionsActivity(cars.get(0));
 			}
 		});
 		
@@ -123,12 +120,6 @@ public class SearchActivity extends Activity {
 			}
 		});
 		
-	}
-	
-	private void startDirectionsActivity(Car car) {
-		Intent intent = new Intent(this, DirectionsActivity.class);
-		intent.putExtra("car", car);
-		startActivity(intent);
 	}
 	
 	private void startStatsActivity(List<Car> cars) {

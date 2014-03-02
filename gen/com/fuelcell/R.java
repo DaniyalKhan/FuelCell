@@ -56,45 +56,45 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int LinearLayout=0x7f0a0026;
         public static final int action_settings=0x7f0a0034;
         public static final int answer=0x7f0a000b;
-        public static final int author1=0x7f0a0017;
-        public static final int author2=0x7f0a0018;
-        public static final int autotext=0x7f0a001a;
+        public static final int author1=0x7f0a0018;
+        public static final int author2=0x7f0a0019;
+        public static final int autotext=0x7f0a001b;
         public static final int carIcon=0x7f0a0001;
         public static final int carName=0x7f0a0002;
         public static final int co2_key=0x7f0a0030;
         public static final int co2_value=0x7f0a0033;
         public static final int cylinderInfo=0x7f0a000c;
         public static final int cylinderName=0x7f0a0006;
-        public static final int destination=0x7f0a0014;
+        public static final int destination=0x7f0a0015;
         public static final int distance=0x7f0a002a;
         public static final int divider1=0x7f0a0003;
         public static final int engineInfo=0x7f0a000d;
         public static final int engineName=0x7f0a0007;
         public static final int estimates=0x7f0a002d;
         public static final int fields=0x7f0a0005;
-        public static final int find_routes=0x7f0a0015;
+        public static final int find_routes=0x7f0a0016;
         public static final int fuelInfo=0x7f0a000e;
         public static final int fuelName=0x7f0a0008;
-        public static final int header=0x7f0a0022;
+        public static final int header=0x7f0a0023;
         public static final int info=0x7f0a0004;
         public static final int left=0x7f0a0027;
-        public static final int mainicon=0x7f0a0016;
-        public static final int map=0x7f0a0025;
-        public static final int origin=0x7f0a0013;
+        public static final int mainicon=0x7f0a0017;
+        public static final int origin=0x7f0a0014;
         public static final int profileLayout=0x7f0a0000;
         public static final int right=0x7f0a0029;
-        public static final int root=0x7f0a0012;
+        public static final int root=0x7f0a0013;
         public static final int route=0x7f0a0028;
-        public static final int saved=0x7f0a0020;
-        public static final int searchButton=0x7f0a001f;
-        public static final int searchCorp=0x7f0a001b;
-        public static final int searchLayout=0x7f0a0019;
-        public static final int searchList=0x7f0a001e;
-        public static final int searchModel=0x7f0a001d;
-        public static final int searchYear=0x7f0a001c;
-        public static final int searchedList=0x7f0a0023;
-        public static final int statsLayout=0x7f0a0021;
-        public static final int text=0x7f0a0024;
+        public static final int saveButton=0x7f0a0012;
+        public static final int saved=0x7f0a0021;
+        public static final int searchButton=0x7f0a0020;
+        public static final int searchCorp=0x7f0a001c;
+        public static final int searchLayout=0x7f0a001a;
+        public static final int searchList=0x7f0a001f;
+        public static final int searchModel=0x7f0a001e;
+        public static final int searchYear=0x7f0a001d;
+        public static final int searchedList=0x7f0a0024;
+        public static final int statsLayout=0x7f0a0022;
+        public static final int text=0x7f0a0025;
         public static final int time=0x7f0a002b;
         public static final int tranInfo=0x7f0a000f;
         public static final int tranName=0x7f0a0009;
@@ -115,10 +115,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_stats=0x7f030004;
         public static final int directions_fragment=0x7f030005;
         public static final int list_item=0x7f030006;
-        public static final int map_fragment=0x7f030007;
-        public static final int route_item=0x7f030008;
-        public static final int search_list=0x7f030009;
-        public static final int travel_activity=0x7f03000a;
+        public static final int route_item=0x7f030007;
+        public static final int search_list=0x7f030008;
+        public static final int travel_activity=0x7f030009;
     }
     public static final class menu {
         public static final int fuel_cell=0x7f090000;
@@ -184,7 +183,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:buttonBarButtonStyle
+          @attr name com.fuelcell:buttonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
         /**
@@ -194,7 +193,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:buttonBarStyle
+          @attr name com.fuelcell:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
     };
