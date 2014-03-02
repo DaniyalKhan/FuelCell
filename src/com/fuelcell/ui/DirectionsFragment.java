@@ -42,7 +42,8 @@ public class DirectionsFragment extends ListFragment {
 		setListAdapter(new RouteAdapter(getActivity(), R.layout.route_item, routes));
 		
 		View inflate = inflater.inflate(R.layout.directions_fragment, container, false);
-		
+		if (!routes.isEmpty())
+			inflate.findViewById(R.id.hint).setVisibility(View.GONE);
 		((Button) inflate.findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -72,6 +73,7 @@ public class DirectionsFragment extends ListFragment {
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			View rowView = convertView;
+			
 		    // reuse views
 		    if (rowView == null) {
 				LayoutInflater inflater = getActivity().getLayoutInflater();
