@@ -34,13 +34,27 @@ public abstract class DynamicArrayAdapter extends ArrayAdapter<String>{
 	};
 
 	public DynamicArrayAdapter(Activity context, int resource, ArrayList<Car> cars, TextCallback callback) {
-		super(context, resource, new ArrayList<String>());
+		super(context, resource);
 		sort(stringComparator);
 		this.callback = callback;
 		this.context = context;
 		this.cars = cars;
 		this.fields = new ArrayList<String>();
+		toFields("");
+		for(String s: fields) {
+			add(s);
+	    }
+		sort(stringComparator);
+		notifyDataSetChanged();
 	}
+	
+//	private ArrayList<String> firstCall(ArrayList<Car> cars) {
+//		ArrayList<String> toReturn = new ArrayList<String>();
+//		for(Car c: cars) {
+//	        toReturn.add(getFieldForCar(c));
+//	    } 
+//		return toReturn;
+//	}
 	
 	static class ViewHolder {
 	    public TextView text;
