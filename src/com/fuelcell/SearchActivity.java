@@ -105,6 +105,7 @@ public class SearchActivity extends Activity {
 							logo.setVisibility(View.VISIBLE);
 							saved.setVisibility(View.VISIBLE);
 							searchList.setVisibility(View.GONE);
+							hint.setVisibility(View.GONE);
 						}
 					});
 				}
