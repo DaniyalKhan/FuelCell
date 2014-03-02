@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
@@ -59,6 +60,7 @@ public class SearchActivity extends Activity {
 	public static List<Car> filtered;
 	public static Double bestFuelEfficiency;
 	public static Double worstFuelEfficiency;
+	TextView hint;
 
 	TextCallback callback = new TextCallback() {
 		
@@ -124,6 +126,7 @@ public class SearchActivity extends Activity {
 		search = (Button) findViewById(R.id.searchButton);
 		saved = (Button) findViewById(R.id.saved);
 		refresh = (Button) findViewById(R.id.refresh);
+		hint = (TextView) findViewById(R.id.hint);
 		
 		filtered = new ArrayList<Car>();
 
@@ -146,10 +149,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -381,6 +384,7 @@ public class SearchActivity extends Activity {
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
 			saved.setVisibility(View.GONE);
+			hint.setVisibility(View.VISIBLE);
 
 		}
 	}
@@ -438,8 +442,8 @@ public class SearchActivity extends Activity {
 								for (View v : views) {
 									v.setVisibility(View.VISIBLE);
 								}
-								views[views.length - 1]
-										.setVisibility(View.GONE);
+								views[views.length - 1].setVisibility(View.GONE);
+								views[views.length - 2].setVisibility(View.GONE);
 							}
 						}
 					});
