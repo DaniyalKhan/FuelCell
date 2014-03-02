@@ -87,8 +87,7 @@ public class DirectionsActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (findViewById(R.id.root) != null) {
-					directions.setPoints("toronto", "vancouver");
-//					directions.setPoints(origin.getText().toString(), destination.getText().toString());
+					directions.setPoints(origin.getText().toString(), destination.getText().toString());
 					directions.makeRequest();
 		        }
 			}

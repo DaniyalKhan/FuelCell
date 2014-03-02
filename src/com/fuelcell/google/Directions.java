@@ -52,17 +52,6 @@ public class Directions {
 		new DirectionTask().execute(DIRECTIONS_URL + "?" + "origin=" + origin + "&" + "destination=" + destination + "&sensor=true");
 	}
 	
-	public boolean routesExist() {
-		return false;
-//		JSONArray routes = JSONUtil.getJSONArray(jsonResult, "routes");
-//		return (JSONUtil.getJSONArray(jsonResult, "routes") == null) ? false : routes.length() > 0;
-	}
-	
-	public Double getDistanceKm() {
-//		if (jsonResult == null) return null;
-		return null;
-	}
-	
 	public static class Route implements Parcelable {
 		public final String summary;
 		public final double distance;
@@ -75,15 +64,6 @@ public class Directions {
 		public double srcLng;
 		public double dstLat;
 		public double dstLng;
-		
-//		public Route(String summary, double distance, double time) {
-//			this.summary = summary;
-//			this.distance = distance;
-//			this.time = time;
-//			this.cDistance = "";
-//			this.cTime = "";
-//			this.stepString = "";
-//		}
 		public Route(JSONObject routeJSON) {
 			if (routeJSON != null) summary = JSONUtil.getString(routeJSON, "summary");
 			else summary = "No Route Summary Available";
