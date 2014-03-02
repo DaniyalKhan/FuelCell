@@ -65,7 +65,7 @@ public class CarProfileActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				
+				car.saveToProfile(CarProfileActivity.this);
 			}
 			
 		});
