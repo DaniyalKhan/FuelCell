@@ -3,6 +3,7 @@ package com.fuelcell;
 import com.fuelcell.models.Car;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CarProfileActivity extends Activity {
 	Car car;
@@ -61,11 +63,29 @@ public class CarProfileActivity extends Activity {
 			
 		});
 		
+		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(CarProfileActivity.this, SearchActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				
+				startActivity(homeIntent);
+			}
+			
+		});
+		
 		save.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				car.saveToProfile(CarProfileActivity.this);
+				Context context = getApplicationContext();
+				CharSequence text = car.getModel() + " saved to profile";
+				int duration = Toast.LENGTH_SHORT;
+
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 			}
 			
 		});

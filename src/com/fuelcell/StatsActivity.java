@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,8 +30,21 @@ public class StatsActivity extends Activity {
 		setContentView(R.layout.activity_stats);
 		
 		resultList = (ListView) findViewById(R.id.searchedList);
+		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				
+				startActivity(homeIntent);
+			}
+			
+		});
+		
 		filtered = SearchActivity.filtered;
 		List<String> resultsOutput = new ArrayList<String>();
+		
 		for (int i = 0 ; i < filtered.size() ; i++) {
 			resultsOutput.add(filtered.get(i).getYear() + " " + filtered.get(i).getManufacturer() + " " + filtered.get(i).getModel());
 		}
@@ -39,6 +53,11 @@ public class StatsActivity extends Activity {
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
 				View row = convertView;
+				Intent intentLast = getIntent();
+				TextView header = (TextView) findViewById(R.id.header);
+				
+					header.setText(intentLast.getStringExtra("title"));
+				
 				if (row == null) {
 					LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
 					row = inflater.inflate(R.layout.list_item, null);

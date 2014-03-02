@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
@@ -12,9 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fuelcell.R;
+import com.fuelcell.SearchActivity;
+import com.fuelcell.StatsActivity;
 import com.fuelcell.google.Directions.Route;
 import com.fuelcell.models.Car;
 
@@ -36,7 +40,22 @@ public class DirectionsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		setListAdapter(new RouteAdapter(getActivity(), R.layout.route_item, routes));
-		return inflater.inflate(R.layout.directions_fragment, container, false);
+		
+		View inflate = inflater.inflate(R.layout.directions_fragment, container, false);
+		
+		((Button) inflate.findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(getActivity(), SearchActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				startActivity(homeIntent);
+				System.out.println("ONCLICKDIRECTIONS");
+			}
+			
+		});
+		
+		return inflate;
 	}
 	
 	static class ViewHolder {
