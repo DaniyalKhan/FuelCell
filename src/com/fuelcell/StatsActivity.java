@@ -64,17 +64,17 @@ public class StatsActivity extends Activity {
 					final ViewHolder viewHolder = new ViewHolder();
 					viewHolder.text = (TextView) row.findViewById(R.id.text);
 					row.setTag(viewHolder);
-					row.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
-							Car c = filtered.get(position);
-							intent.putExtra("car", c);
-							startActivity(intent);
-							
-						}
-					});
 				}
+				row.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
+						Car c = filtered.get(position);
+						intent.putExtra("car", c);
+						startActivity(intent);
+						
+					}
+				});
 				ViewHolder holder = (ViewHolder) row.getTag();
 			    String s = getItem(position);
 		    		holder.text.setText(s);
