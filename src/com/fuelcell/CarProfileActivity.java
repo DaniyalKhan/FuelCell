@@ -21,6 +21,8 @@ public class CarProfileActivity extends Activity {
 	TextView tranInfo;
 	TextView vehicleInfo;
 	TextView carName;
+	TextView efficiencyInfo;
+	TextView emissionsInfo;
 	
 	Button planTrip;
 	Button save;
@@ -40,13 +42,17 @@ public class CarProfileActivity extends Activity {
 		tranInfo = (TextView) findViewById(R.id.tranInfo);
 		fuelInfo = (TextView) findViewById(R.id.fuelInfo);
 		vehicleInfo = (TextView) findViewById(R.id.vehicleInfo);
-		
+		efficiencyInfo = (TextView) findViewById(R.id.efficiencyInfo);
+		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo); 
+				
 		carName.setText(car.getYear() + " " + car.getManufacturer() + " " + car.getModel());
 		cylinderInfo.setText(Integer.toString(car.getCylinders()));
 		engineInfo.setText(Double.toString(car.getEngineSize()));
 		tranInfo.setText(car.getTransmission());
 		fuelInfo.setText(car.getFuelType().toString());
 		vehicleInfo.setText(car.getVehicleClass());
+		efficiencyInfo.setText(Double.toString(car.getHighwayEffL()));
+		emissionsInfo.setText(Double.toString(car.getEmissions()));
 		
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
@@ -69,7 +75,6 @@ public class CarProfileActivity extends Activity {
 			public void onClick(View v) {
 				Intent homeIntent = new Intent(CarProfileActivity.this, SearchActivity.class);
 				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				
 				startActivity(homeIntent);
 			}
 			
@@ -79,12 +84,10 @@ public class CarProfileActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				car.saveToProfile(CarProfileActivity.this);
+				boolean saved = car.saveToProfile(CarProfileActivity.this);
 				Context context = getApplicationContext();
-				CharSequence text = car.getModel() + " saved to profile";
-				int duration = Toast.LENGTH_SHORT;
-
-				Toast toast = Toast.makeText(context, text, duration);
+				CharSequence text = saved ? car.getModel() + " saved to profile" : car.getModel() + " already saved to profile";
+				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}
 			

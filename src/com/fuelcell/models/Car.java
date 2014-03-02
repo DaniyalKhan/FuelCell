@@ -126,10 +126,10 @@ public class Car implements Parcelable {
 		emissions = Double.parseDouble(car[13].trim());
 	}
 	
-	public void saveToProfile(Context c) {
+	public boolean saveToProfile(Context c) {
 		List <Car> saved = getSavedCars(c);
 		for (Car car: saved) {
-			if (car.matches(this)) return; 
+			if (car.matches(this)) return false; 
 		}
 		//to do dont write already saved cars
 		SQLiteDatabase db = CarDatabase.obtain(c).getWritableDatabase();
@@ -150,6 +150,7 @@ public class Car implements Parcelable {
 	    values.put(keys[12], fuelUsage);
 	    values.put(keys[13], emissions);
 	    db.insertWithOnConflict(CarDatabase.CAR_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+	    return true;
 	}
 	
 	private boolean matches(Car car) {

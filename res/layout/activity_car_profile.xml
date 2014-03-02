@@ -25,11 +25,15 @@
 
     <TextView
         android:id="@+id/carName"
-        android:layout_width="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/divider1"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:text="Car Name"
         android:textSize="18sp" 
         android:textStyle="bold"/>
@@ -132,6 +136,36 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
                 android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/efficiency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Highway Fuel Efficiency (L/100 KM):"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/emissions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="CO2 Emissions (kg/Year):"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
         </LinearLayout>
 
         <LinearLayout
@@ -205,7 +239,34 @@
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
                 android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/efficiencyInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/emissionsInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
         </LinearLayout>
+
     </LinearLayout>
 
     <Button
