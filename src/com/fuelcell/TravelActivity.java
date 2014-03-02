@@ -32,9 +32,8 @@ public class TravelActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.travel_activity);
-		Intent intent = getIntent();
-		car = (Car) intent.getParcelableExtra("car");
-		route = (Route) intent.getParcelableExtra("route");
+//		Intent intent = getIntent();
+//		car = (Car) intent.gxent.getParcelableExtra("route");
 //		
 //		JSONArray stepsJSON = null;
 //		
