@@ -140,7 +140,7 @@ public class SearchActivity extends Activity {
 						+ " Year: "+ (searchYear.getText().toString().equals("") == true ? "Any" : searchYear.getText().toString()) + " " 
 						+ " Model: "+ (searchModel.getText().toString().equals("") == true ? "Any" : searchModel.getText().toString()) + " " 
 						+ " Vehicle Type: "+ (searchVType.getText().toString().equals("") == true ? "Any" : searchVType.getText().toString())
-						+ ". Maybe try leaving some parameters blank to broaden your search.");
+						+ ". Maybe try leaving some parameters blank to broaden your search.", false);
 			}
 		});
 		
@@ -169,7 +169,7 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved",
-						"You do not currently have any car profiles saved.");
+						"You do not currently have any car profiles saved.", Car.getSavedCars(SearchActivity.this).size() > 0);
 			}
 		});
 		
@@ -185,11 +185,12 @@ public class SearchActivity extends Activity {
 		
 	}
 	
-	private void startStatsActivity(List<Car> cars,String title,String hint) {
+	private void startStatsActivity(List<Car> cars,String title,String hint, boolean showClear) {
 		Intent intent = new Intent(this, StatsActivity.class);
 		filtered = cars;
 		intent.putExtra("title", title);
 		intent.putExtra("hint", hint);
+		intent.putExtra("clear", showClear);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}

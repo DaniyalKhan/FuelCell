@@ -41,7 +41,13 @@ public class CarDatabase extends SQLiteOpenHelper {
         db.execSQL(createTableString());
     }
     
-    public String createTableString() {
+    public static void reCreate(Context c) {
+    	SQLiteDatabase db = obtain(c).getWritableDatabase();
+    	db.execSQL("DROP TABLE IF EXISTS " + CAR_TABLE_NAME);
+    	db.execSQL(createTableString());
+	}
+    
+    public static String createTableString() {
 		String exec = "CREATE TABLE" + " '" + CAR_TABLE_NAME + "' ('id' " + "INTEGER PRIMARY KEY NOT NULL";
 		for (int i = 0; i < COLUMNS_NAMES.length; i++) {
 			exec += ", '" + COLUMNS_NAMES[i] + "' " + COLUMNS_TYPES[i] + " NOT NULL";

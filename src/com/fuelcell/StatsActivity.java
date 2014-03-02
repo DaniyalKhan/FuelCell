@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fuelcell.models.Car;
+import com.fuelcell.util.CarDatabase;
 
 public class StatsActivity extends Activity {
 	
@@ -36,6 +37,23 @@ public class StatsActivity extends Activity {
 		
 		hint = (TextView) findViewById(R.id.hint);
 		hint.setText(intentLast.getStringExtra("hint"));
+		
+		boolean showClear = intentLast.getBooleanExtra("clear", false);
+		if (!showClear) {
+			findViewById(R.id.clearButton).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.clearButton).setVisibility(View.VISIBLE);
+			findViewById(R.id.clearButton).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					CarDatabase.reCreate(StatsActivity.this);
+					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
+					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+					startActivity(homeIntent);
+				}
+			});
+		}
+		
 		resultList = (ListView) findViewById(R.id.searchedList);
 		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
 
