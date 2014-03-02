@@ -52,7 +52,7 @@ public class Car implements Parcelable {
 		dest.writeString(vehicleClass);
 		dest.writeDouble(engineSize);
 		dest.writeInt(cylinders);
-		dest.writeString(vehicleClass);
+		dest.writeString(transmission);
 		dest.writeString(fuelType.toString().charAt(0) + "");
 		dest.writeDouble(cityEffL);
 		dest.writeDouble(highwayEffL);
