@@ -69,10 +69,24 @@
         android:hint="Year" />
 
     <view
-        android:id="@+id/searchModel"
+        android:id="@+id/searchVType"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/searchYear"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/textbarwhite"
+        android:contentDescription="desc"
+        android:gravity="center"
+        android:hint="Vehicle Type" />
+
+    <view
+        android:id="@+id/searchModel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchVType"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
@@ -101,9 +115,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/button_press"
         android:contentDescription="desc"
-        android:gravity="center" 
+        android:gravity="center"
         android:text="Search"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/saved"
@@ -111,7 +125,7 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/searchButton"
-		android:layout_marginLeft="90dp"
+        android:layout_marginLeft="90dp"
         android:layout_marginRight="90dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_press"

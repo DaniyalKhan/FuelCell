@@ -51,7 +51,7 @@ public class CarProfileActivity extends Activity {
 		tranInfo.setText(car.getTransmission());
 		fuelInfo.setText(car.getFuelType().toString());
 		vehicleInfo.setText(car.getVehicleClass());
-		efficiencyInfo.setText(Double.toString(car.getHighwayEffL()));
+		efficiencyInfo.setText(Float.toString((float) ((int) (car.getHighwayEffL()*100)/100)));
 		emissionsInfo.setText(Double.toString(car.getEmissions()));
 		
 		planTrip = (Button) findViewById(R.id.tripButton);

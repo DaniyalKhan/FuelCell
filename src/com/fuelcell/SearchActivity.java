@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,12 +42,14 @@ public class SearchActivity extends Activity {
 	MyEditText searchCorp;
 	MyEditText searchYear;
 	MyEditText searchModel;
+	MyEditText searchVType;
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
 	DynamicArrayAdapter yearAdapter;
 	DynamicArrayAdapter manufactureAdapter;
 	DynamicArrayAdapter modelAdapter;
+	DynamicArrayAdapter vTypeAdapter;
 	ContextWrapper wrapper;
 	Button search;
 	Button saved;
@@ -55,6 +58,7 @@ public class SearchActivity extends Activity {
 	public static List<Car> filtered;
 	public static Double bestFuelEfficiency;
 	public static Double worstFuelEfficiency;
+	private Context context;
 	
 
 	TextCallback callback = new TextCallback() {
@@ -73,6 +77,56 @@ public class SearchActivity extends Activity {
 				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
 				searchModel.setBackgroundResource((R.drawable.textbargreen));
 			}
+			else if(lastClicked == searchVType.getId()){
+				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+				searchVType.setBackgroundResource((R.drawable.textbargreen));
+			}
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
+			context = getBaseContext();
+//			new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						Thread.sleep(300);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					(getActivity().runOnUiThread(new Runnable() {
+//						@Override
+//						public void run() {
+//								searchVType.setVisibility(View.VISIBLE);
+//								searchModel.setVisibility(View.VISIBLE);
+//								searchYear.setVisibility(View.VISIBLE);
+//								searchCorp.setVisibility(View.VISIBLE);
+//								searchList.setVisibility(View.GONE);
+//						}
+//					}));
+//				}
+//			}).start();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					SearchActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							searchVType.setVisibility(View.VISIBLE);
+							searchModel.setVisibility(View.VISIBLE);
+							searchYear.setVisibility(View.VISIBLE);
+							searchCorp.setVisibility(View.VISIBLE);
+							searchCorp.setVisibility(View.VISIBLE);
+							logo.setVisibility(View.VISIBLE);
+							saved.setVisibility(View.VISIBLE);
+							searchList.setVisibility(View.GONE);
+						}
+					});
+				}
+			}).start();
 		}
 	};
 	
@@ -85,6 +139,7 @@ public class SearchActivity extends Activity {
 		searchCorp = (MyEditText) findViewById(R.id.searchCorp);
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
+		searchVType = (MyEditText) findViewById(R.id.searchVType);
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
 		saved = (Button) findViewById(R.id.saved);
@@ -105,17 +160,20 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
-		searchYear.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
-		searchModel.set(searchCorp, searchModel, searchYear, logo, search, saved, searchList);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, searchList);
 
 		setClick(searchCorp);
 		setClick(searchYear);
 		setClick(searchModel);
+		setClick(searchVType);
 
 		setTextChange(searchCorp);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
+		setTextChange(searchVType);
 
 		saved.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -140,7 +198,8 @@ public class SearchActivity extends Activity {
 			for (int i = 0 ; i < cars.size(); i++) {
 				if ( (cars.get(i).getManufacturer().toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
 						&& (Integer.toString(cars.get(i).getYear()).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
-						&& (cars.get(i).getModel().toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))) {
+						&& (cars.get(i).getModel().toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
+						&& (cars.get(i).getVehicleClass().toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
 					filtered.add(cars.get(i));
 				}
 			}
@@ -194,8 +253,17 @@ public class SearchActivity extends Activity {
 							@Override
 							protected boolean shouldContain(Car c) {
 								return c.getManufacturer().contains(searchCorp.getText()) && 
-										Integer.toString(c.getYear()).contains(searchYear.getText());
+										Integer.toString(c.getYear()).contains(searchYear.getText()) &&
+										c.getVehicleClass().contains(searchVType.getText());
 							}
+						};
+						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+
+							@Override
+							protected String getFieldForCar(Car c) {
+								return c.getVehicleClass();
+							}
+							
 						};
 						return true;
 					} catch (Exception unfinishedException) {
@@ -285,6 +353,8 @@ public class SearchActivity extends Activity {
 					searchYear.setBackgroundResource(R.drawable.textbarwhite);
 				if (searchModel.getVisibility() == View.VISIBLE)
 					searchModel.setBackgroundResource(R.drawable.textbarwhite);
+				if (searchVType.getVisibility() == View.VISIBLE)
+					searchVType.setBackgroundResource(R.drawable.textbarwhite);
 			}
 
 
@@ -301,6 +371,9 @@ public class SearchActivity extends Activity {
 		if (searchModel.getVisibility() == View.VISIBLE) {
 			modelAdapter.getFilter().filter(s);
 		}
+		if (searchVType.getVisibility() == View.VISIBLE) {
+			vTypeAdapter.getFilter().filter(s);
+		}
 	}
 
 	public void makeInVisible(View v) {
@@ -312,6 +385,8 @@ public class SearchActivity extends Activity {
 				searchYear.setVisibility(View.GONE);
 			if (!v.equals(searchModel))
 				searchModel.setVisibility(View.GONE);
+			if (!v.equals(searchVType))
+				searchVType.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
 			saved.setVisibility(View.GONE);
@@ -327,6 +402,8 @@ public class SearchActivity extends Activity {
 				searchList.setAdapter(yearAdapter);
 			if (v.equals(searchModel))
 				searchList.setAdapter(modelAdapter);
+			if (v.equals(searchVType))
+				searchList.setAdapter(vTypeAdapter);
 			//first time filter so when we click the button it populates list
 			filter("");
 		}
@@ -372,7 +449,8 @@ public class SearchActivity extends Activity {
 								for (View v : views) {
 									v.setVisibility(View.VISIBLE);
 								}
-								views[views.length - 1].setVisibility(View.GONE);
+								views[views.length - 1]
+										.setVisibility(View.GONE);
 							}
 						}
 					});
