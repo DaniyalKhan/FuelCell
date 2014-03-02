@@ -19,11 +19,11 @@
         android:id="@+id/carName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/divider1" 
-        android:text="1992 Honda Civic"
+        android:layout_above="@+id/divider1"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:textSize="18sp"/>
+        android:text="1992 Honda Civic"
+        android:textSize="18sp" />
 
     <View
         android:id="@+id/divider1"
@@ -34,5 +34,182 @@
         android:layout_marginRight="10dp"
         android:background="@android:color/darker_gray" />
 
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
+        android:layout_weight="0.5"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/fields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/cylinderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Cylinder:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/engineName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Engine Size:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/fuelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Fuel Type:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tranName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Transmission:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/vehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Vehicle Type:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/cylinderInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/engineInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/fuelInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tranInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/vehicleInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Unknown" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/tripButton"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="90dp"
+        android:layout_marginRight="90dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_press"
+        android:layout_below="@+id/info"
+        android:text="Plan Trip"
+        android:textSize="12sp" />
 
 </RelativeLayout>

@@ -49,7 +49,8 @@ public class StatsActivity extends Activity {
 						@Override
 						public void onClick(View v) {
 							Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
-							intent.putExtra("car", filtered.get(position));
+							Car c = filtered.get(position);
+							intent.putExtra("car", c);
 							startActivity(intent);
 							
 						}

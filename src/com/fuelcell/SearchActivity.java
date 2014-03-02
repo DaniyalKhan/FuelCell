@@ -91,10 +91,10 @@ public class SearchActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				if(cars != null) startStatsActivity(filterList());
+			if(cars != null) startStatsActivity(filterList());
 //				cars.get(0).saveToProfile(SearchActivity.this);
 //				startDirectionsActivity(Car.getSavedCars(SearchActivity.this).get(0));
-				startDirectionsActivity(cars.get(0));
+//				startDirectionsActivity(cars.get(0));
 			}
 		});
 		
