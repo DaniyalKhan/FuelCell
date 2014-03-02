@@ -63,6 +63,18 @@ public class CarProfileActivity extends Activity {
 			
 		});
 		
+		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(CarProfileActivity.this, SearchActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				
+				startActivity(homeIntent);
+			}
+			
+		});
+		
 		save.setOnClickListener(new OnClickListener(){
 
 			@Override

@@ -126,6 +126,7 @@ public class SearchActivity extends Activity {
 		Intent intent = new Intent(this, StatsActivity.class);
 		filtered = cars;
 		intent.putExtra("title", title);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
 	
@@ -163,21 +164,21 @@ public class SearchActivity extends Activity {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
 						
-//						for (int i = 0; i < filesArray.length; i++) {
-//							try {
-//								cars.addAll(new CSVParser(filesArray[i]).parse());
-//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//						}
+						for (int i = 0; i < filesArray.length; i++) {
 							try {
-								cars.addAll(new CSVParser(filesArray[0]).parse());
+								cars.addAll(new CSVParser(filesArray[i]).parse());
 								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-						
+						}
+//							try {
+//								cars.addAll(new CSVParser(filesArray[0]).parse());
+//								progress.incrementProgressBy(addProgress(filesArray.length/200f *100f));
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//						
 						Set<String> year = new HashSet<String>();
 						Set<String> manufacture = new HashSet<String>();
 						Set<String> model = new HashSet<String>();
