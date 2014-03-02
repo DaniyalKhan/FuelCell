@@ -3,6 +3,8 @@ package com.fuelcell;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +53,9 @@ public class SearchActivity extends Activity {
 	ArrayList<Car> cars;
 	int lastClicked;
 	public static List<Car> filtered;
+	public static Double bestFuelEfficiency;
+	public static Double worstFuelEfficiency;
+	
 
 	TextCallback callback = new TextCallback() {
 		
@@ -155,7 +160,6 @@ public class SearchActivity extends Activity {
 					try {
 						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
-						
 //						for (int i = 0; i < filesArray.length; i++) {
 //							try {
 //								cars.addAll(new CSVParser(filesArray[i]).parse());
@@ -169,7 +173,7 @@ public class SearchActivity extends Activity {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-
+						determineFuel();
 						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
 							@Override
 							protected String getFieldForCar(Car c) {
@@ -197,6 +201,16 @@ public class SearchActivity extends Activity {
 					} catch (Exception unfinishedException) {
 						return false;
 					}
+				}
+
+				private void determineFuel() {
+					Set<Double> fuelEffeciency = new HashSet<Double>();
+					for(int i = 0 ; i < cars.size() ; i++) {
+						fuelEffeciency.add(cars.get(i).getHighwayEffL());
+					}
+					worstFuelEfficiency = Collections.max(fuelEffeciency);
+					bestFuelEfficiency = Collections.min(fuelEffeciency);
+					
 				}
 
 				@Override
