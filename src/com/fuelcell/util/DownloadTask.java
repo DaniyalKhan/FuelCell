@@ -48,8 +48,8 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	            // expect HTTP 200 OK, so we don't mistakenly save error report
 	            // instead of the file
 	            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-	                return "Server returned HTTP " + connection.getResponseCode()
-	                        + " " + connection.getResponseMessage();
+	            	if (input != null) input.close();
+	                return getErrorCode(connection);
 	            }
 	
 	            // this will be useful to display download percentage
@@ -94,6 +94,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         }
         return null;
     }
+
+	private String getErrorCode(HttpURLConnection connection) throws IOException {
+		return "Server returned HTTP " + connection.getResponseCode()
+		        + " " + connection.getResponseMessage();
+	}
 
     protected void onProgressUpdate(Integer... progress) {
     	super.onProgressUpdate(progress);
