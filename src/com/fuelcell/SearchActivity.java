@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -183,6 +184,11 @@ public class SearchActivity extends Activity {
 			}
 		});
 		
+		setKeyboardTypes();
+	}
+	
+	private void setKeyboardTypes() {
+		searchYear.setRawInputType(Configuration.KEYBOARD_QWERTY);
 	}
 	
 	private void startStatsActivity(List<Car> cars,String title,String hint, boolean showClear) {
@@ -454,6 +460,14 @@ public class SearchActivity extends Activity {
 			return false;
 		}
 
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_ENTER) {
+				return true;
+			}
+			return super.onKeyDown(keyCode, event);
+		}
+		
 	}
 
 }
