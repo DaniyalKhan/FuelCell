@@ -30,9 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.fuelcell.SearchActivity" android:screenOrientation="portrait" android:noHistory="false"/>
-        <activity android:name="com.fuelcell.DirectionsActivity" android:screenOrientation="portrait"/>
-        <activity android:name="com.fuelcell.TravelActivity" android:screenOrientation="portrait">
+	        <activity android:name="com.fuelcell.SearchActivity" android:screenOrientation="portrait" android:noHistory="false"/>
+	        <activity android:name="com.fuelcell.DirectionsActivity" android:screenOrientation="portrait"/>
+	        <activity android:name="com.fuelcell.TravelActivity" android:screenOrientation="portrait"/>
+            <activity android:name="com.fuelcell.HubActivity" android:screenOrientation="portrait">
         </activity>
         <activity android:screenOrientation="portrait" android:name="StatsActivity"></activity>
         <activity android:screenOrientation="portrait" android:name="CarProfileActivity"></activity>
