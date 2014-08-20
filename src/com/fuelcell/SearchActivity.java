@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +15,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +34,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
@@ -54,7 +55,6 @@ public class SearchActivity extends Activity {
 	DynamicArrayAdapter vTypeAdapter;
 	ContextWrapper wrapper;
 	Button search;
-	Button saved;
 	Button refresh;
 	ArrayList<Car> cars;
 	int lastClicked;
@@ -104,7 +104,6 @@ public class SearchActivity extends Activity {
 							search.setVisibility(View.VISIBLE);
 							refresh.setVisibility(View.VISIBLE);
 							logo.setVisibility(View.VISIBLE);
-							saved.setVisibility(View.VISIBLE);
 							searchList.setVisibility(View.GONE);
 							hint.setVisibility(View.GONE);
 						}
@@ -119,6 +118,8 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_search);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
 
 		searchCorp = (MyEditText) findViewById(R.id.searchCorp);
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
@@ -126,9 +127,10 @@ public class SearchActivity extends Activity {
 		searchVType = (MyEditText) findViewById(R.id.searchVType);
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
-		saved = (Button) findViewById(R.id.saved);
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
+		
+		ButtonSettings.pressSize(search,15);
 		
 		filtered = new ArrayList<Car>();
 
@@ -151,10 +153,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -165,14 +167,6 @@ public class SearchActivity extends Activity {
 		setTextChange(searchYear);
 		setTextChange(searchModel);
 		setTextChange(searchVType);
-
-		saved.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved",
-						"You do not currently have any car profiles saved.", Car.getSavedCars(SearchActivity.this).size() > 0);
-			}
-		});
 		
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
@@ -318,7 +312,7 @@ public class SearchActivity extends Activity {
 				makeInVisible(v);
 				setListAdapter(v);
 				lastClicked = v.getId();
-				filter(((EditText)v).getText());
+				//filter(((EditText)v).getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
@@ -391,7 +385,6 @@ public class SearchActivity extends Activity {
 				searchVType.setVisibility(View.GONE);
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
-			saved.setVisibility(View.GONE);
 			hint.setVisibility(View.VISIBLE);
 
 		}
