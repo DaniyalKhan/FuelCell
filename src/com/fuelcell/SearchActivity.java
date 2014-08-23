@@ -46,6 +46,10 @@ public class SearchActivity extends Activity {
 	MyEditText searchYear;
 	MyEditText searchModel;
 	MyEditText searchVType;
+	ImageView searchHeaderCorp;
+	ImageView searchHeaderYear;
+	ImageView searchHeaderModel;
+	ImageView searchHeaderVType;
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
@@ -69,19 +73,19 @@ public class SearchActivity extends Activity {
 		public void onClick(CharSequence text) {
 			if(lastClicked == searchCorp.getId()) {
 				searchCorp.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchCorp.setBackgroundResource((R.drawable.textbargreen));
+				searchCorp.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchYear.getId()){
 				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchYear.setBackgroundResource((R.drawable.textbargreen));
+				searchYear.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchModel.getId()){
 				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchModel.setBackgroundResource((R.drawable.textbargreen));
+				searchModel.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchVType.getId()){
 				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchVType.setBackgroundResource((R.drawable.textbargreen));
+				searchVType.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
@@ -101,6 +105,10 @@ public class SearchActivity extends Activity {
 							searchModel.setVisibility(View.VISIBLE);
 							searchYear.setVisibility(View.VISIBLE);
 							searchCorp.setVisibility(View.VISIBLE);
+							searchHeaderVType.setVisibility(View.VISIBLE);
+							searchHeaderModel.setVisibility(View.VISIBLE);
+							searchHeaderYear.setVisibility(View.VISIBLE);
+							searchHeaderCorp.setVisibility(View.VISIBLE);
 							search.setVisibility(View.VISIBLE);
 							refresh.setVisibility(View.VISIBLE);
 							logo.setVisibility(View.VISIBLE);
@@ -125,6 +133,12 @@ public class SearchActivity extends Activity {
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		searchVType = (MyEditText) findViewById(R.id.searchVType);
+		
+		searchHeaderCorp = (ImageView) findViewById(R.id.searchHeaderCorp);
+		searchHeaderYear = (ImageView) findViewById(R.id.searchHeaderYear);
+		searchHeaderModel = (ImageView) findViewById(R.id.searchHeaderModel);
+		searchHeaderVType = (ImageView) findViewById(R.id.searchHeaderVType);
+		
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
 		refresh = (Button) findViewById(R.id.refresh);
@@ -153,10 +167,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchList, hint);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -309,20 +323,22 @@ public class SearchActivity extends Activity {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				makeInVisible(v);
-				setListAdapter(v);
-				lastClicked = v.getId();
+				onActionTextField(v);
 				//filter(((EditText)v).getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				makeInVisible(v);
-				setListAdapter(v);
-				lastClicked = v.getId();
+				onActionTextField(v);
 			}
 		});
+	}
+	
+	private void onActionTextField (View v) {
+		makeInVisible(v);
+		setListAdapter(v);
+		lastClicked = v.getId();
 	}
 	
 	protected void setTextChange(EditText textField) {
@@ -343,13 +359,13 @@ public class SearchActivity extends Activity {
 					int count) {
 				filter(s);
 				if (searchCorp.getVisibility() == View.VISIBLE)
-					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+					searchCorp.setBackgroundResource(R.drawable.text_input_search);
 				if (searchYear.getVisibility() == View.VISIBLE)
-					searchYear.setBackgroundResource(R.drawable.textbarwhite);
+					searchYear.setBackgroundResource(R.drawable.text_input_search);
 				if (searchModel.getVisibility() == View.VISIBLE)
-					searchModel.setBackgroundResource(R.drawable.textbarwhite);
+					searchModel.setBackgroundResource(R.drawable.text_input_search);
 				if (searchVType.getVisibility() == View.VISIBLE)
-					searchVType.setBackgroundResource(R.drawable.textbarwhite);
+					searchVType.setBackgroundResource(R.drawable.text_input_search);
 			}
 
 
@@ -375,14 +391,22 @@ public class SearchActivity extends Activity {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
 			refresh.setVisibility(View.GONE);
-			if (!v.equals(searchCorp))
+			if (!v.equals(searchCorp)) {
 				searchCorp.setVisibility(View.GONE);
-			if (!v.equals(searchYear))
+				searchHeaderCorp.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchYear)) {
 				searchYear.setVisibility(View.GONE);
-			if (!v.equals(searchModel))
+				searchHeaderYear.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchModel)) {
 				searchModel.setVisibility(View.GONE);
-			if (!v.equals(searchVType))
+				searchHeaderModel.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchVType)) {
 				searchVType.setVisibility(View.GONE);
+				searchHeaderVType.setVisibility(View.GONE);
+			}
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
 			hint.setVisibility(View.VISIBLE);

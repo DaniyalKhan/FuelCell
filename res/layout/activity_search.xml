@@ -19,7 +19,7 @@
         android:textColor="@android:color/white"
         android:layout_marginTop="2dp"
         android:visibility="invisible"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentBottom="true"/>
 
         <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 
@@ -49,6 +49,7 @@
             android:layout_above="@+id/searchCorp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/refresh_search_press"
             android:contentDescription="desc" />
 
@@ -71,67 +72,96 @@
             android:nextFocusUp="@id/autotext"
             android:src="@drawable/header_home_button" />
 
+        <ImageView
+            android:id="@+id/searchHeaderCorp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainicon"
+            android:layout_centerHorizontal="true" 
+            android:layout_marginTop="15dp"
+            android:src="@drawable/manufacturer_top_search"/>
+        
         <view
             android:id="@+id/searchCorp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/mainicon"
+            android:layout_height="40dp"
+            android:layout_below="@+id/searchHeaderCorp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
-            android:contentDescription="desc"
             android:gravity="center"
-            android:hint="Manufacturer" />
+            android:hint="Any" />
 
+        <ImageView
+            android:id="@+id/searchHeaderYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchCorp"
+            android:layout_centerHorizontal="true" 
+            android:layout_marginTop="15dp"
+            android:src="@drawable/year_top_search"/>
+        
         <view
             android:id="@+id/searchYear"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/searchCorp"
+            android:layout_below="@+id/searchHeaderYear"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
-            android:contentDescription="desc"
             android:gravity="center"
-            android:hint="Year" />
+            android:hint="Any" />
 
+        <ImageView
+            android:id="@+id/searchHeaderVType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchYear"
+            android:layout_centerHorizontal="true" 
+            android:layout_marginTop="15dp"
+            android:src="@drawable/vehicle_type_top_search"/>
+        
         <view
             android:id="@+id/searchVType"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/searchYear"
+            android:layout_below="@+id/searchHeaderVType"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
-            android:contentDescription="desc"
             android:gravity="center"
-            android:hint="Vehicle Type" />
+            android:hint="Any" />
 
+        <ImageView
+            android:id="@+id/searchHeaderModel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchVType"
+            android:layout_centerHorizontal="true" 
+            android:layout_marginTop="15dp"
+            android:src="@drawable/model_top_search"/>
+        
         <view
             android:id="@+id/searchModel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/searchVType"
+            android:layout_below="@+id/searchHeaderModel"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
-            android:contentDescription="desc"
             android:gravity="center"
-            android:hint="Model" />
+            android:hint="Any" />
 
         <ListView
             android:id="@+id/searchList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchModel"
+            android:layout_above="@+id/hint"
             android:layout_marginTop="10dp"
             android:visibility="gone" >
         </ListView>
