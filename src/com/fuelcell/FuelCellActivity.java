@@ -97,7 +97,7 @@ public class FuelCellActivity extends Activity {
 	}
 	
 	private void startSearch() {
-		Intent intent = new Intent(this, SearchActivity.class);
+		Intent intent = new Intent(this, HubActivity.class);
 		startActivity(intent);
 	}
 

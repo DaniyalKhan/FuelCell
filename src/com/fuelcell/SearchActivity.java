@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +15,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +34,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
@@ -45,6 +46,10 @@ public class SearchActivity extends Activity {
 	MyEditText searchYear;
 	MyEditText searchModel;
 	MyEditText searchVType;
+	ImageView searchHeaderCorp;
+	ImageView searchHeaderYear;
+	ImageView searchHeaderModel;
+	ImageView searchHeaderVType;
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
@@ -54,7 +59,6 @@ public class SearchActivity extends Activity {
 	DynamicArrayAdapter vTypeAdapter;
 	ContextWrapper wrapper;
 	Button search;
-	Button saved;
 	Button refresh;
 	ArrayList<Car> cars;
 	int lastClicked;
@@ -69,19 +73,19 @@ public class SearchActivity extends Activity {
 		public void onClick(CharSequence text) {
 			if(lastClicked == searchCorp.getId()) {
 				searchCorp.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchCorp.setBackgroundResource((R.drawable.textbargreen));
+				searchCorp.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchYear.getId()){
 				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchYear.setBackgroundResource((R.drawable.textbargreen));
+				searchYear.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchModel.getId()){
 				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchModel.setBackgroundResource((R.drawable.textbargreen));
+				searchModel.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			else if(lastClicked == searchVType.getId()){
 				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchVType.setBackgroundResource((R.drawable.textbargreen));
+				searchVType.setBackgroundResource((R.drawable.text_input_search_green));
 			}
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
@@ -101,10 +105,13 @@ public class SearchActivity extends Activity {
 							searchModel.setVisibility(View.VISIBLE);
 							searchYear.setVisibility(View.VISIBLE);
 							searchCorp.setVisibility(View.VISIBLE);
+							searchHeaderVType.setVisibility(View.VISIBLE);
+							searchHeaderModel.setVisibility(View.VISIBLE);
+							searchHeaderYear.setVisibility(View.VISIBLE);
+							searchHeaderCorp.setVisibility(View.VISIBLE);
 							search.setVisibility(View.VISIBLE);
 							refresh.setVisibility(View.VISIBLE);
 							logo.setVisibility(View.VISIBLE);
-							saved.setVisibility(View.VISIBLE);
 							searchList.setVisibility(View.GONE);
 							hint.setVisibility(View.GONE);
 						}
@@ -119,16 +126,25 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_search);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
 
 		searchCorp = (MyEditText) findViewById(R.id.searchCorp);
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		searchVType = (MyEditText) findViewById(R.id.searchVType);
+		
+		searchHeaderCorp = (ImageView) findViewById(R.id.searchHeaderCorp);
+		searchHeaderYear = (ImageView) findViewById(R.id.searchHeaderYear);
+		searchHeaderModel = (ImageView) findViewById(R.id.searchHeaderModel);
+		searchHeaderVType = (ImageView) findViewById(R.id.searchHeaderVType);
+		
 		logo = (ImageView) findViewById(R.id.mainicon);
 		search = (Button) findViewById(R.id.searchButton);
-		saved = (Button) findViewById(R.id.saved);
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
+		
+		ButtonSettings.pressSize(search,15);
 		
 		filtered = new ArrayList<Car>();
 
@@ -151,10 +167,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, saved, refresh, searchList, hint);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -165,14 +181,6 @@ public class SearchActivity extends Activity {
 		setTextChange(searchYear);
 		setTextChange(searchModel);
 		setTextChange(searchVType);
-
-		saved.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				startStatsActivity(Car.getSavedCars(SearchActivity.this),"Saved",
-						"You do not currently have any car profiles saved.", Car.getSavedCars(SearchActivity.this).size() > 0);
-			}
-		});
 		
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
@@ -315,20 +323,22 @@ public class SearchActivity extends Activity {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				makeInVisible(v);
-				setListAdapter(v);
-				lastClicked = v.getId();
-				filter(((EditText)v).getText());
+				onActionTextField(v);
+				//filter(((EditText)v).getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				makeInVisible(v);
-				setListAdapter(v);
-				lastClicked = v.getId();
+				onActionTextField(v);
 			}
 		});
+	}
+	
+	private void onActionTextField (View v) {
+		makeInVisible(v);
+		setListAdapter(v);
+		lastClicked = v.getId();
 	}
 	
 	protected void setTextChange(EditText textField) {
@@ -349,13 +359,13 @@ public class SearchActivity extends Activity {
 					int count) {
 				filter(s);
 				if (searchCorp.getVisibility() == View.VISIBLE)
-					searchCorp.setBackgroundResource(R.drawable.textbarwhite);
+					searchCorp.setBackgroundResource(R.drawable.text_input_search);
 				if (searchYear.getVisibility() == View.VISIBLE)
-					searchYear.setBackgroundResource(R.drawable.textbarwhite);
+					searchYear.setBackgroundResource(R.drawable.text_input_search);
 				if (searchModel.getVisibility() == View.VISIBLE)
-					searchModel.setBackgroundResource(R.drawable.textbarwhite);
+					searchModel.setBackgroundResource(R.drawable.text_input_search);
 				if (searchVType.getVisibility() == View.VISIBLE)
-					searchVType.setBackgroundResource(R.drawable.textbarwhite);
+					searchVType.setBackgroundResource(R.drawable.text_input_search);
 			}
 
 
@@ -381,17 +391,24 @@ public class SearchActivity extends Activity {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
 			refresh.setVisibility(View.GONE);
-			if (!v.equals(searchCorp))
+			if (!v.equals(searchCorp)) {
 				searchCorp.setVisibility(View.GONE);
-			if (!v.equals(searchYear))
+				searchHeaderCorp.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchYear)) {
 				searchYear.setVisibility(View.GONE);
-			if (!v.equals(searchModel))
+				searchHeaderYear.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchModel)) {
 				searchModel.setVisibility(View.GONE);
-			if (!v.equals(searchVType))
+				searchHeaderModel.setVisibility(View.GONE);
+			}
+			if (!v.equals(searchVType)) {
 				searchVType.setVisibility(View.GONE);
+				searchHeaderVType.setVisibility(View.GONE);
+			}
 			searchList.setVisibility(View.VISIBLE);
 			search.setVisibility(View.GONE);
-			saved.setVisibility(View.GONE);
 			hint.setVisibility(View.VISIBLE);
 
 		}
