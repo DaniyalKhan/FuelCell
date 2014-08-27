@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.fuelcell.csvutils.CSVFileUtils;
+import com.fuelcell.util.CarDatabase;
 import com.fuelcell.util.DownloadTask;
 import com.fuelcell.util.DownloadTask.DownloadCallback;
 
@@ -39,6 +40,9 @@ public class FuelCellActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
+		
+		CarDatabase.obtain(this).getWritableDatabase();
+		
 		wrapper = new ContextWrapper(this);
 //		deleteContents();
 		//list of all files to download

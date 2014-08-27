@@ -46,10 +46,10 @@ public class StatsActivity extends Activity {
 			findViewById(R.id.clearButton).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					CarDatabase.reCreate(StatsActivity.this);
-					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
-					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-					startActivity(homeIntent);
+//					CarDatabase.reCreate(StatsActivity.this);
+//					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
+//					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+//					startActivity(homeIntent);
 				}
 			});
 		}
