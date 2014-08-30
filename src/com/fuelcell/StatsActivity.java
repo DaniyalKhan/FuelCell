@@ -71,7 +71,7 @@ public class StatsActivity extends Activity {
 		List<String> resultsOutput = new ArrayList<String>();
 		
 		for (int i = 0 ; i < filtered.size() ; i++) {
-			resultsOutput.add(filtered.get(i).getYear() + " " + filtered.get(i).getManufacturer() + " " + filtered.get(i).getModel());
+			resultsOutput.add(filtered.get(i).year + " " + filtered.get(i).manufacturer + " " + filtered.get(i).model);
 		}
 		ArrayAdapter<String> resultsAdapter = new ArrayAdapter<String>(StatsActivity.this, R.layout.list_item, resultsOutput) {
 

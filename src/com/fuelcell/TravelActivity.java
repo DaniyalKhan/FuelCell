@@ -131,11 +131,11 @@ public class TravelActivity extends FragmentActivity {
 					if (speedMS >= HIGHWAY_LIMIT) {
 						highwayMetres += distance;
 						highwaySeconds += duration;
-						fuelUsed = (car.getHighwayEffL()/100.0) / 1000.0 * distance;
+						fuelUsed = (car.highwayEffL/100.0) / 1000.0 * distance;
 					} else {
 						cityMetres += distance;
 						citySeconds += duration;
-						fuelUsed = (car.getCityEffL()/100.0) / 1000.0 * distance;
+						fuelUsed = (car.cityEffL/100.0) / 1000.0 * distance;
 					}
 					String summary = JSONUtil.getString(stepJSON, "html_instructions");
 					if (summary != null) {
@@ -183,10 +183,10 @@ public class TravelActivity extends FragmentActivity {
 		double cityKM = cityMetres/1000.0;
 		
 		//litres / KM
-		double hEffM = car.getHighwayEffL()/100.0;
-		double cEffL = car.getCityEffL()/100.0;
+		double hEffM = car.highwayEffL/100.0;
+		double cEffL = car.cityEffL/100.0;
 		
-		double emissions = car.getEmissions() * 1000.0 * (citySeconds + highwaySeconds) / 31557600.0 * (36000.0 / 31557600.0);
+		double emissions = car.emissions * 1000.0 * (citySeconds + highwaySeconds) / 31557600.0 * (36000.0 / 31557600.0);
 		
 		final double litresSpent = twoDecimalPlaces(hEffM * highwayKM + cEffL * cityKM);
 		

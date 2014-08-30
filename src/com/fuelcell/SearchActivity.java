@@ -213,10 +213,10 @@ public class SearchActivity extends Activity {
 	{
 		ArrayList<Car> filtered = new ArrayList<Car>();
 			for (int i = 0 ; i < cars.size(); i++) {
-				if ( (cars.get(i).getManufacturer().toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
-						&& (Integer.toString(cars.get(i).getYear()).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
-						&& (cars.get(i).getModel().toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
-						&& (cars.get(i).getVehicleClass().toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
+				if ( (cars.get(i).manufacturer.toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
+						&& (Integer.toString(cars.get(i).year).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
+						&& (cars.get(i).model.toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
+						&& (cars.get(i).vehicleClass.toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
 					filtered.add(cars.get(i));
 				}
 			}
@@ -233,46 +233,46 @@ public class SearchActivity extends Activity {
 				@Override
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
-						File[] filesArray = wrapper.getFilesDir().listFiles();
+//						File[] filesArray = wrapper.getFilesDir().listFiles();
 						cars = new ArrayList<Car>();
-						for (int i = 0; i < filesArray.length; i++) {
-							try {
-								cars.addAll(new CSVParser(filesArray[i]).parse());
-								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+//						for (int i = 0; i < filesArray.length; i++) {
+//							try {
+//								cars.addAll(new CSVParser(filesArray[i]).parse());
+//								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//						}
 						determineFuel();
 						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
 							@Override
 							protected String getFieldForCar(Car c) {
-								return Integer.toString(c.getYear());
+								return Integer.toString(c.year);
 							}							
 						};
 						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
 							@Override
 							protected String getFieldForCar(Car c) {
-								return c.getManufacturer();
+								return c.manufacturer;
 							}
 						};
 						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
 							@Override
 							protected String getFieldForCar(Car c) {
-								return c.getModel();
+								return c.model;
 							}
 							@Override
 							protected boolean shouldContain(Car c) {
-								return c.getManufacturer().contains(searchCorp.getText()) && 
-										Integer.toString(c.getYear()).contains(searchYear.getText()) &&
-										c.getVehicleClass().contains(searchVType.getText());
+								return c.manufacturer.contains(searchCorp.getText()) && 
+										Integer.toString(c.year).contains(searchYear.getText()) &&
+										c.vehicleClass.contains(searchVType.getText());
 							}
 						};
 						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
 
 							@Override
 							protected String getFieldForCar(Car c) {
-								return c.getVehicleClass();
+								return c.vehicleClass;
 							}
 							
 						};
@@ -285,7 +285,7 @@ public class SearchActivity extends Activity {
 				private void determineFuel() {
 					Set<Double> fuelEffeciency = new HashSet<Double>();
 					for(int i = 0 ; i < cars.size() ; i++) {
-						fuelEffeciency.add(cars.get(i).getHighwayEffL());
+						fuelEffeciency.add(cars.get(i).highwayEffL);
 					}
 					worstFuelEfficiency = Collections.max(fuelEffeciency);
 					bestFuelEfficiency = Collections.min(fuelEffeciency);

@@ -45,19 +45,19 @@ public class CarProfileActivity extends Activity {
 		efficiencyInfo = (TextView) findViewById(R.id.efficiencyInfo);
 		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo); 
 				
-		carName.setText(car.getYear() + " " + car.getManufacturer() + " " + car.getModel());
-		cylinderInfo.setText(Integer.toString(car.getCylinders()));
-		engineInfo.setText(Float.toString((float) ((int) (car.getEngineSize()*100)/100)));
-		tranInfo.setText(car.getTransmission());
-		fuelInfo.setText(car.getFuelType().toString());
-		vehicleInfo.setText(car.getVehicleClass());
-		efficiencyInfo.setText(Float.toString((float) ((int) (car.getHighwayEffL()*100)/100)));
-		emissionsInfo.setText(Double.toString(car.getEmissions()));
+		carName.setText(car.year + " " + car.manufacturer + " " + car.model);
+		cylinderInfo.setText(Integer.toString(car.cylinders));
+		engineInfo.setText(Float.toString((float) ((int) (car.engineSize*100)/100)));
+		tranInfo.setText(car.transmission.toString());
+		fuelInfo.setText(car.fuelType.toString());
+		vehicleInfo.setText(car.vehicleClass);
+		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
+		emissionsInfo.setText(Double.toString(car.emissions));
 		
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
 				
-		int stars = (int) Math.round(5 * (1.0 - ((car.getHighwayEffL() - SearchActivity.bestFuelEfficiency)/(SearchActivity.worstFuelEfficiency - SearchActivity.bestFuelEfficiency))));
+		int stars = (int) Math.round(5 * (1.0 - ((car.highwayEffL - SearchActivity.bestFuelEfficiency)/(SearchActivity.worstFuelEfficiency - SearchActivity.bestFuelEfficiency))));
 		if(stars>=1)
 			findViewById(R.id.star1).setBackgroundResource(R.drawable.startrue);
 		if(stars>=2)
@@ -98,7 +98,7 @@ public class CarProfileActivity extends Activity {
 			public void onClick(View v) {
 				boolean saved = car.saveToProfile(CarProfileActivity.this);
 				Context context = getApplicationContext();
-				CharSequence text = saved ? car.getModel() + " saved to profile" : car.getModel() + " already saved to profile";
+				CharSequence text = saved ? car.model + " saved to profile" : car.model + " already saved to profile";
 				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}

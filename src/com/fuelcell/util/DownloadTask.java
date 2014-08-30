@@ -6,11 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.fuelcell.csvutils.CSVFileUtils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,6 +18,8 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.widget.Toast;
 
+import com.fuelcell.csvutils.CSVFileUtils;
+
 public class DownloadTask extends AsyncTask<String, Integer, String> {
 	
 	HttpClient httpclient;
@@ -26,12 +27,14 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	ProgressDialog dialog;
 	WakeLock wakeLock;
 	DownloadCallback callback;
+	ArrayList<String> newFiles;
 	
 	public DownloadTask(Context context, ProgressDialog dialog, DownloadCallback callback) {
 		this.context = context;
 		this.httpclient = new DefaultHttpClient();
 		this.dialog = dialog;
 		this.callback = callback;
+		this.newFiles = new ArrayList<String>();
 	}
 	
 	protected String doInBackground(String... stringUrls) {
@@ -59,10 +62,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	            String canonName = CSVFileUtils.getNameFromURL(stringUrl);
 	            System.out.println("Downloading: " + canonName);
 	            
+	            
 	            // download the file
 	            input = connection.getInputStream();
 	            output = context.openFileOutput(canonName, Context.MODE_PRIVATE);
-	
+	            
 	            byte data[] = new byte[4096];
 	            int count;
 	            while ((count = input.read(data)) != -1) {
@@ -77,6 +81,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	                    publishProgress((int) (totalProgress * 100 / fileLength)/stringUrls.length);
 	                output.write(data, 0, count);
 	            }
+	            newFiles.add(canonName);
         	}
         } catch (Exception e) {
             return e.toString();
@@ -112,10 +117,10 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     	wakeLock.release();
         dialog.dismiss();
         if (result != null)
-            Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Download error: " + result, Toast.LENGTH_LONG).show();
         else
             Toast.makeText(context,"Data downloaded", Toast.LENGTH_LONG).show();
-        if (callback != null) callback.onDownloadComplete();
+        if (callback != null) callback.onDownloadComplete(newFiles);
     }
 
 	@Override
@@ -130,7 +135,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	}
 	
 	public interface DownloadCallback {
-		void onDownloadComplete();
+		void onDownloadComplete(ArrayList<String> fileLocations);
 	}
     
 }

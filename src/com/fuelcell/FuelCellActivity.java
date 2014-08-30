@@ -1,6 +1,7 @@
 package com.fuelcell;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -9,10 +10,13 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
 import com.fuelcell.csvutils.CSVFileUtils;
+import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.util.CarDatabase;
+import com.fuelcell.util.DatabaseWriter;
 import com.fuelcell.util.DownloadTask;
 import com.fuelcell.util.DownloadTask.DownloadCallback;
 
@@ -44,7 +48,7 @@ public class FuelCellActivity extends Activity {
 		CarDatabase.obtain(this).getWritableDatabase();
 		
 		wrapper = new ContextWrapper(this);
-//		deleteContents();
+		deleteContents();
 		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
 		//list of all files that are currently in the folder
@@ -55,7 +59,7 @@ public class FuelCellActivity extends Activity {
 			for (int i = 0; i < filesArray.length; i++) {
 				String name = filesArray[i].getName();
 				//add the file names (without parent directory to the file list)
-				files.add(name.substring(name.lastIndexOf("/")+1, name.length()));
+				files.add(name.substring(name.lastIndexOf("/") + 1, name.length()));
 			}
 		}
 		
@@ -77,8 +81,15 @@ public class FuelCellActivity extends Activity {
 			//download for each file
 			final DownloadTask downloadTask = new DownloadTask(this, progressDialog, new DownloadCallback() {
 				@Override
-				public void onDownloadComplete() {
-					startSearch();
+				public void onDownloadComplete(ArrayList<String> newFiles) {
+					//once the download completes, for each of the new files, parse and write to database
+					new DatabaseWriter(FuelCellActivity.this, wrapper) {
+						@Override
+						protected void onPostExecute(String result) {
+							super.onPostExecute(result);
+							startSearch();
+						}
+					}.execute(newFiles.toArray(new String[newFiles.size()]));
 				}
 			});
 			downloadTask.execute(toDownload.toArray(new String[toDownload.size()]));
