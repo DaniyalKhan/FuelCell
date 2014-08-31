@@ -28,7 +28,7 @@ public class DatabaseWriter extends AsyncTask<String, Integer, String> {
 	@Override
 	protected String doInBackground(String... files) {
 		CarDatabase db = CarDatabase.obtain(context);
-		db.begin();
+		db.beginInsert();
 		for (String file: files) {
 			try {
 				List<Car> cars = new CSVParser(wrapper.getFileStreamPath(file)).parseCars();
@@ -41,7 +41,7 @@ public class DatabaseWriter extends AsyncTask<String, Integer, String> {
 				e.printStackTrace();
 			}
 		}
-		db.end();
+		db.endInsert();
 		return null;
 	}
 	

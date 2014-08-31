@@ -1,7 +1,5 @@
 package com.fuelcell;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,7 +13,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,7 +32,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fuelcell.action.ButtonSettings;
-import com.fuelcell.csvutils.CSVParser;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.DynamicArrayAdapter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;

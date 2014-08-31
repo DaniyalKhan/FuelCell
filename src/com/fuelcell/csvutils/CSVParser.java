@@ -49,7 +49,7 @@ public class CSVParser {
 			car.vehicleClass = data[3];
 			car.engineSize = Double.parseDouble(data[4]);
 			car.cylinders = Integer.parseInt(data[5]);
-			//transmission contains info
+			//transmission contains info number of gears as well
 			car.transmission = transmissionType(data[6].substring(0, data[6].length() - 1));
 			car.gears = Integer.parseInt(data[6].substring(data[6].length() - 1));
 			car.fuelType = fuelType(data[7]);

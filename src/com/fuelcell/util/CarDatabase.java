@@ -1,12 +1,13 @@
 package com.fuelcell.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
 import com.fuelcell.models.Car;
 
@@ -44,7 +45,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 //    private static final String COLUMN = "<column>";
 //    private static final String TABLE = "<table>";
     
-//	private static String QuerySearch = "select distinct ? from ? order by ?"; 
+	private static String QuerySearch = "select distinct ? from ? order by ?"; 
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
@@ -78,61 +79,61 @@ public class CarDatabase extends SQLiteOpenHelper {
         this.context = context;
     }
 	
-//	public List<Integer> getYears() {
-//		ArrayList<Integer> years = new ArrayList<Integer>();
-//		Cursor c = getReadableDatabase().rawQuery(search.replace(TABLE, CAR_DATA_TABLE).replace(COLUMN, PRIMARY_KEYS[0]), null);
-//		while(c.moveToNext()) years.add(c.getInt(0));
-//		return years;
-//	}
-//	
-//	public List<String> getManufacturers() {
-//		ArrayList<String> manufacturers = new ArrayList<String>();
-//		Cursor c = getReadableDatabase().rawQuery(search.replace(TABLE, CAR_DATA_TABLE).replace(COLUMN, PRIMARY_KEYS[1]), null);
-//		while(c.moveToNext()) manufacturers.add(c.getString(0));
-//		return manufacturers;
-//	}
-//	
-//	public List<String> getModels() {
-//		ArrayList<String> models = new ArrayList<String>();
-//		Cursor c = getReadableDatabase().rawQuery(search.replace(TABLE, CAR_DATA_TABLE).replace(COLUMN, PRIMARY_KEYS[2]), null);
-//		while(c.moveToNext()) models.add(c.getString(0));
-//		return models;
-//	}
-//	
-//	public List<String> getVehicleClasses() {
-//		ArrayList<String> classes = new ArrayList<String>();
-//		Cursor c = getReadableDatabase().rawQuery(search.replace(TABLE, CAR_DATA_TABLE).replace(COLUMN, PRIMARY_KEYS[3]), null);
-//		while(c.moveToNext()) classes.add(c.getString(0));
-//		return classes;
-//	}
+	private abstract class ColumnQuery<T> {
+		List<T> queryDistinct(String[] selectionAgs) {
+			SQLiteDatabase db = getReadableDatabase();
+			ArrayList<T> values = new ArrayList<T>();
+			Cursor c = db.rawQuery(QuerySearch, selectionAgs);
+			while(c.moveToNext()) values.add(getData(c));
+			c.close();
+			db.close();
+			return values;
+		}
+		abstract T getData(Cursor c);
+	}
 	
-	public void begin() {
+	private final ColumnQuery<Integer> integerQuery = new ColumnQuery<Integer>() {
+		@Override
+		Integer getData(Cursor c) {
+			return c.getInt(0);
+		}
+	};
+	
+	private final ColumnQuery<String> stringQuery = new ColumnQuery<String>() {
+		@Override
+		String getData(Cursor c) {
+			return c.getString(0);
+		}
+	};
+	
+	public List<Integer> getYears() {
+		return integerQuery.queryDistinct(new String[] {PRIMARY_KEYS[0], CAR_TABLE, PRIMARY_KEYS[0]});
+	}
+	
+	public List<String> getManufacturers() {
+		return stringQuery.queryDistinct(new String[] {PRIMARY_KEYS[1], CAR_TABLE, PRIMARY_KEYS[0]});
+	}
+	
+	public List<String> getModels() {
+		return stringQuery.queryDistinct(new String[] {PRIMARY_KEYS[2], CAR_TABLE, PRIMARY_KEYS[2]});
+	}
+	
+	public List<String> getVehicleClasses() {
+		return stringQuery.queryDistinct(new String[] {PRIMARY_KEYS[3], CAR_TABLE, PRIMARY_KEYS[3]});
+	}
+	
+	public void beginInsert() {
 		getWritableDatabase().beginTransaction();
 	}
 	
-	public void end() {
-		getWritableDatabase().setTransactionSuccessful();
-		getWritableDatabase().endTransaction();
+	public void endInsert() {
+		SQLiteDatabase db = getWritableDatabase();
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		db.close();
 	}
 	
-//	public ArrayList<Car> getCars() {
-//		String query = "select distinct * from "
-//	}
-	
-//	/**
-//	 * Returns the distinct values for all entries in a given table's column
-//	 * @param tableName the table to query
-//	 * @param columnName The column name in the table
-//	 */
-//	private List<String> getDistinctTupleValues(String tableName, String columnName, ) {
-//		ArrayList<String> results = new ArrayList<String>();
-//		Cursor c = getReadableDatabase().rawQuery(columnSearch.replace(TABLE, tableName).replace(COLUMN, columnName), null);
-//		while(c.moveToNext()) results.add(c.getString(0));
-//		return results;
-//	}
-	
 	public void insertCar(Car car) {
-		//TODO use dynamic sql with SQLiteStatement: http://stackoverflow.com/questions/3501516/android-sqlite-database-slow-insertion
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryInsertCarData);
 		
