@@ -51,7 +51,7 @@ public class CSVParser {
 			car.cylinders = Integer.parseInt(data[5]);
 			//transmission contains info
 			car.transmission = transmissionType(data[6].substring(0, data[6].length() - 1));
-			car.gears = Integer.parseInt(data[6].substring(data[6].length() - 2));
+			car.gears = Integer.parseInt(data[6].substring(data[6].length() - 1));
 			car.fuelType = fuelType(data[7]);
 			car.cityEffL = Double.parseDouble(data[8]);
 			car.highwayEffL = Double.parseDouble(data[9]);
@@ -61,7 +61,6 @@ public class CSVParser {
 			car.emissions = Double.parseDouble(data[13]);
 		} catch (NumberFormatException e) {
 			//sometimes we might get lines in the csv that are not valid car data (legend data for example)
-			e.printStackTrace();
 			return null;
 		}
 		return car;

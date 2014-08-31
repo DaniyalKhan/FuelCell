@@ -37,7 +37,7 @@ public class DirectionsActivity extends FragmentActivity {
 		@Override
 		public void onRouteSelect(Route r) {
 			Intent intent = new Intent(DirectionsActivity.this, TravelActivity.class);
-			intent.putExtra("car", car);
+//			intent.putExtra("car", car);
 			intent.putExtra("route", r);
 			intent.putExtra("srcLat", r.srcLat);
 			intent.putExtra("srcLng", r.srcLng);

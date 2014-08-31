@@ -1,9 +1,12 @@
 package com.fuelcell.util;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.fuelcell.models.Car;
 
@@ -18,11 +21,13 @@ public class CarDatabase extends SQLiteOpenHelper {
 	private static final String CAR_TABLE = "car_info";
 	private static final String FAVOURITES = "saved_cars";
 	
-    private static final String[] PRIMARY_KEYS = { "Year", "Manufacturer", "Model", "Vehicle Class", "Engine Size (L)", "Cylinders", "Transmission" };
-    private static final String[] PRIMARY_KEY_TYPES = {"INTEGER", "VARCHAR(255)", "VARCHAR(255)", "VARCHAR(255)", "FLOAT",  "INTEGER", "VARCHAR(255)"};
+    private static final String[] PRIMARY_KEYS = { "Year", "Manufacturer", "Model", "Vehicle_Class", "Engine_Size_L", "Cylinders", "Transmission", "Gears", "Fuel_Type" };
+    private static final String[] PRIMARY_KEY_TYPES = {"INTEGER", "VARCHAR(255)", "VARCHAR(255)", "VARCHAR(255)", "FLOAT",  "INTEGER", "VARCHAR(255)", "INTEGER", "VARCHAR(255)" };
     
-    private static final String[] CAR_ATTRIBUTES = { "Gears", "Fuel Type", "City Efficienty (L/100KM)", "Highway Efficienty (L/100KM)", "City Efficienty (MPG)", "Highway Efficienty (MPG)", "Fuel Usage (L/Year)", "Emissions (G/KM)" };
-    private static final String[] CAR_ATTRIBUTE_TYPES = {"INTEGER", "VARCHAR(255)",  "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
+    private static final String[] CAR_ATTRIBUTES = {"City_Efficienty_L_100KM", "Highway_Efficienty_L_100KM", "City_Efficienty_MPG", "Highway_Efficienty_MPG", "Fuel_Usage_L_Year", "Emissions_G_KM" };
+    private static final String[] CAR_ATTRIBUTE_TYPES = {"FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
+    
+    static ArrayList<Car> cars = new ArrayList<Car>();
     
 //    private static final String CAR_DATA_TABLE = "car_data";
 //    private static final String[] CAR_DATA = { "ENGINESIZE", "CYLINDERS", "TRANSMISSION", "FUELTYPE" };
@@ -40,12 +45,12 @@ public class CarDatabase extends SQLiteOpenHelper {
 //    private static final String TABLE = "<table>";
     
 //	private static String QuerySearch = "select distinct ? from ? order by ?"; 
-    private static String QueryInsertCarData = "insert into ";
+    private static String QueryInsertCarData = "insert into " + CAR_TABLE;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
     //construct precompiled query strings
     static {
-    	QueryInsertCarData += "(";
+    	QueryInsertCarData += " (";
     	for (String key: PRIMARY_KEYS) {
     		QueryInsertCarData += (key + ", ");	
     	}
@@ -53,7 +58,7 @@ public class CarDatabase extends SQLiteOpenHelper {
     		QueryInsertCarData += (attribute + ", ");	
     	}
     	//get rid of ending space and comma
-    	QueryInsertCarData.substring(0, QueryInsertCarData.length() - 2);
+    	QueryInsertCarData = QueryInsertCarData.substring(0, QueryInsertCarData.length() - 2);
     	QueryInsertCarData += ") values (?";
     	for (int i = 0; i < PRIMARY_KEYS.length + CAR_ATTRIBUTES.length - 1; i++) {
     		QueryInsertCarData += ", ?";
@@ -132,23 +137,22 @@ public class CarDatabase extends SQLiteOpenHelper {
 		SQLiteStatement statement = db.compileStatement(QueryInsertCarData);
 		
 		//primary keys
-		statement.bindLong(1, (long) car.year);
+		statement.bindDouble(1, car.year);
 		statement.bindString(2, car.manufacturer);
 		statement.bindString(3, car.model);
 		statement.bindString(4, car.vehicleClass);
-		statement.bindLong(5, (long) car.engineSize);
-		statement.bindLong(6, (long) car.cylinders);
+		statement.bindDouble(5, car.engineSize);
+		statement.bindDouble(6, car.cylinders);
 		statement.bindString(7, car.transmission.toString());
 		//other keys
-		statement.bindLong(8, (long) car.gears);
+		statement.bindDouble(8, car.gears);
 		statement.bindString(9, car.fuelType.toString());
-		statement.bindLong(10, (long) car.cityEffL);
-		statement.bindLong(11, (long) car.highwayEffL);
-		statement.bindLong(12, (long) car.cityEffM);
-		statement.bindLong(13, (long) car.highwayEffM);
-		statement.bindLong(14, (long) car.fuelUsage);
-		statement.bindLong(15, (long) car.emissions);
-		
+		statement.bindDouble(10, car.cityEffL);
+		statement.bindDouble(11, car.highwayEffL);
+		statement.bindDouble(12, car.cityEffM);
+		statement.bindDouble(13, car.highwayEffM);
+		statement.bindDouble(14, car.fuelUsage);
+		statement.bindDouble(15, car.emissions);
 		statement.executeInsert();		
 	}
 	

@@ -1,6 +1,7 @@
 package com.fuelcell.models;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -12,7 +13,7 @@ import android.os.Parcelable;
 
 import com.fuelcell.util.CarDatabase;
 
-public class Car implements Parcelable {
+public class Car {
 	
 	public static enum FuelType {Diesel, Ethanol, Natural, Regular, Premium};
 	public static enum TransmissionType {Automatic, AutomaticManual, AutomaticWithSelectShift, ContinuouslyVariable, Manual};
@@ -37,31 +38,53 @@ public class Car implements Parcelable {
 	
 	public double emissions;
 
-	public Car() {}
-	
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+	public static class CarComparator implements Comparator<Car> {
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(year);
-		dest.writeString(manufacturer);
-		dest.writeString(model);
-		dest.writeString(vehicleClass);
-		dest.writeDouble(engineSize);
-		dest.writeInt(cylinders);
-		dest.writeString(transmission.toString());
-		dest.writeString(fuelType.toString().charAt(0) + "");
-		dest.writeDouble(cityEffL);
-		dest.writeDouble(highwayEffL);
-		dest.writeDouble(cityEffM);
-		dest.writeDouble(highwayEffM);
-		dest.writeDouble(fuelUsage);
-		dest.writeDouble(emissions);
+		@Override
+		public int compare(Car c1, Car c2) {
+			String ft1 = c1.fuelType.toString();
+			String ft2 = c2.fuelType.toString();
+			String tr2 = c1.transmission.toString();
+			String tr1 = c2.transmission.toString();
+			if (c1.year != c2.year) return c1.year - c2.year;
+			else if (!c1.manufacturer.equals(c2.manufacturer)) return c1.manufacturer.compareTo(c2.manufacturer);
+			else if (!c1.model.equals(c2.model)) return c1.model.compareTo(c2.model);
+			else if (!c1.vehicleClass.equals(c2.vehicleClass)) return c1.vehicleClass.compareTo(c2.vehicleClass);
+			else if (c1.cylinders != c2.cylinders) return c1.cylinders - c2.cylinders;
+			else if (!ft1.equals(ft2)) return ft1.compareTo(ft2);
+			else if (!tr1.equals(tr2)) return tr1.compareTo(tr2);
+			else if (c1.gears != c2.gears) return c1.gears - c2.gears;
+			else if (c1.engineSize != c2.engineSize) return (int) Math.signum(c1.engineSize - c2.engineSize);
+			return 0;
+		}
 		
 	}
+	
+	public Car() {}
+	
+//	@Override
+//	public int describeContents() {
+//		return 0;
+//	}
+//
+//	@Override
+//	public void writeToParcel(Parcel dest, int flags) {
+//		dest.writeInt(year);
+//		dest.writeString(manufacturer);
+//		dest.writeString(model);
+//		dest.writeString(vehicleClass);
+//		dest.writeDouble(engineSize);
+//		dest.writeInt(cylinders);
+//		dest.writeString(transmission.toString());
+//		dest.writeString(fuelType.toString().charAt(0) + "");
+//		dest.writeDouble(cityEffL);
+//		dest.writeDouble(highwayEffL);
+//		dest.writeDouble(cityEffM);
+//		dest.writeDouble(highwayEffM);
+//		dest.writeDouble(fuelUsage);
+//		dest.writeDouble(emissions);
+//		
+//	}
 	
 //	public static final Parcelable.Creator<Car> CREATOR = new Parcelable.Creator<Car>() {
 //		public Car createFromParcel(Parcel in) {
@@ -153,16 +176,19 @@ public class Car implements Parcelable {
 	    return true;
 	}
 	
-	private boolean matches(Car car) {
-		return car.year == year &&
-				car.manufacturer.equals(manufacturer) &&
-				car.model.equals(model) &&
-				car.vehicleClass.equals(vehicleClass) &&
-				car.cylinders == cylinders &&
-				car.transmission == car.transmission &&
-				car.fuelType.equals(fuelType);
-				
-	}
+	
+	
+//	public boolean matches(Car car) {
+//		return car.year == year &&
+//				car.manufacturer.equals(manufacturer) &&
+//				car.model.equals(model) &&
+//				car.vehicleClass.equals(vehicleClass) &&
+//				car.cylinders == cylinders &&
+//				car.transmission == transmission &&
+//				car.fuelType == fuelType &&
+//				car.gears == gears &&
+//				car.engineSize == engineSize;
+//	}
 
 	public static List<Car> getSavedCars(Context context) {
 		List<Car> saved = new ArrayList<Car>();
