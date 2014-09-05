@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,6 +30,8 @@ public class StatsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_stats);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		
 		Intent intentLast = getIntent();
 		TextView header = (TextView) findViewById(R.id.header);
@@ -55,7 +57,7 @@ public class StatsActivity extends Activity {
 		}
 		
 		resultList = (ListView) findViewById(R.id.searchedList);
-		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
+		((ImageView) findViewById(R.id.mainicon)).setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {

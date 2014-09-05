@@ -73,6 +73,15 @@
             android:src="@drawable/header_home_button" />
 
         <ImageView
+	        android:id="@+id/searchicon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/mainicon"
+	        android:layout_alignTop="@+id/mainicon"
+	        android:layout_marginTop="3dp"
+	        android:src="@drawable/header_search" />
+        
+        <ImageView
             android:id="@+id/searchHeaderCorp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -187,5 +196,6 @@
         android:layout_height="wrap_content" >
 
 </TextView>
+
 
 </RelativeLayout>

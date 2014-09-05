@@ -13,23 +13,37 @@
     	android:layout_height="wrap_content"
     	android:layout_centerInParent="true"
     	android:gravity="center"
+    	android:textColor="@android:color/white"
     	android:layout_marginRight="20dp"
     	android:layout_marginLeft="20dp"
     	android:text="Sorry there are no results. Please Try Again."
     />
-    <Button
-        android:id="@+id/homeButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/home_press"/>
+    
+    <ImageView
+            android:id="@+id/mainicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="20dp"
+            android:contentDescription="desc"
+            android:nextFocusLeft="@id/autotext"
+            android:nextFocusUp="@id/autotext"
+            android:src="@drawable/header_home_button" />
 
     <LinearLayout
         android:id="@+id/listLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:layout_below="@+id/mainicon">
 
         <TextView
             android:id="@+id/header"
@@ -38,7 +52,8 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:textColor="@android:color/white"/>
    
 
         <ListView
@@ -49,7 +64,7 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@android:color/black"
+            android:divider="@android:color/white"
             android:dividerHeight="1dp"
             android:paddingLeft="10dp" >
         </ListView>
