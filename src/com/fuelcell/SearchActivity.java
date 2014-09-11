@@ -51,6 +51,7 @@ public class SearchActivity extends Activity {
 	ImageView searchHeaderModel;
 	ImageView searchHeaderVType;
 	ImageView logo;
+	ImageView searchLogo;
 	ListView searchList;
 	RelativeLayout layout;
 	DynamicArrayAdapter yearAdapter;
@@ -114,6 +115,7 @@ public class SearchActivity extends Activity {
 							logo.setVisibility(View.VISIBLE);
 							searchList.setVisibility(View.GONE);
 							hint.setVisibility(View.GONE);
+							searchLogo.setVisibility(View.VISIBLE);
 						}
 					});
 				}
@@ -140,6 +142,7 @@ public class SearchActivity extends Activity {
 		searchHeaderVType = (ImageView) findViewById(R.id.searchHeaderVType);
 		
 		logo = (ImageView) findViewById(R.id.mainicon);
+		searchLogo = (ImageView) findViewById(R.id.searchicon);
 		search = (Button) findViewById(R.id.searchButton);
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
@@ -167,10 +170,10 @@ public class SearchActivity extends Activity {
 
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, searchLogo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, searchLogo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, searchLogo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, searchLogo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 
 		setClick(searchCorp);
 		setClick(searchYear);
@@ -390,6 +393,7 @@ public class SearchActivity extends Activity {
 	public void makeInVisible(View v) {
 		if (v.hasFocus()) {
 			logo.setVisibility(View.GONE);
+			searchLogo.setVisibility(View.GONE);
 			refresh.setVisibility(View.GONE);
 			if (!v.equals(searchCorp)) {
 				searchCorp.setVisibility(View.GONE);

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.fuelcell.models.Car;
 import com.fuelcell.util.CarDatabase;
@@ -34,8 +35,11 @@ public class StatsActivity extends Activity {
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		
 		Intent intentLast = getIntent();
-		TextView header = (TextView) findViewById(R.id.header);
-		header.setText(intentLast.getStringExtra("title"));
+		if (intentLast.getStringExtra("title").equalsIgnoreCase("Results")) {
+			findViewById(R.id.resulticon).setBackgroundResource(R.drawable.header_results);
+		} else if (intentLast.getStringExtra("title").equalsIgnoreCase("Saved")){
+			findViewById(R.id.resulticon).setBackgroundResource(R.drawable.header_fav);
+		}
 		
 		hint = (TextView) findViewById(R.id.hint);
 		hint.setText(intentLast.getStringExtra("hint"));

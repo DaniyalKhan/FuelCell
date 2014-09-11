@@ -4,30 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="CarProfileActivity" >
-
-    <Button
-        android:id="@+id/homeButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/home_press" />
+    
+    <ImageView
+            android:id="@+id/mainicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="20dp"
+            android:contentDescription="desc"
+            android:src="@drawable/header_home_button" />
 
     <ImageView
-        android:id="@+id/carIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/caricon" />
+	        android:id="@+id/profileicon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/mainicon"
+	        android:layout_alignTop="@+id/mainicon"
+	        android:layout_marginTop="3dp"
+	        android:src="@drawable/header_profile" />
 
     <TextView
         android:id="@+id/carName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/divider1"
+        android:layout_below="@+id/mainicon"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -36,16 +44,17 @@
         android:singleLine="true"
         android:text="Car Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold" 
+        android:textColor="@android:color/white"/>
 
     <View
         android:id="@+id/divider1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/carIcon"
+        android:layout_below="@+id/carName"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/info"
@@ -69,13 +78,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Cylinders:"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/engineName"
@@ -84,13 +94,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Engine Size:"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/fuelName"
@@ -99,13 +110,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Fuel Type:"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/tranName"
@@ -114,13 +126,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Transmission:"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/vehicleName"
@@ -129,13 +142,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Vehicle Type:"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/efficiency"
@@ -144,13 +158,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Highway Fuel Efficiency (L/100km):"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/emissions"
@@ -159,13 +174,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="CO2 Emissions (kg/year):"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -180,91 +196,98 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/engineInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/fuelInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/tranInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/vehicleInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/efficiencyInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/emissionsInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Unknown" />
+                android:text="Unknown" 
+                android:textColor="@android:color/white"/>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginRight="30dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 
@@ -277,7 +300,8 @@
         android:layout_marginLeft="20dp" 
         android:layout_marginTop="20dp"
         android:text="Fuel Effeciency Rating"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
 
     <RelativeLayout
         android:id="@+id/stars"
