@@ -30,6 +30,7 @@ public class FuelCellActivity extends Activity {
 		for (int i = 0; i < filesArray.length; i++) {
 			filesArray[i].delete();
 		}
+		//TODO wipe DB
 	}
 	
 	private void printContents() {
@@ -48,7 +49,7 @@ public class FuelCellActivity extends Activity {
 		CarDatabase.obtain(this).getWritableDatabase();
 		
 		wrapper = new ContextWrapper(this);
-		deleteContents();
+//		deleteContents();
 		//list of all files to download
 		ArrayList<String> toDownload = new ArrayList<String>();
 		//list of all files that are currently in the folder

@@ -69,7 +69,7 @@ public class StatsActivity extends Activity {
 			
 		});
 		
-		filtered = SearchActivity.filtered;
+//		filtered = SearchActivity.filtered;
 		List<String> resultsOutput = new ArrayList<String>();
 		
 		for (int i = 0 ; i < filtered.size() ; i++) {

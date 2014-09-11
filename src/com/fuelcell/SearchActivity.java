@@ -1,6 +1,7 @@
 package com.fuelcell;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -33,58 +34,72 @@ import android.widget.TextView;
 
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
+import com.fuelcell.util.CarDatabase;
 import com.fuelcell.util.DynamicArrayAdapter;
+import com.fuelcell.util.DynamicArrayAdapter.CarFilter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
 
 public class SearchActivity extends Activity {
 
-	MyEditText searchCorp;
+	List<CarFrame> frames;
+	
+	MyEditText searchManu;
 	MyEditText searchYear;
 	MyEditText searchModel;
 	MyEditText searchVType;
-	ImageView searchHeaderCorp;
+	ImageView searchHeaderManu;
 	ImageView searchHeaderYear;
 	ImageView searchHeaderModel;
 	ImageView searchHeaderVType;
 	ImageView logo;
 	ListView searchList;
 	RelativeLayout layout;
-	DynamicArrayAdapter yearAdapter;
-	DynamicArrayAdapter manufactureAdapter;
-	DynamicArrayAdapter modelAdapter;
-	DynamicArrayAdapter vTypeAdapter;
+	
+	DynamicArrayAdapter carAdapter; 
+	CarFilter yearFilter;
+	CarFilter manufacturerFilter;
+	CarFilter modelFilter;
+	CarFilter vehicleFilter;
+	
+	//list of views that disappear during filter/search
+	List<View> invisibleViews;
+	
+	MyEditText lastClicked;
+	
 	ContextWrapper wrapper;
 	Button search;
 	Button refresh;
-	ArrayList<Car> cars;
-	int lastClicked;
-	public static List<Car> filtered;
+	TextView hint;
+	
 	public static Double bestFuelEfficiency;
 	public static Double worstFuelEfficiency;
-	TextView hint;
 
+	//callback that a list item has been clicked
 	TextCallback callback = new TextCallback() {
-		
 		@Override
 		public void onClick(CharSequence text) {
-			if(lastClicked == searchCorp.getId()) {
-				searchCorp.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchCorp.setBackgroundResource((R.drawable.text_input_search_green));
-			}
-			else if(lastClicked == searchYear.getId()){
-				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchYear.setBackgroundResource((R.drawable.text_input_search_green));
-			}
-			else if(lastClicked == searchModel.getId()){
-				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchModel.setBackgroundResource((R.drawable.text_input_search_green));
-			}
-			else if(lastClicked == searchVType.getId()){
-				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-				searchVType.setBackgroundResource((R.drawable.text_input_search_green));
-			}
+			lastClicked.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+			lastClicked.setBackgroundResource((R.drawable.text_input_search_green));
+			
+//			if(lastClicked == searchManu.getId()) {
+//				lastClicked.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+//				lastClicked.setBackgroundResource((R.drawable.text_input_search_green));
+//			}
+//			else if(lastClicked == searchYear.getId()){
+//				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+//				searchYear.setBackgroundResource((R.drawable.text_input_search_green));
+//			}
+//			else if(lastClicked == searchModel.getId()){
+//				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+//				searchModel.setBackgroundResource((R.drawable.text_input_search_green));
+//			}
+//			else if(lastClicked == searchVType.getId()){
+//				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
+//				searchVType.setBackgroundResource((R.drawable.text_input_search_green));
+//			}
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(searchCorp.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(searchManu.getWindowToken(), 0);
 
 			new Thread(new Runnable() {
 				@Override
@@ -97,19 +112,21 @@ public class SearchActivity extends Activity {
 					SearchActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							searchVType.setVisibility(View.VISIBLE);
-							searchModel.setVisibility(View.VISIBLE);
-							searchYear.setVisibility(View.VISIBLE);
-							searchCorp.setVisibility(View.VISIBLE);
-							searchHeaderVType.setVisibility(View.VISIBLE);
-							searchHeaderModel.setVisibility(View.VISIBLE);
-							searchHeaderYear.setVisibility(View.VISIBLE);
-							searchHeaderCorp.setVisibility(View.VISIBLE);
-							search.setVisibility(View.VISIBLE);
-							refresh.setVisibility(View.VISIBLE);
-							logo.setVisibility(View.VISIBLE);
-							searchList.setVisibility(View.GONE);
-							hint.setVisibility(View.GONE);
+							visible();
+							
+//							searchVType.setVisibility(View.VISIBLE);
+//							searchModel.setVisibility(View.VISIBLE);
+//							searchYear.setVisibility(View.VISIBLE);
+//							searchManu.setVisibility(View.VISIBLE);
+//							searchHeaderVType.setVisibility(View.VISIBLE);
+//							searchHeaderModel.setVisibility(View.VISIBLE);
+//							searchHeaderYear.setVisibility(View.VISIBLE);
+//							searchHeaderManu.setVisibility(View.VISIBLE);
+//							search.setVisibility(View.VISIBLE);
+//							refresh.setVisibility(View.VISIBLE);
+//							logo.setVisibility(View.VISIBLE);
+//							searchList.setVisibility(View.GONE);
+//							hint.setVisibility(View.GONE);
 						}
 					});
 				}
@@ -125,12 +142,12 @@ public class SearchActivity extends Activity {
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 
-		searchCorp = (MyEditText) findViewById(R.id.searchCorp);
+		searchManu = (MyEditText) findViewById(R.id.searchCorp);
 		searchYear = (MyEditText) findViewById(R.id.searchYear);
 		searchModel = (MyEditText) findViewById(R.id.searchModel);
 		searchVType = (MyEditText) findViewById(R.id.searchVType);
 		
-		searchHeaderCorp = (ImageView) findViewById(R.id.searchHeaderCorp);
+		searchHeaderManu = (ImageView) findViewById(R.id.searchHeaderCorp);
 		searchHeaderYear = (ImageView) findViewById(R.id.searchHeaderYear);
 		searchHeaderModel = (ImageView) findViewById(R.id.searchHeaderModel);
 		searchHeaderVType = (ImageView) findViewById(R.id.searchHeaderVType);
@@ -140,16 +157,14 @@ public class SearchActivity extends Activity {
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
 		
-		ButtonSettings.pressSize(search,15);
-		
-		filtered = new ArrayList<Car>();
-
+		ButtonSettings.pressSize(search, 15);
+				
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				startStatsActivity(filterList(),"Results","There does not seem to be any cars with the given information: "
-						+ " Manufacturer: "+ (searchCorp.getText().toString().equals("") == true ? "Any" : searchCorp.getText().toString()) + " " 
+				startStatsActivity("Results","There does not seem to be any cars with the given information: "
+						+ " Manufacturer: "+ (searchManu.getText().toString().equals("") == true ? "Any" : searchManu.getText().toString()) + " " 
 						+ " Year: "+ (searchYear.getText().toString().equals("") == true ? "Any" : searchYear.getText().toString()) + " " 
 						+ " Model: "+ (searchModel.getText().toString().equals("") == true ? "Any" : searchModel.getText().toString()) + " " 
 						+ " Vehicle Type: "+ (searchVType.getText().toString().equals("") == true ? "Any" : searchVType.getText().toString())
@@ -161,19 +176,26 @@ public class SearchActivity extends Activity {
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
 		wrapper = new ContextWrapper(this);
 
+		invisibleViews = Arrays.asList(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, logo, refresh);
+		
+		searchManu.setTextHeader(searchHeaderManu);
+		searchYear.setTextHeader(searchHeaderYear);
+		searchModel.setTextHeader(searchHeaderModel);
+		searchVType.setTextHeader(searchHeaderVType);
+		
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
-		searchCorp.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchYear.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchModel.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-		searchVType.set(searchCorp, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderCorp, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+//		searchManu.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+//		searchYear.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+//		searchModel.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
+//		searchVType.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 
-		setClick(searchCorp);
+		setClick(searchManu);
 		setClick(searchYear);
 		setClick(searchModel);
 		setClick(searchVType);
 
-		setTextChange(searchCorp);
+		setTextChange(searchManu);
 		setTextChange(searchYear);
 		setTextChange(searchModel);
 		setTextChange(searchVType);
@@ -181,7 +203,7 @@ public class SearchActivity extends Activity {
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				searchCorp.getText().clear();
+				searchManu.getText().clear();
 				searchModel.getText().clear();
 				searchYear.getText().clear();
 				searchVType.getText().clear();
@@ -195,9 +217,8 @@ public class SearchActivity extends Activity {
 		searchYear.setRawInputType(Configuration.KEYBOARD_QWERTY);
 	}
 	
-	private void startStatsActivity(List<Car> cars,String title,String hint, boolean showClear) {
+	private void startStatsActivity(String title,String hint, boolean showClear) {
 		Intent intent = new Intent(this, StatsActivity.class);
-		filtered = cars;
 		intent.putExtra("title", title);
 		intent.putExtra("hint", hint);
 		intent.putExtra("clear", showClear);
@@ -205,97 +226,121 @@ public class SearchActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	private ArrayList<Car> filterList()
-	{
-		ArrayList<Car> filtered = new ArrayList<Car>();
-			for (int i = 0 ; i < cars.size(); i++) {
-				if ( (cars.get(i).manufacturer.toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
-						&& (Integer.toString(cars.get(i).year).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
-						&& (cars.get(i).model.toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
-						&& (cars.get(i).vehicleClass.toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
-					filtered.add(cars.get(i));
-				}
-			}
-		
-		return filtered;
-	}
+//	private ArrayList<Car> filterList() {
+//		ArrayList<Car> filtered = new ArrayList<Car>();
+//			for (int i = 0 ; i < cars.size(); i++) {
+//				if ( (cars.get(i).manufacturer.toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
+//						&& (Integer.toString(cars.get(i).year).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
+//						&& (cars.get(i).model.toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
+//						&& (cars.get(i).vehicleClass.toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
+//					filtered.add(cars.get(i));
+//				}
+//			}
+//		
+//		return filtered;
+//	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (cars == null) {
+		if (frames == null) {
 			new AsyncTask<Integer, Integer, Boolean>() {
 				ProgressDialog progress;
 				@Override
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
-//						File[] filesArray = wrapper.getFilesDir().listFiles();
-						cars = new ArrayList<Car>();
-//						for (int i = 0; i < filesArray.length; i++) {
-//							try {
-//								cars.addAll(new CSVParser(filesArray[i]).parse());
-//								progress.setProgress((int) (100 * ((float)i)/filesArray.length));
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//						}
-						determineFuel();
-						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+						frames = CarDatabase.obtain(SearchActivity.this).getCarFrames();
+						
+						carAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, frames, callback);
+						
+						yearFilter = carAdapter.new CarFilter() {
 							@Override
-							protected String getFieldForCar(Car c) {
+							protected String filterField(CarFrame c) {
 								return Integer.toString(c.year);
-							}							
+							}
 						};
-						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+						
+						manufacturerFilter = carAdapter.new CarFilter() {
 							@Override
-							protected String getFieldForCar(Car c) {
+							protected String filterField(CarFrame c) {
 								return c.manufacturer;
 							}
 						};
-						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+						
+						modelFilter = carAdapter.new CarFilter() {
 							@Override
-							protected String getFieldForCar(Car c) {
+							protected String filterField(CarFrame c) {
 								return c.model;
 							}
-							@Override
-							protected boolean shouldContain(Car c) {
-								return c.manufacturer.contains(searchCorp.getText()) && 
-										Integer.toString(c.year).contains(searchYear.getText()) &&
-										c.vehicleClass.contains(searchVType.getText());
-							}
 						};
-						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-
+						
+						vehicleFilter = carAdapter.new CarFilter() {
 							@Override
-							protected String getFieldForCar(Car c) {
+							protected String filterField(CarFrame c) {
 								return c.vehicleClass;
 							}
-							
 						};
+						
+						searchManu.setFilter(manufacturerFilter);
+						searchYear.setFilter(yearFilter);
+						searchModel.setFilter(manufacturerFilter);
+						searchVType.setFilter(vehicleFilter);
+						
+						searchList.setAdapter(carAdapter);
+						
+//						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return Integer.toString(c.year);
+//							}							
+//						};
+//						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.manufacturer;
+//							}
+//						};
+//						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.model;
+//							}
+//							@Override
+//							protected boolean shouldContain(Car c) {
+//								return c.manufacturer.contains(searchCorp.getText()) && 
+//										Integer.toString(c.year).contains(searchYear.getText()) &&
+//										c.vehicleClass.contains(searchVType.getText());
+//							}
+//						};
+//						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.vehicleClass;
+//							}
+//						};
 						return true;
 					} catch (Exception unfinishedException) {
 						return false;
 					}
 				}
 
-				private void determineFuel() {
-					Set<Double> fuelEffeciency = new HashSet<Double>();
-					for(int i = 0 ; i < cars.size() ; i++) {
-						fuelEffeciency.add(cars.get(i).highwayEffL);
-					}
-					worstFuelEfficiency = Collections.max(fuelEffeciency);
-					bestFuelEfficiency = Collections.min(fuelEffeciency);
-					
-				}
+//				private void determineFuel() {
+//					Set<Double> fuelEffeciency = new HashSet<Double>();
+//					for(int i = 0 ; i < cars.size() ; i++) {
+//						fuelEffeciency.add(cars.get(i).highwayEffL);
+//					}
+//					worstFuelEfficiency = Collections.max(fuelEffeciency);
+//					bestFuelEfficiency = Collections.min(fuelEffeciency);
+//					
+//				}
 
 				@Override
 				protected void onPreExecute() {
 					progress = new ProgressDialog(SearchActivity.this);
 					progress.setMessage("Loading car data onto Fuel Cell.");
 					progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					progress.setProgress(0);
-					progress.setMax(100);
-					progress.setIndeterminate(false);
+					progress.setIndeterminate(true);
 					progress.show();
 				}
 
@@ -315,29 +360,29 @@ public class SearchActivity extends Activity {
 	
 	
 
-	protected void setClick(EditText textField) {
+	protected void setClick(final MyEditText textField) {
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				onActionTextField(v);
+				onActionTextField(textField);
 				//filter(((EditText)v).getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onActionTextField(v);
+				onActionTextField(textField);
 			}
 		});
 	}
 	
-	private void onActionTextField (View v) {
-		makeInVisible(v);
-		setListAdapter(v);
-		lastClicked = v.getId();
+	private void onActionTextField(MyEditText editText) {
+		makeInvisible(editText, editText.textHeader);
+		carAdapter.setFilter(editText.filter);
+		lastClicked = editText;
 	}
 	
-	protected void setTextChange(EditText textField) {
+	protected void setTextChange(MyEditText textField) {
 		textField.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -345,17 +390,16 @@ public class SearchActivity extends Activity {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				filter(s);
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				filter(s);
-				if (searchCorp.getVisibility() == View.VISIBLE)
-					searchCorp.setBackgroundResource(R.drawable.text_input_search);
+				//TODO fix this up so we don't have 4 if statements
+				if (searchManu.getVisibility() == View.VISIBLE)
+					searchManu.setBackgroundResource(R.drawable.text_input_search);
 				if (searchYear.getVisibility() == View.VISIBLE)
 					searchYear.setBackgroundResource(R.drawable.text_input_search);
 				if (searchModel.getVisibility() == View.VISIBLE)
@@ -369,63 +413,64 @@ public class SearchActivity extends Activity {
 	}
 	
 	public void filter(CharSequence s) {
-		if (searchCorp.getVisibility() == View.VISIBLE) {
-			manufactureAdapter.getFilter().filter(s);
-		}
-		if (searchYear.getVisibility() == View.VISIBLE) {
-			yearAdapter.getFilter().filter(s);
-		}
-		if (searchModel.getVisibility() == View.VISIBLE) {
-			modelAdapter.getFilter().filter(s);
-		}
-		if (searchVType.getVisibility() == View.VISIBLE) {
-			vTypeAdapter.getFilter().filter(s);
-		}
+		carAdapter.getFilter().filter(s);
+//		if (searchManu.getVisibility() == View.VISIBLE) {
+//			manufactureAdapter.getFilter().filter(s);
+//		}
+//		if (searchYear.getVisibility() == View.VISIBLE) {
+//			yearAdapter.getFilter().filter(s);
+//		}
+//		if (searchModel.getVisibility() == View.VISIBLE) {
+//			modelAdapter.getFilter().filter(s);
+//		}
+//		if (searchVType.getVisibility() == View.VISIBLE) {
+//			vTypeAdapter.getFilter().filter(s);
+//		}
+	}
+	
+	public void visible() {
+		for (View v: invisibleViews) v.setVisibility(View.VISIBLE);
+		searchList.setVisibility(View.GONE);
+		hint.setVisibility(View.GONE);
 	}
 
-	public void makeInVisible(View v) {
-		if (v.hasFocus()) {
-			logo.setVisibility(View.GONE);
-			refresh.setVisibility(View.GONE);
-			if (!v.equals(searchCorp)) {
-				searchCorp.setVisibility(View.GONE);
-				searchHeaderCorp.setVisibility(View.GONE);
-			}
-			if (!v.equals(searchYear)) {
-				searchYear.setVisibility(View.GONE);
-				searchHeaderYear.setVisibility(View.GONE);
-			}
-			if (!v.equals(searchModel)) {
-				searchModel.setVisibility(View.GONE);
-				searchHeaderModel.setVisibility(View.GONE);
-			}
-			if (!v.equals(searchVType)) {
-				searchVType.setVisibility(View.GONE);
-				searchHeaderVType.setVisibility(View.GONE);
-			}
-			searchList.setVisibility(View.VISIBLE);
-			search.setVisibility(View.GONE);
-			hint.setVisibility(View.VISIBLE);
-
-		}
-	}
-
-	public void setListAdapter(View v) {
-		if (v.hasFocus()) {
-			if (v.equals(searchCorp))
-				searchList.setAdapter(manufactureAdapter);
-			if (v.equals(searchYear))
-				searchList.setAdapter(yearAdapter);
-			if (v.equals(searchModel))
-				searchList.setAdapter(modelAdapter);
-			if (v.equals(searchVType))
-				searchList.setAdapter(vTypeAdapter);
-		}
+	public void makeInvisible(View ... views) {
+		for (View v: invisibleViews) v.setVisibility(View.GONE);
+		for (View v: views) v.setVisibility(View.VISIBLE);
+		//these two views need to become visible  when switching to search mode
+		searchList.setVisibility(View.VISIBLE);
+		hint.setVisibility(View.VISIBLE);
+		
+//		if (v.hasFocus()) {
+//			logo.setVisibility(View.GONE);
+//			refresh.setVisibility(View.GONE);
+//			if (!v.equals(searchManu)) {
+//				searchManu.setVisibility(View.GONE);
+//				searchHeaderMenu.setVisibility(View.GONE);
+//			}
+//			if (!v.equals(searchYear)) {
+//				searchYear.setVisibility(View.GONE);
+//				searchHeaderYear.setVisibility(View.GONE);
+//			}
+//			if (!v.equals(searchModel)) {
+//				searchModel.setVisibility(View.GONE);
+//				searchHeaderModel.setVisibility(View.GONE);
+//			}
+//			if (!v.equals(searchVType)) {
+//				searchVType.setVisibility(View.GONE);
+//				searchHeaderVType.setVisibility(View.GONE);
+//			}
+//			searchList.setVisibility(View.VISIBLE);
+//			search.setVisibility(View.GONE);
+//			hint.setVisibility(View.VISIBLE);
+//
+//		}
 	}
 
 	public static class MyEditText extends EditText {
 
-		View[] views;
+		CarFilter filter;
+		View textHeader;
 		Context context;
 
 		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -443,10 +488,14 @@ public class SearchActivity extends Activity {
 			this.context = context;
 		}
 
-		public void set(View... v) {
-			this.views = v;
+		public void setTextHeader(View header) {
+			this.textHeader = header;
 		}
-
+		
+		public void setFilter(CarFilter filter) {
+			this.filter = filter;
+		}
+		
 		public boolean onKeyPreIme(final int keyCode, KeyEvent event) {
 			new Thread(new Runnable() {
 				@Override
@@ -460,11 +509,7 @@ public class SearchActivity extends Activity {
 						@Override
 						public void run() {
 							if (keyCode == KeyEvent.KEYCODE_BACK) {
-								for (View v : views) {
-									v.setVisibility(View.VISIBLE);
-								}
-								views[views.length - 1].setVisibility(View.GONE);
-								views[views.length - 2].setVisibility(View.GONE);
+								((SearchActivity)context).visible();
 							}
 						}
 					});

@@ -13,15 +13,11 @@ import android.os.Parcelable;
 
 import com.fuelcell.util.CarDatabase;
 
-public class Car {
+public class Car extends CarFrame {
 	
 	public static enum FuelType {Diesel, Ethanol, Natural, Regular, Premium};
 	public static enum TransmissionType {Automatic, AutomaticManual, AutomaticWithSelectShift, ContinuouslyVariable, Manual};
 	
-	public int year;
-	public String manufacturer;
-	public String model;
-	public String vehicleClass;
 	public double engineSize;
 	public int cylinders;
 	public TransmissionType transmission;

@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
 
 public class CarDatabase extends SQLiteOpenHelper {
 
@@ -45,7 +46,8 @@ public class CarDatabase extends SQLiteOpenHelper {
 //    private static final String COLUMN = "<column>";
 //    private static final String TABLE = "<table>";
     
-	private static String QuerySearch = "select distinct ? from ? order by ?"; 
+	private static String QueryColumn = "select distinct ? from ? order by ?"; 
+	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from ?"; 
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
@@ -80,10 +82,10 @@ public class CarDatabase extends SQLiteOpenHelper {
     }
 	
 	private abstract class ColumnQuery<T> {
-		List<T> queryDistinct(String[] selectionAgs) {
+		List<T> queryDistinct(String[] selectionArgs) {
 			SQLiteDatabase db = getReadableDatabase();
 			ArrayList<T> values = new ArrayList<T>();
-			Cursor c = db.rawQuery(QuerySearch, selectionAgs);
+			Cursor c = db.rawQuery(QueryColumn, selectionArgs);
 			while(c.moveToNext()) values.add(getData(c));
 			c.close();
 			db.close();
@@ -105,6 +107,14 @@ public class CarDatabase extends SQLiteOpenHelper {
 			return c.getString(0);
 		}
 	};
+	
+	public List<CarFrame> getCarFrames() {
+		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.rawQuery(QueryColumn, new String[] {PRIMARY_KEYS[0], PRIMARY_KEYS[1], PRIMARY_KEYS[2], PRIMARY_KEYS[3], CAR_TABLE});
+		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+		return carFrames;
+	}
 	
 	public List<Integer> getYears() {
 		return integerQuery.queryDistinct(new String[] {PRIMARY_KEYS[0], CAR_TABLE, PRIMARY_KEYS[0]});
