@@ -55,9 +55,9 @@ public class StatsActivity extends Activity {
 		
 		boolean showClear = intentLast.getBooleanExtra("clear", false);
 		if (!showClear) {
-			clearButton.setVisibility(View.VISIBLE);
-		} else {
 			clearButton.setVisibility(View.GONE);
+		} else {
+			clearButton.setVisibility(View.VISIBLE);
 			clearButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
