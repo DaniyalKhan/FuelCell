@@ -109,16 +109,7 @@ public class DirectionsActivity extends FragmentActivity {
 			}
 		});
 		
-		((ImageView) findViewById(R.id.mainicon)).setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent homeIntent = new Intent(DirectionsActivity.this, SearchActivity.class);
-				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				startActivity(homeIntent);
-			}
-			
-		});
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
 		
 	}
 	

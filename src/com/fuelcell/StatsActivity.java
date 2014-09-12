@@ -12,11 +12,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.util.CarDatabase;
 
@@ -25,6 +29,8 @@ public class StatsActivity extends Activity {
 	ListView resultList;
 	List<Car> filtered;
 	TextView hint;
+	Button clearButton;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,42 +42,42 @@ public class StatsActivity extends Activity {
 		
 		Intent intentLast = getIntent();
 		if (intentLast.getStringExtra("title").equalsIgnoreCase("Results")) {
-			findViewById(R.id.resulticon).setBackgroundResource(R.drawable.header_results);
+			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_results);
 		} else if (intentLast.getStringExtra("title").equalsIgnoreCase("Saved")){
-			findViewById(R.id.resulticon).setBackgroundResource(R.drawable.header_fav);
+			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_fav);
 		}
+		
+		clearButton = (Button) findViewById(R.id.clearButton);
 		
 		hint = (TextView) findViewById(R.id.hint);
 		hint.setText(intentLast.getStringExtra("hint"));
+		ButtonSettings.pressSize(clearButton, 15);
 		
 		boolean showClear = intentLast.getBooleanExtra("clear", false);
 		if (!showClear) {
-			findViewById(R.id.clearButton).setVisibility(View.GONE);
+			clearButton.setVisibility(View.VISIBLE);
 		} else {
-			findViewById(R.id.clearButton).setVisibility(View.VISIBLE);
-			findViewById(R.id.clearButton).setOnClickListener(new OnClickListener() {
+			clearButton.setVisibility(View.GONE);
+			clearButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					CarDatabase.reCreate(StatsActivity.this);
-					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
+					Intent homeIntent = new Intent(StatsActivity.this, HubActivity.class);
 					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
 					startActivity(homeIntent);
 				}
 			});
+//			LinearLayout rl = new LinearLayout(this);
+//			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+//			params.addRule(RelativeLayout.ABOVE, clearButton.getId());
+//			rl.addView(findViewById(R.id.listLayout), params);
+			
+			
+			
 		}
 		
 		resultList = (ListView) findViewById(R.id.searchedList);
-		((ImageView) findViewById(R.id.mainicon)).setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
-				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				
-				startActivity(homeIntent);
-			}
-			
-		});
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
 		
 		filtered = SearchActivity.filtered;
 		List<String> resultsOutput = new ArrayList<String>();

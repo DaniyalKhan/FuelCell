@@ -151,6 +151,8 @@ public class SearchActivity extends Activity {
 		
 		filtered = new ArrayList<Car>();
 
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
+		
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override
