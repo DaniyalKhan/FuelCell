@@ -38,23 +38,22 @@
             android:nextFocusUp="@id/autotext"
             android:src="@drawable/header_home_button" />
 
+    <ImageView
+	        android:id="@+id/resulticon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/mainicon"
+	        android:layout_alignTop="@+id/mainicon"
+	        android:layout_marginTop="3dp"
+	        android:src="@drawable/header_fav" />
+   
     <LinearLayout
         android:id="@+id/listLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" 
-        android:layout_below="@+id/mainicon">
-
-        <TextView
-            android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold" 
-            android:textColor="@android:color/white"/>
-   
+        android:layout_below="@+id/mainicon"
+        android:layout_above="@+id/clearButton">
 
         <ListView
             android:id="@+id/searchedList"
@@ -68,16 +67,19 @@
             android:dividerHeight="1dp"
             android:paddingLeft="10dp" >
         </ListView>
-		<Button
-        android:id="@+id/clearButton"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_marginLeft="90dp"
-        android:layout_marginRight="90dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_press"
-        android:text="Clear"
-        android:textSize="12sp" />
         
  </LinearLayout>
+ <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:textColor="@android:color/white"
+        android:visibility="visible"
+        android:background="@drawable/favourites_delete_all_button_press"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

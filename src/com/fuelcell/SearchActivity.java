@@ -53,6 +53,7 @@ public class SearchActivity extends Activity {
 	ImageView searchHeaderModel;
 	ImageView searchHeaderVType;
 	ImageView logo;
+	ImageView searchLogo;
 	ListView searchList;
 	RelativeLayout layout;
 	
@@ -112,8 +113,7 @@ public class SearchActivity extends Activity {
 					SearchActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							visible();
-							
+							visible();				
 //							searchVType.setVisibility(View.VISIBLE);
 //							searchModel.setVisibility(View.VISIBLE);
 //							searchYear.setVisibility(View.VISIBLE);
@@ -153,12 +153,12 @@ public class SearchActivity extends Activity {
 		searchHeaderVType = (ImageView) findViewById(R.id.searchHeaderVType);
 		
 		logo = (ImageView) findViewById(R.id.mainicon);
+		searchLogo = (ImageView) findViewById(R.id.searchicon);
 		search = (Button) findViewById(R.id.searchButton);
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
 		
 		ButtonSettings.pressSize(search, 15);
-				
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -185,6 +185,7 @@ public class SearchActivity extends Activity {
 		
 		// need these so the text fields can reshow everything when user presses back,
 		// needs a reference to everything that needs to show back up
+
 //		searchManu.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 //		searchYear.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
 //		searchModel.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);

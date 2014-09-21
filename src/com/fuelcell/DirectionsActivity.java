@@ -18,8 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.google.Directions;
 import com.fuelcell.google.Directions.DirectionCallback;
 import com.fuelcell.google.Directions.Route;
@@ -82,6 +84,9 @@ public class DirectionsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_directions);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
+		
 		Intent intent = getIntent();
 		car = (Car) intent.getParcelableExtra("car");
 		directions = new Directions(this, callback );
@@ -89,6 +94,8 @@ public class DirectionsActivity extends FragmentActivity {
 		final EditText origin = (EditText) findViewById(R.id.origin);
 		final EditText destination = (EditText) findViewById(R.id.destination);
 		final Button findRoutes = (Button) findViewById(R.id.find_routes);
+		
+		ButtonSettings.pressSize(findRoutes,15);
 		
 		findRoutes.setOnClickListener(new OnClickListener() {
 			@Override
@@ -102,17 +109,7 @@ public class DirectionsActivity extends FragmentActivity {
 			}
 		});
 		
-		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent homeIntent = new Intent(DirectionsActivity.this, SearchActivity.class);
-				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				
-				startActivity(homeIntent);
-			}
-			
-		});
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
 		
 	}
 	

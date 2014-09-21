@@ -1,11 +1,18 @@
 package com.fuelcell.action;
 
+import com.fuelcell.DirectionsActivity;
+import com.fuelcell.HubActivity;
+import com.fuelcell.SearchActivity;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class ButtonSettings {
@@ -51,4 +58,16 @@ public class ButtonSettings {
 		button.setLayoutParams(lp);
 	}
 	
+	public static void setHomeButton(ImageView button, final Context currCxt) {
+		button.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent homeIntent = new Intent(currCxt, HubActivity.class);
+				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+				currCxt.startActivity(homeIntent);
+			}
+			
+		});
+	}
 }
