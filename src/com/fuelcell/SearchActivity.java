@@ -77,23 +77,6 @@ public class SearchActivity extends Activity {
 		public void onClick(CharSequence text) {
 			lastClicked.setText(text.toString().replaceAll("<\\/?[b]>", ""));
 			lastClicked.setBackgroundResource((R.drawable.text_input_search_green));
-			
-//			if(lastClicked == searchManu.getId()) {
-//				lastClicked.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-//				lastClicked.setBackgroundResource((R.drawable.text_input_search_green));
-//			}
-//			else if(lastClicked == searchYear.getId()){
-//				searchYear.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-//				searchYear.setBackgroundResource((R.drawable.text_input_search_green));
-//			}
-//			else if(lastClicked == searchModel.getId()){
-//				searchModel.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-//				searchModel.setBackgroundResource((R.drawable.text_input_search_green));
-//			}
-//			else if(lastClicked == searchVType.getId()){
-//				searchVType.setText(text.toString().replaceAll("<\\/?[b]>", ""));
-//				searchVType.setBackgroundResource((R.drawable.text_input_search_green));
-//			}
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchManu.getWindowToken(), 0);
 
@@ -165,14 +148,6 @@ public class SearchActivity extends Activity {
 		searchModel.setTextHeader(searchHeaderModel);
 		searchVType.setTextHeader(searchHeaderVType);
 		
-		// need these so the text fields can reshow everything when user presses back,
-		// needs a reference to everything that needs to show back up
-
-//		searchManu.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-//		searchYear.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-//		searchModel.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-//		searchVType.set(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, searchList, hint);
-
 		setClick(searchManu);
 		setClick(searchYear);
 		setClick(searchModel);
@@ -209,62 +184,18 @@ public class SearchActivity extends Activity {
 		startActivity(intent);
 	}
 	
-//	private ArrayList<Car> filterList() {
-//		ArrayList<Car> filtered = new ArrayList<Car>();
-//			for (int i = 0 ; i < cars.size(); i++) {
-//				if ( (cars.get(i).manufacturer.toLowerCase().contains(searchCorp.getText().toString().toLowerCase())  || searchCorp.getText().toString().equals(""))
-//						&& (Integer.toString(cars.get(i).year).toLowerCase().contains(searchYear.getText().toString().toLowerCase()) || searchYear.getText().toString().equals(""))
-//						&& (cars.get(i).model.toLowerCase().contains(searchModel.getText().toString().toLowerCase())  || searchModel.getText().toString().equals(""))
-//						&& (cars.get(i).vehicleClass.toLowerCase().contains(searchVType.getText().toString().toLowerCase())  || searchVType.getText().toString().equals(""))) {
-//					filtered.add(cars.get(i));
-//				}
-//			}
-//		
-//		return filtered;
-//	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		if (frames == null) {
+			//TODO can also move this into a thread instead
 			new AsyncTask<Integer, Integer, Boolean>() {
 				ProgressDialog progress;
 				@Override
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
 						frames = CarDatabase.obtain(SearchActivity.this).getCarFrames();
-
-//						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return Integer.toString(c.year);
-//							}							
-//						};
-//						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.manufacturer;
-//							}
-//						};
-//						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.model;
-//							}
-//							@Override
-//							protected boolean shouldContain(Car c) {
-//								return c.manufacturer.contains(searchCorp.getText()) && 
-//										Integer.toString(c.year).contains(searchYear.getText()) &&
-//										c.vehicleClass.contains(searchVType.getText());
-//							}
-//						};
-//						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.vehicleClass;
-//							}
-//						};
 						return true;
 					} catch (Exception unfinishedException) {
 						return false;
@@ -345,16 +276,6 @@ public class SearchActivity extends Activity {
 	
 
 	protected void setClick(final MyEditText textField) {
-//		textField.setOnTouchListener(new OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				onActionTextField(textField);
-//				if(textField.requestFocusFromTouch()) {
-//				    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//				}
-//				return true;
-//			}
-//		});
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
