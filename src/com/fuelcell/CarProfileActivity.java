@@ -62,17 +62,17 @@ public class CarProfileActivity extends Activity {
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
 				
-		int stars = (int) Math.round(5 * (1.0 - ((car.highwayEffL - SearchActivity.bestFuelEfficiency)/(SearchActivity.worstFuelEfficiency - SearchActivity.bestFuelEfficiency))));
-		if(stars>=1)
-			findViewById(R.id.star1).setBackgroundResource(R.drawable.startrue);
-		if(stars>=2)
-			findViewById(R.id.star2).setBackgroundResource(R.drawable.startrue);
-		if(stars>=3)
-			findViewById(R.id.star3).setBackgroundResource(R.drawable.startrue);
-		if(stars>=4)
-			findViewById(R.id.star4).setBackgroundResource(R.drawable.startrue);
-		if(stars>=5)
-			findViewById(R.id.star5).setBackgroundResource(R.drawable.startrue);
+//		int stars = (int) Math.round(5 * (1.0 - ((car.highwayEffL - SearchActivity.bestFuelEfficiency)/(SearchActivity.worstFuelEfficiency - SearchActivity.bestFuelEfficiency))));
+//		if(stars>=1)
+//			findViewById(R.id.star1).setBackgroundResource(R.drawable.startrue);
+//		if(stars>=2)
+//			findViewById(R.id.star2).setBackgroundResource(R.drawable.startrue);
+//		if(stars>=3)
+//			findViewById(R.id.star3).setBackgroundResource(R.drawable.startrue);
+//		if(stars>=4)
+//			findViewById(R.id.star4).setBackgroundResource(R.drawable.startrue);
+//		if(stars>=5)
+//			findViewById(R.id.star5).setBackgroundResource(R.drawable.startrue);
 		
 		planTrip.setOnClickListener(new OnClickListener(){
 

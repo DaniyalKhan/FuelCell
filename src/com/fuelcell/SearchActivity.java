@@ -248,7 +248,7 @@ public class SearchActivity extends Activity {
 						
 						searchManu.setFilter(manufacturerFilter);
 						searchYear.setFilter(yearFilter);
-						searchModel.setFilter(manufacturerFilter);
+						searchModel.setFilter(modelFilter);
 						searchVType.setFilter(vehicleFilter);
 						
 						searchList.setAdapter(carAdapter);
@@ -267,7 +267,6 @@ public class SearchActivity extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				onActionTextField(textField);
-				filter(textField.getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
@@ -279,9 +278,11 @@ public class SearchActivity extends Activity {
 	}
 	
 	private void onActionTextField(MyEditText editText) {
-		makeInvisible(editText);
-		carAdapter.setFilter(editText.filter);
-		lastClicked = editText;
+		if (editText.hasFocus() || editText.textHeader.hasFocus()) {
+			makeInvisible(editText);
+			carAdapter.setFilter(editText.filter, editText.getText().toString());
+			lastClicked = editText;
+		}
 	}
 	
 	protected void setTextChange(MyEditText textField) {

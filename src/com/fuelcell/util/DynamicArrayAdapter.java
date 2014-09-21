@@ -90,8 +90,11 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	    return rowView;
 	}
 
-	public void setFilter(CarFilter filter) {
+	public void setFilter(CarFilter filter, String fieldText) {
+		clear();
 		this.filter = filter;
+		filter.filter(fieldText);
+		notifyDataSetChanged();
 	}
 	
 	@Override
