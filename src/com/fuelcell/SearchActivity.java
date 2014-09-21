@@ -67,9 +67,6 @@ public class SearchActivity extends Activity {
 	Button search;
 	Button refresh;
 	TextView hint;
-	
-	public static Double bestFuelEfficiency;
-	public static Double worstFuelEfficiency;
 
 	//callback that a list item has been clicked
 	TextCallback callback = new TextCallback() {
@@ -202,16 +199,6 @@ public class SearchActivity extends Activity {
 					}
 					
 				}
-				
-//				private void determineFuel() {
-//					Set<Double> fuelEffeciency = new HashSet<Double>();
-//					for(int i = 0 ; i < cars.size() ; i++) {
-//						fuelEffeciency.add(cars.get(i).highwayEffL);
-//					}
-//					worstFuelEfficiency = Collections.max(fuelEffeciency);
-//					bestFuelEfficiency = Collections.min(fuelEffeciency);
-//					
-//				}
 
 				@Override
 				protected void onPreExecute() {
