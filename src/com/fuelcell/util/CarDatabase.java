@@ -47,7 +47,8 @@ public class CarDatabase extends SQLiteOpenHelper {
 //    private static final String TABLE = "<table>";
     
 	private static String QueryColumn = "select distinct ? from ? order by ?"; 
-	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from ?"; 
+//	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from " + CAR_TABLE;
+	private static String QueryCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + CAR_TABLE;
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
@@ -111,8 +112,11 @@ public class CarDatabase extends SQLiteOpenHelper {
 	public List<CarFrame> getCarFrames() {
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.rawQuery(QueryColumn, new String[] {PRIMARY_KEYS[0], PRIMARY_KEYS[1], PRIMARY_KEYS[2], PRIMARY_KEYS[3], CAR_TABLE});
-		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+//		Cursor c = db.rawQuery(QueryCarFrame, new String[] {PRIMARY_KEYS[0], PRIMARY_KEYS[1], PRIMARY_KEYS[2], PRIMARY_KEYS[3]});
+		Cursor c = db.rawQuery(QueryCarFrame, null);
+		while (c.moveToNext()) {
+			carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+		}
 		return carFrames;
 	}
 	

@@ -1,11 +1,7 @@
 package com.fuelcell;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fuelcell.action.ButtonSettings;
-import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
 import com.fuelcell.util.DynamicArrayAdapter;
@@ -113,20 +108,7 @@ public class SearchActivity extends Activity {
 					SearchActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							visible();				
-//							searchVType.setVisibility(View.VISIBLE);
-//							searchModel.setVisibility(View.VISIBLE);
-//							searchYear.setVisibility(View.VISIBLE);
-//							searchManu.setVisibility(View.VISIBLE);
-//							searchHeaderVType.setVisibility(View.VISIBLE);
-//							searchHeaderModel.setVisibility(View.VISIBLE);
-//							searchHeaderYear.setVisibility(View.VISIBLE);
-//							searchHeaderManu.setVisibility(View.VISIBLE);
-//							search.setVisibility(View.VISIBLE);
-//							refresh.setVisibility(View.VISIBLE);
-//							logo.setVisibility(View.VISIBLE);
-//							searchList.setVisibility(View.GONE);
-//							hint.setVisibility(View.GONE);
+							visible();
 						}
 					});
 				}
@@ -176,7 +158,7 @@ public class SearchActivity extends Activity {
 		layout = (RelativeLayout) findViewById(R.layout.activity_search);
 		wrapper = new ContextWrapper(this);
 
-		invisibleViews = Arrays.asList(searchManu, searchModel, searchYear, searchVType, logo, search, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, logo, refresh);
+		invisibleViews = Arrays.asList(searchManu, searchModel, searchYear, searchVType, logo, search, searchLogo, refresh, searchHeaderManu, searchHeaderYear, searchHeaderModel, searchHeaderVType, logo, refresh);
 		
 		searchManu.setTextHeader(searchHeaderManu);
 		searchYear.setTextHeader(searchHeaderYear);
@@ -251,6 +233,70 @@ public class SearchActivity extends Activity {
 				protected Boolean doInBackground(Integer... arg0) {
 					try {
 						frames = CarDatabase.obtain(SearchActivity.this).getCarFrames();
+
+//						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return Integer.toString(c.year);
+//							}							
+//						};
+//						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.manufacturer;
+//							}
+//						};
+//						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.model;
+//							}
+//							@Override
+//							protected boolean shouldContain(Car c) {
+//								return c.manufacturer.contains(searchCorp.getText()) && 
+//										Integer.toString(c.year).contains(searchYear.getText()) &&
+//										c.vehicleClass.contains(searchVType.getText());
+//							}
+//						};
+//						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
+//
+//							@Override
+//							protected String getFieldForCar(Car c) {
+//								return c.vehicleClass;
+//							}
+//						};
+						return true;
+					} catch (Exception unfinishedException) {
+						return false;
+					}
+					
+				}
+				
+//				private void determineFuel() {
+//					Set<Double> fuelEffeciency = new HashSet<Double>();
+//					for(int i = 0 ; i < cars.size() ; i++) {
+//						fuelEffeciency.add(cars.get(i).highwayEffL);
+//					}
+//					worstFuelEfficiency = Collections.max(fuelEffeciency);
+//					bestFuelEfficiency = Collections.min(fuelEffeciency);
+//					
+//				}
+
+				@Override
+				protected void onPreExecute() {
+					progress = new ProgressDialog(SearchActivity.this);
+					progress.setMessage("Loading car data onto Fuel Cell.");
+					progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+					progress.show();
+				}
+
+				@Override
+				protected void onPostExecute(Boolean result) {
+					progress.dismiss();
+					if (result == false) {
+						AlertDialog.Builder failure = new AlertDialog.Builder(SearchActivity.this);
+						failure.setMessage("Loading Failed");
+					} else {
 						
 						carAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, frames, callback);
 						
@@ -288,69 +334,6 @@ public class SearchActivity extends Activity {
 						searchVType.setFilter(vehicleFilter);
 						
 						searchList.setAdapter(carAdapter);
-						
-//						yearAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return Integer.toString(c.year);
-//							}							
-//						};
-//						manufactureAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.manufacturer;
-//							}
-//						};
-//						modelAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.model;
-//							}
-//							@Override
-//							protected boolean shouldContain(Car c) {
-//								return c.manufacturer.contains(searchCorp.getText()) && 
-//										Integer.toString(c.year).contains(searchYear.getText()) &&
-//										c.vehicleClass.contains(searchVType.getText());
-//							}
-//						};
-//						vTypeAdapter = new DynamicArrayAdapter(SearchActivity.this, R.layout.list_item, cars, callback) {
-//
-//							@Override
-//							protected String getFieldForCar(Car c) {
-//								return c.vehicleClass;
-//							}
-//						};
-						return true;
-					} catch (Exception unfinishedException) {
-						return false;
-					}
-				}
-
-//				private void determineFuel() {
-//					Set<Double> fuelEffeciency = new HashSet<Double>();
-//					for(int i = 0 ; i < cars.size() ; i++) {
-//						fuelEffeciency.add(cars.get(i).highwayEffL);
-//					}
-//					worstFuelEfficiency = Collections.max(fuelEffeciency);
-//					bestFuelEfficiency = Collections.min(fuelEffeciency);
-//					
-//				}
-
-				@Override
-				protected void onPreExecute() {
-					progress = new ProgressDialog(SearchActivity.this);
-					progress.setMessage("Loading car data onto Fuel Cell.");
-					progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					progress.setIndeterminate(true);
-					progress.show();
-				}
-
-				@Override
-				protected void onPostExecute(Boolean result) {
-					progress.dismiss();
-					if (result == false) {
-						AlertDialog.Builder failure = new AlertDialog.Builder(SearchActivity.this);
-						failure.setMessage("Loading Failed");
 					}
 
 				}
@@ -362,11 +345,21 @@ public class SearchActivity extends Activity {
 	
 
 	protected void setClick(final MyEditText textField) {
+//		textField.setOnTouchListener(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				onActionTextField(textField);
+//				if(textField.requestFocusFromTouch()) {
+//				    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//				}
+//				return true;
+//			}
+//		});
 		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				onActionTextField(textField);
-				//filter(((EditText)v).getText());
+				filter(textField.getText());
 			}
 		});
 		textField.setOnClickListener(new OnClickListener() {
@@ -378,7 +371,7 @@ public class SearchActivity extends Activity {
 	}
 	
 	private void onActionTextField(MyEditText editText) {
-		makeInvisible(editText, editText.textHeader);
+		makeInvisible(editText);
 		carAdapter.setFilter(editText.filter);
 		lastClicked = editText;
 	}
@@ -415,18 +408,6 @@ public class SearchActivity extends Activity {
 	
 	public void filter(CharSequence s) {
 		carAdapter.getFilter().filter(s);
-//		if (searchManu.getVisibility() == View.VISIBLE) {
-//			manufactureAdapter.getFilter().filter(s);
-//		}
-//		if (searchYear.getVisibility() == View.VISIBLE) {
-//			yearAdapter.getFilter().filter(s);
-//		}
-//		if (searchModel.getVisibility() == View.VISIBLE) {
-//			modelAdapter.getFilter().filter(s);
-//		}
-//		if (searchVType.getVisibility() == View.VISIBLE) {
-//			vTypeAdapter.getFilter().filter(s);
-//		}
 	}
 	
 	public void visible() {
@@ -435,37 +416,16 @@ public class SearchActivity extends Activity {
 		hint.setVisibility(View.GONE);
 	}
 
-	public void makeInvisible(View ... views) {
-		for (View v: invisibleViews) v.setVisibility(View.GONE);
-		for (View v: views) v.setVisibility(View.VISIBLE);
-		//these two views need to become visible  when switching to search mode
-		searchList.setVisibility(View.VISIBLE);
-		hint.setVisibility(View.VISIBLE);
-		
-//		if (v.hasFocus()) {
-//			logo.setVisibility(View.GONE);
-//			refresh.setVisibility(View.GONE);
-//			if (!v.equals(searchManu)) {
-//				searchManu.setVisibility(View.GONE);
-//				searchHeaderMenu.setVisibility(View.GONE);
-//			}
-//			if (!v.equals(searchYear)) {
-//				searchYear.setVisibility(View.GONE);
-//				searchHeaderYear.setVisibility(View.GONE);
-//			}
-//			if (!v.equals(searchModel)) {
-//				searchModel.setVisibility(View.GONE);
-//				searchHeaderModel.setVisibility(View.GONE);
-//			}
-//			if (!v.equals(searchVType)) {
-//				searchVType.setVisibility(View.GONE);
-//				searchHeaderVType.setVisibility(View.GONE);
-//			}
-//			searchList.setVisibility(View.VISIBLE);
-//			search.setVisibility(View.GONE);
-//			hint.setVisibility(View.VISIBLE);
-//
-//		}
+	public void makeInvisible(MyEditText t) {
+		if (t.hasFocus() || t.textHeader.hasFocus()) {
+			for (View v: invisibleViews) {
+				//only turn invisible the views that are not in focus! (the ones that are not clicked)
+				if (!v.equals(t) &&  !v.equals(t.textHeader)) v.setVisibility(View.GONE);
+			}
+			searchList.setVisibility(View.VISIBLE);
+			hint.setVisibility(View.VISIBLE);
+			searchLogo.setVisibility(View.GONE);
+		}
 	}
 
 	public static class MyEditText extends EditText {
