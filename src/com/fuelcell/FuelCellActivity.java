@@ -39,6 +39,9 @@ public class FuelCellActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_fuel_cell);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
+		
 		wrapper = new ContextWrapper(this);
 //		deleteContents();
 		//list of all files to download
