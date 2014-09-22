@@ -10,7 +10,6 @@ import org.w3c.dom.Document;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,12 +26,14 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.google.Directions.Route;
 import com.fuelcell.google.GMapV2Direction;
 import com.fuelcell.google.GMapV2Direction.DocCallback;
@@ -220,14 +221,7 @@ public class TravelActivity extends FragmentActivity {
 			}
 		});
 
-		((Button) findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent homeIntent = new Intent(TravelActivity.this, SearchActivity.class);
-				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				startActivity(homeIntent);
-			}
-		});
+		ButtonSettings.setHomeButton((ImageView) findViewById(R.id.mainicon), this);
 		
 		expand = (Button) findViewById(R.id.expandButton);
 		isExpanded = false;

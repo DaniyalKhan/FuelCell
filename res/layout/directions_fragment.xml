@@ -33,7 +33,7 @@
 	        android:layout_toRightOf="@+id/mainicon"
 	        android:layout_alignTop="@+id/mainicon"
 	        android:layout_marginTop="3dp"
-	        android:src="@drawable/header_route" />
+	        android:src="@drawable/header_results" />
 
     <LinearLayout
         android:layout_width="fill_parent"
