@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
@@ -13,14 +12,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fuelcell.R;
-import com.fuelcell.SearchActivity;
-import com.fuelcell.StatsActivity;
+import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.google.Directions.Route;
-import com.fuelcell.models.Car;
 
 
 public class DirectionsFragment extends ListFragment {
@@ -44,16 +41,7 @@ public class DirectionsFragment extends ListFragment {
 		View inflate = inflater.inflate(R.layout.directions_fragment, container, false);
 		if (!routes.isEmpty())
 			inflate.findViewById(R.id.hint).setVisibility(View.GONE);
-		((Button) inflate.findViewById(R.id.homeButton)).setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent homeIntent = new Intent(getActivity(), SearchActivity.class);
-				homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-				startActivity(homeIntent);
-			}
-			
-		});
+		ButtonSettings.setHomeButton(((ImageView) this.getActivity().findViewById(R.id.mainicon)),this.getActivity());
 		
 		return inflate;
 	}

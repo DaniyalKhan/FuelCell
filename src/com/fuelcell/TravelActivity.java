@@ -69,6 +69,9 @@ public class TravelActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.travel_activity);
+		
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
+		
 		Intent intent = getIntent();
 		car = (Car) intent.getParcelableExtra("car");
 		route = (Route) intent.getParcelableExtra("route");

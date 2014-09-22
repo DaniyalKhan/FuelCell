@@ -99,7 +99,6 @@ public class StatsActivity extends Activity {
 					final ViewHolder viewHolder = new ViewHolder();
 					viewHolder.text = (TextView) row.findViewById(R.id.text);
 					row.setTag(viewHolder);
-					row.setBackgroundResource(R.drawable.scroll_cell_general);
 				}
 				row.setOnClickListener(new OnClickListener() {
 					@Override
