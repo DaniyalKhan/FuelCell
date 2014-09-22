@@ -118,6 +118,7 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		}
 		
 		protected boolean shouldContain(CarFrame c) {
+			//TODO better filtering by looking at other fields
 			return true;
 		}
 		

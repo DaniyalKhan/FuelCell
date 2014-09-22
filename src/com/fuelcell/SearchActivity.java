@@ -36,7 +36,7 @@ import com.fuelcell.util.DynamicArrayAdapter.CarFilter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
 
 public class SearchActivity extends Activity {
-
+	
 	List<CarFrame> frames;
 	
 	MyEditText searchManu;
@@ -177,6 +177,8 @@ public class SearchActivity extends Activity {
 		intent.putExtra("title", title);
 		intent.putExtra("hint", hint);
 		intent.putExtra("clear", showClear);
+		CarFrame.saveCarToIntent(intent, searchYear.getText().toString(), searchManu.getText().toString(), 
+				searchModel.getText().toString(), searchVType.getText().toString());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
+import com.google.android.gms.drive.internal.m;
 
 public class CarDatabase extends SQLiteOpenHelper {
 
@@ -28,9 +29,7 @@ public class CarDatabase extends SQLiteOpenHelper {
     
     private static final String[] CAR_ATTRIBUTES = {"City_Efficienty_L_100KM", "Highway_Efficienty_L_100KM", "City_Efficienty_MPG", "Highway_Efficienty_MPG", "Fuel_Usage_L_Year", "Emissions_G_KM" };
     private static final String[] CAR_ATTRIBUTE_TYPES = {"FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
-    
-    static ArrayList<Car> cars = new ArrayList<Car>();
-    
+        
 //    private static final String CAR_DATA_TABLE = "car_data";
 //    private static final String[] CAR_DATA = { "ENGINESIZE", "CYLINDERS", "TRANSMISSION", "FUELTYPE" };
 //    private static final String[] CAR_DATA_TYPES = { "VARCHAR(255)", "INTEGER", "VARCHAR(255)", "VARCHAR(255)" };
@@ -109,11 +108,57 @@ public class CarDatabase extends SQLiteOpenHelper {
 		}
 	};
 	
+	private String constructQueryCarFrame(String[] primaryKeys, boolean hasSelctionArgs) {
+		if (primaryKeys == null ) throw new IllegalArgumentException("Cannot query with null primary keys");  
+		QueryCarFrame = "select distinct ";
+		for (String key: primaryKeys) QueryCarFrame += (key + ", ");
+		QueryCarFrame.substring(0, QueryCarFrame.length() - 2);
+		QueryCarFrame += (" from " + CAR_TABLE);
+		if (!hasSelctionArgs) return QueryCarFrame; 
+		QueryCarFrame += " where ";
+		for (String key: primaryKeys) QueryCarFrame += (key + " = ? and");
+		QueryCarFrame.substring(0, QueryCarFrame.length() - 4);
+		return QueryCarFrame;
+	}
+	
+	/**
+	 * Get distinct arFrame data matching these arguments
+	 * @param year
+	 * @param manufacturer
+	 * @param model
+	 * @param vehicleClass
+	 * @return
+	 */
+	public List<CarFrame> getCarFrames(int year, String manufacturer, String model, String vehicleClass) {
+		ArrayList<String> primaryKeys;
+		ArrayList<String> selectionArgs;
+		if (year > 0) {
+			primaryKeys.add(PRIMARY_KEYS[0]);
+			selectionArgs.add(manufacturer);		
+		}
+		if (manufacturer != null && manufacturer != "") {
+			primaryKeys.add(PRIMARY_KEYS[1]);
+			selectionArgs.add(manufacturer);
+		}
+		if (model != null && model != "") {
+			primaryKeys.add(PRIMARY_KEYS[2]);
+			selectionArgs.add(model);
+		}
+		if (vehicleClass != null && vehicleClass != "") {
+			primaryKeys.add(PRIMARY_KEYS[3]);
+			selectionArgs.add(vehicleClass);
+		}
+		return carFrameQuery();
+	}
+	
+	/**
+	 * Get all distinct CarFrame data
+	 * @return
+	 */
 	public List<CarFrame> getCarFrames() {
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
 		SQLiteDatabase db = getReadableDatabase();
-//		Cursor c = db.rawQuery(QueryCarFrame, new String[] {PRIMARY_KEYS[0], PRIMARY_KEYS[1], PRIMARY_KEYS[2], PRIMARY_KEYS[3]});
-		Cursor c = db.rawQuery(QueryCarFrame, null);
+		Cursor c = db.rawQuery(constructQueryCarFrame(PRIMARY_KEYS, false), null);
 		while (c.moveToNext()) {
 			carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		}
