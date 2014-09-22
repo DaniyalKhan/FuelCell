@@ -25,9 +25,11 @@ public class CarProfileActivity extends Activity {
 	TextView carName;
 	TextView efficiencyInfo;
 	TextView emissionsInfo;
+	TextView gearInfo;
 	
 	Button planTrip;
 	Button save;
+	Button defaultButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,8 @@ public class CarProfileActivity extends Activity {
 		fuelInfo = (TextView) findViewById(R.id.fuelInfo);
 		vehicleInfo = (TextView) findViewById(R.id.vehicleInfo);
 		efficiencyInfo = (TextView) findViewById(R.id.efficiencyInfo);
-		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo); 
+		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo);
+		gearInfo = (TextView) findViewById(R.id.gearInfo);
 				
 		carName.setText(car.year + " " + car.manufacturer + " " + car.model);
 		cylinderInfo.setText(Integer.toString(car.cylinders));
@@ -58,22 +61,17 @@ public class CarProfileActivity extends Activity {
 		vehicleInfo.setText(car.vehicleClass);
 		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
 		emissionsInfo.setText(Double.toString(car.emissions));
+		//TODO set gear info
+		gearInfo.setText("Set me");
 		
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
-				
-//		int stars = (int) Math.round(5 * (1.0 - ((car.highwayEffL - SearchActivity.bestFuelEfficiency)/(SearchActivity.worstFuelEfficiency - SearchActivity.bestFuelEfficiency))));
-//		if(stars>=1)
-//			findViewById(R.id.star1).setBackgroundResource(R.drawable.startrue);
-//		if(stars>=2)
-//			findViewById(R.id.star2).setBackgroundResource(R.drawable.startrue);
-//		if(stars>=3)
-//			findViewById(R.id.star3).setBackgroundResource(R.drawable.startrue);
-//		if(stars>=4)
-//			findViewById(R.id.star4).setBackgroundResource(R.drawable.startrue);
-//		if(stars>=5)
-//			findViewById(R.id.star5).setBackgroundResource(R.drawable.startrue);
+		defaultButton = (Button) findViewById(R.id.defaultButton);
 		
+		ButtonSettings.pressSize(planTrip, 10);
+		ButtonSettings.pressSize(defaultButton, 10);
+		ButtonSettings.pressSize(save, 5);
+				
 		planTrip.setOnClickListener(new OnClickListener(){
 
 			@Override

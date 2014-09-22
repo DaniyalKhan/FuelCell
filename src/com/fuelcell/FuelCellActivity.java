@@ -47,6 +47,8 @@ public class FuelCellActivity extends Activity {
 		setContentView(R.layout.activity_fuel_cell);
 		
 		CarDatabase.obtain(this).getWritableDatabase();
+		getWindow().setBackgroundDrawableResource(R.drawable.background);
+
 		
 		wrapper = new ContextWrapper(this);
 //		deleteContents();

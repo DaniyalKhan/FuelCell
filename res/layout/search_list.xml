@@ -6,7 +6,7 @@
     android:layout_marginTop="5dp"
     android:background="@android:color/transparent"
     android:cacheColorHint="@android:color/transparent"
-    android:divider="@android:color/white"
+    android:divider="@android:color/transparent"
     android:dividerHeight="1dp"
     android:paddingLeft="10dp" >
 

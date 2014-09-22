@@ -20,7 +20,7 @@
         android:allowBackup="true"
         android:icon="@drawable/fuelcellappicon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyTheme" >
         <activity
             android:name="com.fuelcell.FuelCellActivity"
             android:label="@string/app_name" 

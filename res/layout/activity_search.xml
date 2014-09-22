@@ -16,7 +16,6 @@
         android:text="To return to the main page, close the keyboard (or press back)." 
         android:textStyle="italic"
         android:textSize="10dp"
-        android:textColor="@android:color/white"
         android:layout_marginTop="2dp"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"/>
@@ -99,6 +98,7 @@
             android:layout_marginRight="10dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:hint="Any" />
 
@@ -120,6 +120,7 @@
             android:layout_marginRight="10dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:hint="Any" />
 
@@ -141,6 +142,7 @@
             android:layout_marginRight="10dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:hint="Any" />
 
@@ -162,6 +164,7 @@
             android:layout_marginRight="10dp"
             class="com.fuelcell.SearchActivity$MyEditText"
             android:background="@drawable/text_input_search"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:hint="Any" />
 

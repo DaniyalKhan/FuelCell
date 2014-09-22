@@ -4,31 +4,42 @@
     android:id="@+id/statsLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/homeButton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/home_press" />
+    <ImageView
+            android:id="@+id/mainicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="20dp"
+            android:contentDescription="desc"
+            android:nextFocusLeft="@id/autotext"
+            android:nextFocusUp="@id/autotext"
+            android:src="@drawable/header_home_button" />
+
+        <ImageView
+	        android:id="@+id/routeicon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/mainicon"
+	        android:layout_alignTop="@+id/mainicon"
+	        android:layout_marginTop="3dp"
+	        android:src="@drawable/header_results" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:text="Available Routes"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:orientation="vertical" 
+        android:layout_below="@+id/mainicon">
 
         <TextView
             android:id="@+id/hint"
@@ -38,14 +49,17 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
+            android:textColor="@android:color/white"
             android:text="Sorry there are no results for this route, please try another." />
 
         <ListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#FFFFFF"
-            android:divider="@android:color/white" >
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/white"
+            android:textColor="@android:color/white" >
+
         </ListView>
     </LinearLayout>
 
