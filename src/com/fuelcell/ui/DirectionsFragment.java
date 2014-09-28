@@ -83,9 +83,9 @@ public class DirectionsFragment extends ListFragment {
 		    // fill data
 		    ViewHolder holder = (ViewHolder) rowView.getTag();
 		    Route r = getItem(position);
-		    holder.route.setText(Html.fromHtml("<b>" + holder.route.getText() + "</b>" + "  " + r.summary));
-		    holder.distance.setText(Html.fromHtml("<b>" + holder.distance.getText()+ "</b>" + "  " + r.cDistance));
-		    holder.time.setText(Html.fromHtml("<b>" +holder.time.getText() + "</b>" + "  " + r.cTime));
+		    holder.route.setText(Html.fromHtml("<b>Route: </b>" + "  " + r.summary));
+		    holder.distance.setText(Html.fromHtml("<b>Distance: </b>" + "  " + r.cDistance));
+		    holder.time.setText(Html.fromHtml("<b>Time: </b>" + "  " + r.cTime));
 		    return rowView;
 		}
 		
