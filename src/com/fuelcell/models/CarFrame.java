@@ -26,16 +26,16 @@ public class CarFrame {
 	
 	public static void saveCarToIntent(Intent intent, String year, String manufacturer, String model, String vehicleClass) {
 		intent.putExtra(INTENT_YEAR, year);
-		intent.putExtra(INTENT_YEAR, manufacturer);
-		intent.putExtra(INTENT_YEAR, model);
-		intent.putExtra(INTENT_YEAR, vehicleClass);
+		intent.putExtra(INTENT_MANUFACTURER, manufacturer);
+		intent.putExtra(INTENT_MODEL, model);
+		intent.putExtra(INTENT_VCLASS, vehicleClass);
 	}
 	
 	public static CarFrame loadCarFromIntent(Intent intent) {
-		return new CarFrame(intent.getStringExtra(INTENT_YEAR) == "" ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR)), 
-							intent.getStringExtra(INTENT_MANUFACTURER) == "" ? null : intent.getStringExtra(INTENT_MANUFACTURER), 
-							intent.getStringExtra(INTENT_MODEL) == "" ? null : intent.getStringExtra(INTENT_MODEL), 
-							intent.getStringExtra(INTENT_VCLASS) == "" ? null : intent.getStringExtra(INTENT_VCLASS) );
+		return new CarFrame(intent.getStringExtra(INTENT_YEAR).equals("") ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR)), 
+							intent.getStringExtra(INTENT_MANUFACTURER).equals("") ? null : intent.getStringExtra(INTENT_MANUFACTURER), 
+							intent.getStringExtra(INTENT_MODEL).equals("") ? null : intent.getStringExtra(INTENT_MODEL), 
+							intent.getStringExtra(INTENT_VCLASS).equals("") ? null : intent.getStringExtra(INTENT_VCLASS) );
 	}
 
 }

@@ -27,6 +27,8 @@ public class CarDatabase extends SQLiteOpenHelper {
     private static final String[] PRIMARY_KEYS = { "Year", "Manufacturer", "Model", "Vehicle_Class", "Engine_Size_L", "Cylinders", "Transmission", "Gears", "Fuel_Type" };
     private static final String[] PRIMARY_KEY_TYPES = {"INTEGER", "VARCHAR(255)", "VARCHAR(255)", "VARCHAR(255)", "FLOAT",  "INTEGER", "VARCHAR(255)", "INTEGER", "VARCHAR(255)" };
     
+    private static final String[] PRIMARY_KEYS_FRAME = { "Year", "Manufacturer", "Model", "Vehicle_Class"};
+    
     private static final String[] CAR_ATTRIBUTES = {"City_Efficienty_L_100KM", "Highway_Efficienty_L_100KM", "City_Efficienty_MPG", "Highway_Efficienty_MPG", "Fuel_Usage_L_Year", "Emissions_G_KM" };
     private static final String[] CAR_ATTRIBUTE_TYPES = {"FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
         
@@ -53,6 +55,7 @@ public class CarDatabase extends SQLiteOpenHelper {
     
     //construct precompiled query strings
     static {
+    	//TODO use string builder
     	QueryInsertCarData += " (";
     	for (String key: PRIMARY_KEYS) {
     		QueryInsertCarData += (key + ", ");	
@@ -108,21 +111,25 @@ public class CarDatabase extends SQLiteOpenHelper {
 		}
 	};
 	
-	private String constructQueryCarFrame(String[] primaryKeys, boolean hasSelctionArgs) {
-		if (primaryKeys == null ) throw new IllegalArgumentException("Cannot query with null primary keys");  
-		QueryCarFrame = "select distinct ";
-		for (String key: primaryKeys) QueryCarFrame += (key + ", ");
-		QueryCarFrame.substring(0, QueryCarFrame.length() - 2);
-		QueryCarFrame += (" from " + CAR_TABLE);
-		if (!hasSelctionArgs) return QueryCarFrame; 
-		QueryCarFrame += " where ";
-		for (String key: primaryKeys) QueryCarFrame += (key + " = ? and");
-		QueryCarFrame.substring(0, QueryCarFrame.length() - 4);
-		return QueryCarFrame;
+	/**
+	 * Construct a car frame query with the specified columns in the (toptional) where clause
+	 * @param columns
+	 * @param selectionArgCount
+	 * @return
+	 */
+	private String constructQueryCarFrame(String[] columns, boolean hasWhereClause) {
+		if (!hasWhereClause) return QueryCarFrame;
+		StringBuilder builder = new StringBuilder(QueryCarFrame);
+		builder.append(" where ");
+		for (int i = 0; i < columns.length; i++) {
+			builder.append(columns[i] + " = ? and ");
+		}
+		return builder.subSequence(0, builder.length() - 5).toString();
 	}
 	
 	/**
-	 * Get distinct arFrame data matching these arguments
+	 * Get distinct carFrame data matching the given arguments (binded to placeholders in the where clause).
+	 * If any parameters are null or empty, they are not included in the where clause
 	 * @param year
 	 * @param manufacturer
 	 * @param model
@@ -130,25 +137,29 @@ public class CarDatabase extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public List<CarFrame> getCarFrames(int year, String manufacturer, String model, String vehicleClass) {
-		ArrayList<String> primaryKeys;
-		ArrayList<String> selectionArgs;
+		ArrayList<String> primaryKeys = new ArrayList<String>();
+		ArrayList<String> selectionArgs = new ArrayList<String>();
 		if (year > 0) {
 			primaryKeys.add(PRIMARY_KEYS[0]);
 			selectionArgs.add(manufacturer);		
 		}
-		if (manufacturer != null && manufacturer != "") {
+		if (manufacturer != null && !manufacturer.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[1]);
 			selectionArgs.add(manufacturer);
 		}
-		if (model != null && model != "") {
+		if (model != null && !model.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[2]);
 			selectionArgs.add(model);
 		}
-		if (vehicleClass != null && vehicleClass != "") {
+		if (vehicleClass != null && !vehicleClass.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[3]);
 			selectionArgs.add(vehicleClass);
 		}
-		return carFrameQuery();
+		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
+		int argSize = selectionArgs.size();
+		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(primaryKeys.toArray(new String[primaryKeys.size()]), argSize != 0), selectionArgs.toArray(new String[argSize]));
+		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+		return carFrames;
 	}
 	
 	/**
@@ -157,11 +168,8 @@ public class CarDatabase extends SQLiteOpenHelper {
 	 */
 	public List<CarFrame> getCarFrames() {
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
-		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.rawQuery(constructQueryCarFrame(PRIMARY_KEYS, false), null);
-		while (c.moveToNext()) {
-			carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
-		}
+		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(PRIMARY_KEYS_FRAME, false), null);
+		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
 	

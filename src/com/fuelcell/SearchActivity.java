@@ -197,6 +197,7 @@ public class SearchActivity extends Activity {
 						frames = CarDatabase.obtain(SearchActivity.this).getCarFrames();
 						return true;
 					} catch (Exception unfinishedException) {
+						unfinishedException.printStackTrace();
 						return false;
 					}
 					

@@ -85,6 +85,7 @@ public class StatsActivity extends Activity {
 	//load the car data
 	@Override
 	protected void onStart() {
+		super.onStart();
 		Intent intentLast = getIntent();
 		final CarFrame carFrame = CarFrame.loadCarFromIntent(intentLast);
 		new Thread(new Runnable() {
