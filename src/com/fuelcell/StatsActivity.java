@@ -31,7 +31,10 @@ public class StatsActivity extends Activity {
 	TextView hint;
 	Button clearButton;
 	
-	
+	/**
+	 * TODO: need to differentiate based on # of gears and other car things
+	 * 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,11 +120,10 @@ public class StatsActivity extends Activity {
 								row.setOnClickListener(new OnClickListener() {
 									@Override
 									public void onClick(View v) {
+										//After they click on car a car, just query the first car that coems up that matches the 4 criteria for now 
 										Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
-//										Car c = filtered.get(position);
-//										intent.putExtra("car", c);
+										CarFrame.saveCarToIntent(intent, Integer.toString(carFrame.year), carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
 										startActivity(intent);
-										
 									}
 								});
 								ViewHolder holder = (ViewHolder) row.getTag();

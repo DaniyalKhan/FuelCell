@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
 
 public class CarProfileActivity extends Activity {
 	Car car;
@@ -38,31 +39,6 @@ public class CarProfileActivity extends Activity {
 		setContentView(R.layout.activity_car_profile);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
-		
-		Intent intent = getIntent();
-		
-		car = (Car) intent.getParcelableExtra("car");
-		
-		carName = (TextView) findViewById(R.id.carName);
-		cylinderInfo = (TextView) findViewById(R.id.cylinderInfo);
-		engineInfo = (TextView) findViewById(R.id.engineInfo);
-		tranInfo = (TextView) findViewById(R.id.tranInfo);
-		fuelInfo = (TextView) findViewById(R.id.fuelInfo);
-		vehicleInfo = (TextView) findViewById(R.id.vehicleInfo);
-		efficiencyInfo = (TextView) findViewById(R.id.efficiencyInfo);
-		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo);
-		gearInfo = (TextView) findViewById(R.id.gearInfo);
-				
-		carName.setText(car.year + " " + car.manufacturer + " " + car.model);
-		cylinderInfo.setText(Integer.toString(car.cylinders));
-		engineInfo.setText(Float.toString((float) ((int) (car.engineSize*100)/100)));
-		tranInfo.setText(car.transmission.toString());
-		fuelInfo.setText(car.fuelType.toString());
-		vehicleInfo.setText(car.vehicleClass);
-		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
-		emissionsInfo.setText(Double.toString(car.emissions));
-		//TODO set gear info
-		gearInfo.setText("Set me");
 		
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
@@ -99,4 +75,39 @@ public class CarProfileActivity extends Activity {
 			
 		});
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		Intent intent = getIntent();
+		
+		final CarFrame carFrame = CarFrame.loadCarFromIntent(intent);
+		//TODO set this info once we query FULL car data
+		carName = (TextView) findViewById(R.id.carName);
+		cylinderInfo = (TextView) findViewById(R.id.cylinderInfo);
+		engineInfo = (TextView) findViewById(R.id.engineInfo);
+		tranInfo = (TextView) findViewById(R.id.tranInfo);
+		fuelInfo = (TextView) findViewById(R.id.fuelInfo);
+		vehicleInfo = (TextView) findViewById(R.id.vehicleInfo);
+		efficiencyInfo = (TextView) findViewById(R.id.efficiencyInfo);
+		emissionsInfo = (TextView) findViewById(R.id.emissionsInfo);
+		gearInfo = (TextView) findViewById(R.id.gearInfo);
+				
+		carName.setText(car.year + " " + car.manufacturer + " " + car.model);
+		cylinderInfo.setText(Integer.toString(car.cylinders));
+		engineInfo.setText(Float.toString((float) ((int) (car.engineSize*100)/100)));
+		tranInfo.setText(car.transmission.toString());
+		fuelInfo.setText(car.fuelType.toString());
+		vehicleInfo.setText(car.vehicleClass);
+		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
+		emissionsInfo.setText(Double.toString(car.emissions));
+		//TODO set gear info
+		gearInfo.setText("Set me");
+	}
+	
+	
+	
+	
+	
 }
