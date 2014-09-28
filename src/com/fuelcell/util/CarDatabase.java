@@ -141,7 +141,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		ArrayList<String> selectionArgs = new ArrayList<String>();
 		if (year > 0) {
 			primaryKeys.add(PRIMARY_KEYS[0]);
-			selectionArgs.add(manufacturer);		
+			selectionArgs.add(Integer.toString(year));		
 		}
 		if (manufacturer != null && !manufacturer.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[1]);

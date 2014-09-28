@@ -88,6 +88,7 @@ public class StatsActivity extends Activity {
 		super.onStart();
 		Intent intentLast = getIntent();
 		final CarFrame carFrame = CarFrame.loadCarFromIntent(intentLast);
+		//TODO maybe make this an async task?
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -134,7 +135,7 @@ public class StatsActivity extends Activity {
 					}
 				});
 			}
-		});
+		}).run();
 
 	}
 	
