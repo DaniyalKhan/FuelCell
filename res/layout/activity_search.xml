@@ -9,196 +9,226 @@
         android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:text="To return to the main page, close the keyboard (or press back)." 
-        android:textStyle="italic"
-        android:textSize="10dp"
         android:layout_marginTop="2dp"
-        android:visibility="invisible"
-        android:layout_alignParentBottom="true"/>
+        android:gravity="center"
+        android:text="To return to the main page, close the keyboard (or press back)."
+        android:textSize="10dp"
+        android:textStyle="italic"
+        android:visibility="invisible" />
 
-        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 
-        <LinearLayout
-            android:layout_width="0px"
-            android:layout_height="0px"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
-        <!--
+    <!--
              :nextFocusUp and :nextFocusLeft have been set to the id of this component
     	     to prevent the dummy from receiving focus again
-        -->
+    -->
 
-        <AutoCompleteTextView
-            android:id="@+id/autotext"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:nextFocusLeft="@id/autotext"
-            android:nextFocusUp="@id/autotext"
-            android:visibility="gone" />
+    <AutoCompleteTextView
+        android:id="@+id/autotext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:nextFocusLeft="@id/autotext"
+        android:nextFocusUp="@id/autotext"
+        android:visibility="gone" />
 
-        <Button
-            android:id="@+id/refresh"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_above="@+id/searchCorp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/refresh_search_press"
-            android:contentDescription="desc" />
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/searchCorp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/refresh_search_press"
+        android:contentDescription="desc" />
 
-        <ImageView
-            android:id="@+id/mainicon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentRight="false"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_centerHorizontal="false"
-            android:layout_centerInParent="false"
-            android:layout_centerVertical="false"
-            android:layout_marginTop="20dp"
-            android:contentDescription="desc"
-            android:nextFocusLeft="@id/autotext"
-            android:nextFocusUp="@id/autotext"
-            android:src="@drawable/header_home_button" />
+    <ImageView
+        android:id="@+id/mainicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="20dp"
+        android:contentDescription="desc"
+        android:nextFocusLeft="@id/autotext"
+        android:nextFocusUp="@id/autotext"
+        android:src="@drawable/header_home_button" />
 
-        <ImageView
-	        android:id="@+id/searchicon"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/mainicon"
-	        android:layout_alignTop="@+id/mainicon"
-	        android:layout_marginTop="3dp"
-	        android:src="@drawable/header_search" />
-        
-        <ImageView
-            android:id="@+id/searchHeaderCorp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mainicon"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/manufacturer_top_search"/>
-        
-        <view
-            android:id="@+id/searchCorp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/searchHeaderCorp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            class="com.fuelcell.SearchActivity$MyEditText"
-            android:background="@drawable/text_input_search"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:hint="Any" />
+    <ImageView
+        android:id="@+id/searchicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/mainicon"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/mainicon"
+        android:src="@drawable/header_search" />
 
-        <ImageView
-            android:id="@+id/searchHeaderYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchCorp"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/year_top_search"/>
-        
-        <view
-            android:id="@+id/searchYear"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/searchHeaderYear"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            class="com.fuelcell.SearchActivity$MyEditText"
-            android:background="@drawable/text_input_search"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:hint="Any" />
+    <ImageView
+        android:id="@+id/searchHeaderCorp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainicon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/manufacturer_top_search" />
 
-        <ImageView
-            android:id="@+id/searchHeaderVType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchYear"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/vehicle_type_top_search"/>
-        
-        <view
-            android:id="@+id/searchVType"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/searchHeaderVType"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            class="com.fuelcell.SearchActivity$MyEditText"
-            android:background="@drawable/text_input_search"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:hint="Any" />
+    <view
+        android:id="@+id/searchCorp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/searchHeaderCorp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/text_input_search"
+        android:gravity="center"
+        android:hint="Any"
+        android:textColor="@android:color/black" />
 
-        <ImageView
-            android:id="@+id/searchHeaderModel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchVType"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/model_top_search"/>
-        
-        <view
-            android:id="@+id/searchModel"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/searchHeaderModel"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            class="com.fuelcell.SearchActivity$MyEditText"
-            android:background="@drawable/text_input_search"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:hint="Any" />
+    <ImageView
+        android:id="@+id/searchHeaderYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchCorp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/year_top_search" />
 
-        <ListView
-            android:id="@+id/searchList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchModel"
-            android:layout_above="@+id/hint"
-            android:layout_marginTop="10dp"
-            android:visibility="gone" >
-        </ListView>
-	<LinearLayout
-	    android:layout_below="@+id/searchList"
-	    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <view
+        android:id="@+id/searchYear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchHeaderYear"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/text_input_search"
+        android:gravity="center"
+        android:hint="Any"
+        android:textColor="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/searchHeaderVType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchYear"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/vehicle_type_top_search" />
+
+    <view
+        android:id="@+id/searchVType"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchHeaderVType"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/text_input_search"
+        android:gravity="center"
+        android:hint="Any"
+        android:textColor="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/searchHeaderModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchVType"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/model_top_search" />
+
+    <view
+        android:id="@+id/searchModel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/searchHeaderModel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        class="com.fuelcell.SearchActivity$MyEditText"
+        android:background="@drawable/text_input_search"
+        android:gravity="center"
+        android:hint="Any"
+        android:textColor="@android:color/black" />
+
+    <ListView
+        android:id="@+id/searchList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hint"
+        android:layout_below="@+id/searchModel"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchList" >
+
         <Button
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/search_search_press"
             android:contentDescription="desc"
-            android:gravity="center"/>
+            android:gravity="center" />
+    </LinearLayout>
 
-	</LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
+    </TextView>
+ <!-- Loading Example -->
+    <ImageView
+        android:id="@+id/loadingBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:src="@drawable/loading_bar_back" >
+    </ImageView>
 
-</TextView>
-
+    <ImageView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loadingAnim"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:gravity="center"
+        android:src="@drawable/loading_text" />
+    
+    <ImageView
+        android:id="@+id/loadingAnim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:gravity="center"
+        android:src="@drawable/loading_bar_animation" >
+    </ImageView>
 
 </RelativeLayout>

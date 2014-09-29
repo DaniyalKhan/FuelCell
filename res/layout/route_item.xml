@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/white"
-            android:text="" />
+            android:text=""
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <LinearLayout
@@ -29,22 +29,22 @@
         android:layout_weight="0.5"
         android:orientation="vertical" >
 
-       	<TextView
+        <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/white"
-            android:text="" />
-        
+            android:text=""
+            android:textColor="@android:color/white" />
+
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:textColor="@android:color/white"
-            android:text="" />
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>
