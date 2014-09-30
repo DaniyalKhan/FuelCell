@@ -46,11 +46,12 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/text_input_search"
+        android:background="@drawable/text_input_location"
         android:layout_below="@+id/searchHeaderOrigin"
         android:textColor="@android:color/black"
         android:contentDescription="desc"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textCursorDrawable="@null"  />
 
     <ImageView
             android:id="@+id/searchHeaderDestination"
@@ -68,11 +69,12 @@
         android:layout_marginRight="10dp"
         android:layout_height="50dp"
         android:layout_below="@+id/searchHeaderDestination"
-        android:background="@drawable/text_input_search"
+        android:background="@drawable/text_input_location"
         android:textColor="@android:color/black"
         android:contentDescription="desc"
         android:ems="10"
-        android:gravity="center">
+        android:gravity="center"
+        android:textCursorDrawable="@null" >
     </EditText>
 <LinearLayout
     android:layout_width="wrap_content"
@@ -84,6 +86,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:background="@drawable/find_route_route_press"
         android:textSize="12sp"/>
 </LinearLayout>

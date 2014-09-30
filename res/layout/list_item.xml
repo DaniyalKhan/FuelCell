@@ -1,9 +1,24 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" 
-     android:id="@+id/text"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent"
-    android:padding="10dp"
-    android:textSize="16sp"
-    android:textColor="@android:color/white">
-    
-</TextView>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="sdfgfg"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/list_arrow" />
+
+</RelativeLayout>

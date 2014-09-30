@@ -78,6 +78,9 @@ public class DirectionsFragment extends ListFragment {
 						if (callback != null) callback.onRouteSelect(routes.get(position));
 					}
 				});
+				//Add arrow
+//				ImageView icon (ImageView)rowView.findViewById(list_arrow);
+//				icon.setImageResource(R.drawable.list_arrow);
 		    }
 
 		    // fill data

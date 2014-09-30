@@ -89,18 +89,18 @@ public class StatsActivity extends Activity {
 
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
-				View row = convertView;
+				View rowView = convertView;
 				//Hide message when there are items
 				hint.setVisibility(View.GONE);
 				
-				if (row == null) {
+				if (rowView == null) {
 					LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
-					row = inflater.inflate(R.layout.list_item, null);
+					rowView = inflater.inflate(R.layout.list_item, null);
 					final ViewHolder viewHolder = new ViewHolder();
-					viewHolder.text = (TextView) row.findViewById(R.id.text);
-					row.setTag(viewHolder);
+					viewHolder.text = (TextView) rowView.findViewById(R.id.text);
+					rowView.setTag(viewHolder);
 				}
-				row.setOnClickListener(new OnClickListener() {
+				rowView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
@@ -110,11 +110,11 @@ public class StatsActivity extends Activity {
 						
 					}
 				});
-				ViewHolder holder = (ViewHolder) row.getTag();
+				ViewHolder holder = (ViewHolder) rowView.getTag();
 			    String s = getItem(position);
 		    		holder.text.setText(s);
 
-				return row;
+				return rowView;
 			}
 			
 		};
