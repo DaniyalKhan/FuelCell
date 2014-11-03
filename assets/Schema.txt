@@ -1,0 +1,15 @@
+Functional Dependencies
+
+1.	Year, Manufacturer, Model, Vehicle Class -> Engine Size, Cylinders, Transmission, Fuel Type, Fuel Consumption, Fuel, Co2 Emissions
+
+
+Tables
+
+1. 	Car Info
+	Year, Manufacturer, Model, Vehicle Class -> Engine Size, Cylinders, Transmission, Fuel Type
+
+2. 	Car Fuel Consumption
+	Year, Manufacturer, Model, Vehicle Class -> Fuel Consumption, Fuel, Co2 Emissions
+
+3. 	Saved Cars
+	Year, Manufacturer, Model, Vehicle Class

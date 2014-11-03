@@ -21,17 +21,20 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.fuelcell.action.ButtonSettings;
-import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
 
 public class StatsActivity extends Activity {
 	
 	ListView resultList;
-	List<Car> filtered;
+	List<CarFrame> searched;
 	TextView hint;
 	Button clearButton;
 	
-	
+	/**
+	 * TODO: need to differentiate based on # of gears and other car things
+	 * 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,10 +64,10 @@ public class StatsActivity extends Activity {
 			clearButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					CarDatabase.reCreate(StatsActivity.this);
-					Intent homeIntent = new Intent(StatsActivity.this, HubActivity.class);
-					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-					startActivity(homeIntent);
+//					CarDatabase.reCreate(StatsActivity.this);
+//					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
+//					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
+//					startActivity(homeIntent);
 				}
 			});
 //			LinearLayout rl = new LinearLayout(this);
@@ -72,22 +75,26 @@ public class StatsActivity extends Activity {
 //			params.addRule(RelativeLayout.ABOVE, clearButton.getId());
 //			rl.addView(findViewById(R.id.listLayout), params);
 			
-			
-			
 		}
 		
 		resultList = (ListView) findViewById(R.id.searchedList);
 		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
 		
-		filtered = SearchActivity.filtered;
-		List<String> resultsOutput = new ArrayList<String>();
-		
-		for (int i = 0 ; i < filtered.size() ; i++) {
-			resultsOutput.add(filtered.get(i).getYear() + " " + filtered.get(i).getManufacturer() + " " + filtered.get(i).getModel());
-		}
-		ArrayAdapter<String> resultsAdapter = new ArrayAdapter<String>(StatsActivity.this, R.layout.list_item, resultsOutput) {
-
+	}
+	
+	
+	
+	
+	//load the car data
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Intent intentLast = getIntent();
+		final CarFrame carFrame = CarFrame.loadCarFromIntent(intentLast);
+		//TODO maybe make this an async task?
+		new Thread(new Runnable() {
 			@Override
+/*
 			public View getView(final int position, View convertView, ViewGroup parent) {
 				View rowView = convertView;
 				//Hide message when there are items
@@ -101,24 +108,59 @@ public class StatsActivity extends Activity {
 					rowView.setTag(viewHolder);
 				}
 				rowView.setOnClickListener(new OnClickListener() {
+*/
+			public void run() {
+				searched = CarDatabase.obtain(StatsActivity.this).getCarFrames(carFrame.year, carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
+				StatsActivity.this.runOnUiThread(new Runnable() {
 					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
-						Car c = filtered.get(position);
-						intent.putExtra("car", c);
-						startActivity(intent);
-						
+					public void run() {
+						List<String> resultsOutput = new ArrayList<String>();
+						for (int i = 0 ; i < searched.size() ; i++) {
+							resultsOutput.add(searched.get(i).year + " " + searched.get(i).manufacturer + " " + searched.get(i).model);
+						}
+						ArrayAdapter<String> resultsAdapter = new ArrayAdapter<String>(StatsActivity.this, R.layout.list_item, resultsOutput) {
+							@Override
+							public View getView(final int position, View convertView, ViewGroup parent) {
+								View row = convertView;
+								//Hide message when there are items
+								hint.setVisibility(View.GONE);
+								
+								if (row == null) {
+									LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
+									row = inflater.inflate(R.layout.list_item, null);
+									final ViewHolder viewHolder = new ViewHolder();
+									viewHolder.text = (TextView) row.findViewById(R.id.text);
+									row.setTag(viewHolder);
+								}
+								row.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										//After they click on car a car, just query the first car that coems up that matches the 4 criteria for now 
+										Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
+										CarFrame.saveCarToIntent(intent, Integer.toString(carFrame.year), carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
+										startActivity(intent);
+									}
+								});
+								ViewHolder holder = (ViewHolder) row.getTag();
+							    String s = getItem(position);
+						    	holder.text.setText(s);
+								return row;
+							}
+							
+						};
+						resultList.setAdapter(resultsAdapter);
 					}
 				});
+/*
 				ViewHolder holder = (ViewHolder) rowView.getTag();
 			    String s = getItem(position);
 		    		holder.text.setText(s);
 
 				return rowView;
+*/
 			}
-			
-		};
-		resultList.setAdapter(resultsAdapter);
+		}).run();
+
 	}
 	
 	static class ViewHolder {
