@@ -32,10 +32,10 @@ public class CarFrame {
 	}
 	
 	public static CarFrame loadCarFromIntent(Intent intent) {
-		return new CarFrame(intent.getStringExtra(INTENT_YEAR).equals("") ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR)), 
-							intent.getStringExtra(INTENT_MANUFACTURER).equals("") ? null : intent.getStringExtra(INTENT_MANUFACTURER), 
-							intent.getStringExtra(INTENT_MODEL).equals("") ? null : intent.getStringExtra(INTENT_MODEL), 
-							intent.getStringExtra(INTENT_VCLASS).equals("") ? null : intent.getStringExtra(INTENT_VCLASS) );
+		return new CarFrame(intent.getStringExtra(INTENT_YEAR) == null ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR)), 
+							intent.getStringExtra(INTENT_MANUFACTURER) == null ? "" : intent.getStringExtra(INTENT_MANUFACTURER), 
+							intent.getStringExtra(INTENT_MODEL) == null ? "" : intent.getStringExtra(INTENT_MODEL), 
+							intent.getStringExtra(INTENT_VCLASS) == null ? "" : intent.getStringExtra(INTENT_VCLASS));
 	}
 
 }
