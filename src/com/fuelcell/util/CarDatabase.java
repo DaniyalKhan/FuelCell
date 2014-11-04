@@ -14,6 +14,7 @@ import com.fuelcell.models.CarFrame;
 
 public class CarDatabase extends SQLiteOpenHelper {
 
+	private Context context;
 	private static CarDatabase instance;
 	
 	private static final String DATABASE_NAME = "cars_database";
