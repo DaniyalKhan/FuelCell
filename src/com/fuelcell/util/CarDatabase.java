@@ -11,11 +11,9 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
-import com.google.android.gms.drive.internal.m;
 
 public class CarDatabase extends SQLiteOpenHelper {
 
-	private Context context;
 	private static CarDatabase instance;
 	
 	private static final String DATABASE_NAME = "cars_database";
