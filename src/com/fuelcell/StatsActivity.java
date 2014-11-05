@@ -108,7 +108,12 @@ public class StatsActivity extends Activity {
 				rowView.setOnClickListener(new OnClickListener() {
 */
 			public void run() {
-				searched = CarDatabase.obtain(StatsActivity.this).getCarFrames(carFrame.year, carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
+				Intent intentLast = getIntent();
+				if (intentLast.getStringExtra("title").equalsIgnoreCase("Results")) {
+					searched = CarDatabase.obtain(StatsActivity.this).getCarFrames(carFrame.year, carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
+				} else if (intentLast.getStringExtra("title").equalsIgnoreCase("Saved")){
+					searched = CarDatabase.obtain(StatsActivity.this).getFavCarFrames();
+				}
 				StatsActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

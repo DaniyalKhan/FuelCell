@@ -57,6 +57,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 			+ CAR_ATTRIBUTES[0] + ", " + CAR_ATTRIBUTES[1] + ", " + CAR_ATTRIBUTES[2] + ", " + CAR_ATTRIBUTES[3] + ", " + CAR_ATTRIBUTES[4] + ", " + CAR_ATTRIBUTES[5]
 			+ " from " + CAR_TABLE;
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
+    private static String QueryFavCarFrame = "select distinct "+ PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + FAVOURITES;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
     //construct precompiled query strings
@@ -182,6 +183,15 @@ public class CarDatabase extends SQLiteOpenHelper {
 		int argSize = selectionArgs.size();
 		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(primaryKeys.toArray(new String[primaryKeys.size()]), argSize != 0), selectionArgs.toArray(new String[argSize]));
 		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+		return carFrames;
+	}
+	
+	public List<CarFrame> getFavCarFrames() {
+		ArrayList<String> selectionArgs = new ArrayList<String>();
+		Cursor c = getReadableDatabase().rawQuery(QueryFavCarFrame,selectionArgs.toArray(new String[selectionArgs.size()]));
+		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
+		while (c.moveToNext())
+			while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
 	
