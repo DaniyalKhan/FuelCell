@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,10 +15,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.fuelcell.action.ButtonSettings;
@@ -137,7 +135,7 @@ public class StatsActivity extends Activity {
 									public void onClick(View v) {
 										//After they click on car a car, just query the first car that coems up that matches the 4 criteria for now 
 										Intent intent = new Intent(StatsActivity.this, CarProfileActivity.class);
-										CarFrame.saveCarToIntent(intent, Integer.toString(carFrame.year), carFrame.manufacturer, carFrame.model, carFrame.vehicleClass);
+										CarFrame.saveCarToIntent(intent, Integer.toString(searched.get(position).year), searched.get(position).manufacturer, searched.get(position).model, searched.get(position).vehicleClass);
 										startActivity(intent);
 									}
 								});

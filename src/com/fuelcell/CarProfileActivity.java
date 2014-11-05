@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
+import com.fuelcell.util.CarDatabase;
 
 public class CarProfileActivity extends Activity {
 	Car car;
@@ -83,7 +84,9 @@ public class CarProfileActivity extends Activity {
 		Intent intent = getIntent();
 		
 		final CarFrame carFrame = CarFrame.loadCarFromIntent(intent);
-		//TODO set this info once we query FULL car data
+		
+		this.car = CarDatabase.obtain(CarProfileActivity.this).getCarFull(carFrame);
+		
 		carName = (TextView) findViewById(R.id.carName);
 		cylinderInfo = (TextView) findViewById(R.id.cylinderInfo);
 		engineInfo = (TextView) findViewById(R.id.engineInfo);
@@ -102,12 +105,6 @@ public class CarProfileActivity extends Activity {
 		vehicleInfo.setText(car.vehicleClass);
 		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
 		emissionsInfo.setText(Double.toString(car.emissions));
-		//TODO set gear info
-		gearInfo.setText("Set me");
+		gearInfo.setText(Integer.toString(car.gears));
 	}
-	
-	
-	
-	
-	
 }

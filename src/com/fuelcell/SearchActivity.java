@@ -121,6 +121,7 @@ public class SearchActivity extends Activity {
 		hint = (TextView) findViewById(R.id.hint);
 		
 		ButtonSettings.pressSize(search, 15);
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override

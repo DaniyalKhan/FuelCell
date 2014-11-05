@@ -8,8 +8,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.fuelcell.models.Car;
+import com.fuelcell.models.Car.FuelType;
+import com.fuelcell.models.Car.TransmissionType;
 import com.fuelcell.models.CarFrame;
 
 public class CarDatabase extends SQLiteOpenHelper {
@@ -49,6 +52,10 @@ public class CarDatabase extends SQLiteOpenHelper {
 	private static String QueryColumn = "select distinct ? from ? order by ?"; 
 //	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from " + CAR_TABLE;
 	private static String QueryCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + CAR_TABLE;
+	private static String QueryCarFull = "select " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
+			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ", " 
+			+ CAR_ATTRIBUTES[0] + ", " + CAR_ATTRIBUTES[1] + ", " + CAR_ATTRIBUTES[2] + ", " + CAR_ATTRIBUTES[3] + ", " + CAR_ATTRIBUTES[4] + ", " + CAR_ATTRIBUTES[5]
+			+ " from " + CAR_TABLE;
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
 //  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
     
@@ -111,7 +118,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 	};
 	
 	/**
-	 * Construct a car frame query with the specified columns in the (toptional) where clause
+	 * Construct a car frame query with the specified columns in the (optional) where clause
 	 * @param columns
 	 * @param selectionArgCount
 	 * @return
@@ -124,6 +131,23 @@ public class CarDatabase extends SQLiteOpenHelper {
 			builder.append(columns[i] + " = ? and ");
 		}
 		return builder.subSequence(0, builder.length() - 5).toString();
+	}
+	
+	/**
+	 * Construct a car query for all profile information using where to get certain car
+	 * @param carFrame
+	 * @return
+	 */
+	private String constructQueryCarFull(String[] carArgs) {
+		StringBuilder builder = new StringBuilder(QueryCarFull);
+		if (carArgs.length > 0) {
+			builder.append(" where ");
+			for (int i = 0 ; i < carArgs.length ; i++){
+				builder.append(carArgs[i] + " = ? and ");
+			}
+			return builder.subSequence(0, builder.length() - 5).toString();
+		}
+		return "";
 	}
 	
 	/**
@@ -159,6 +183,57 @@ public class CarDatabase extends SQLiteOpenHelper {
 		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(primaryKeys.toArray(new String[primaryKeys.size()]), argSize != 0), selectionArgs.toArray(new String[argSize]));
 		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
+	}
+	
+	/**
+	 * Get distinct car for car profile
+	 * @param 
+	 * @return
+	 */
+	public Car getCarFull(CarFrame carFrame) {
+		Car car = new Car();
+		ArrayList<String> primaryKeys = new ArrayList<String>();
+		ArrayList<String> selectionArgs = new ArrayList<String>();
+		
+		if (carFrame.year > 0) {
+			primaryKeys.add(PRIMARY_KEYS[0]);	
+			selectionArgs.add(Integer.toString(carFrame.year));
+		}
+		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[1]);
+			selectionArgs.add(carFrame.manufacturer);
+		}
+		if (carFrame.model != null && !carFrame.model.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[2]);
+			selectionArgs.add(carFrame.model);
+		}
+		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[3]);
+			selectionArgs.add(carFrame.vehicleClass);
+		}
+	
+		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFull(primaryKeys.toArray(new String[primaryKeys.size()])), selectionArgs.toArray(new String[selectionArgs.size()]));
+		c.moveToNext(); 
+
+		//Set from Primary Keys
+		car.year=c.getInt(0);
+		car.manufacturer=c.getString(1);
+		car.model=c.getString(2);
+		car.vehicleClass=c.getString(3);
+		car.engineSize=c.getDouble(4);
+		car.cylinders=c.getInt(5);
+		car.transmission=TransmissionType.valueOf(c.getString(6));
+		car.gears=c.getInt(7);
+		car.fuelType=FuelType.valueOf(c.getString(8));
+		//Set for car attributes
+		car.cityEffL=c.getFloat(9);
+		car.highwayEffL=c.getFloat(10);
+		car.cityEffM=c.getFloat(11);
+		car.highwayEffM=c.getFloat(12);
+		car.fuelUsage=c.getDouble(13);
+		car.emissions=c.getDouble(14);
+		
+		return car;
 	}
 	
 	/**

@@ -231,7 +231,7 @@ public class Car extends CarFrame {
 //		return cylinders;
 //	}
 //
-//	public String getTransmission() {
+//	public TransmissionType getTransmission() {
 //		return transmission;
 //	}
 //
