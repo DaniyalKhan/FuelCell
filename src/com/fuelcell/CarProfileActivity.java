@@ -54,7 +54,7 @@ public class CarProfileActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intentTrip = new Intent(CarProfileActivity.this, DirectionsActivity.class);
-//				intentTrip.putExtra("car", car);
+				intentTrip.putExtra("car", car);
 				startActivity(intentTrip);
 				
 			}

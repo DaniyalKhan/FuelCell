@@ -13,7 +13,7 @@ import android.os.Parcelable;
 
 import com.fuelcell.util.CarDatabase;
 
-public class Car extends CarFrame {
+public class Car extends CarFrame implements Parcelable{
 	
 	public static enum FuelType {Diesel, Ethanol, Natural, Regular, Premium};
 	public static enum TransmissionType {Automatic, AutomaticManual, AutomaticWithSelectShift, ContinuouslyVariable, Manual};
@@ -58,71 +58,72 @@ public class Car extends CarFrame {
 	
 	public Car() {}
 	
-//	@Override
-//	public int describeContents() {
-//		return 0;
-//	}
-//
-//	@Override
-//	public void writeToParcel(Parcel dest, int flags) {
-//		dest.writeInt(year);
-//		dest.writeString(manufacturer);
-//		dest.writeString(model);
-//		dest.writeString(vehicleClass);
-//		dest.writeDouble(engineSize);
-//		dest.writeInt(cylinders);
-//		dest.writeString(transmission.toString());
-//		dest.writeString(fuelType.toString().charAt(0) + "");
-//		dest.writeDouble(cityEffL);
-//		dest.writeDouble(highwayEffL);
-//		dest.writeDouble(cityEffM);
-//		dest.writeDouble(highwayEffM);
-//		dest.writeDouble(fuelUsage);
-//		dest.writeDouble(emissions);
-//		
-//	}
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(year);
+		dest.writeString(manufacturer);
+		dest.writeString(model);
+		dest.writeString(vehicleClass);
+		dest.writeDouble(engineSize);
+		dest.writeInt(cylinders);
+		dest.writeString(transmission.toString());
+		dest.writeInt(gears);
+		dest.writeString(fuelType.toString().charAt(0) + "");
+		dest.writeDouble(cityEffL);
+		dest.writeDouble(highwayEffL);
+		dest.writeDouble(cityEffM);
+		dest.writeDouble(highwayEffM);
+		dest.writeDouble(fuelUsage);
+		dest.writeDouble(emissions);
+		
+	}
 	
-//	public static final Parcelable.Creator<Car> CREATOR = new Parcelable.Creator<Car>() {
-//		public Car createFromParcel(Parcel in) {
-//			return new Car(in); 
-//	    }
-//		public Car[] newArray(int size) {
-//			return new Car[size];
-//		}
-//	};
+	public static final Parcelable.Creator<Car> CREATOR = new Parcelable.Creator<Car>() {
+		public Car createFromParcel(Parcel in) {
+			return new Car(in); 
+	    }
+		public Car[] newArray(int size) {
+			return new Car[size];
+		}
+	};
 	
-//	public Car(Parcel in) {
-//		this(in.readInt(), in.readString(), in.readString(), in.readString(), 
-//				in.readDouble(), in.readInt(), in.readString(), in.readString(), 
-//				in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), 
-//				in.readDouble(), in.readDouble());
-//	}
+	public Car(Parcel in) {
+		this(in.readInt(), in.readString(), in.readString(), in.readString(), 
+				in.readDouble(), in.readInt(), in.readString(), in.readInt(), in.readString(), 
+				in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble(), 
+				in.readDouble(), in.readDouble());
+	}
 	
-//	private Car(int year, String manufacturer, String model,
-//			String vehicleClass, double engineSize, int cylinders,
-//			String transmission, int numberofGears, String fuelType, 
-//			double cityEffL, double highwayEffL, double cityEffM, 
-//			double highwayEffM, double fuelUsage, double emissions) {
-//		this.year = year;
-//		this.manufacturer = manufacturer;
-//		this.model = model;
-//		this.vehicleClass = vehicleClass;
-//		this.engineSize = engineSize;
-//		this.cylinders = cylinders;
-//		this.transmission = transmission;
-//		this.gears = numberofGears;
-//		if (fuelType.trim().equals("D")) this.fuelType = FuelType.Diesel;
-//		else if (fuelType.trim().equals("E")) this.fuelType = FuelType.Ethanol;
-//		else if (fuelType.trim().equals("N")) this.fuelType = FuelType.Natural;
-//		else if (fuelType.trim().equals("X")) this.fuelType = FuelType.Regular;
-//		else this.fuelType = FuelType.Premium;
-//		this.cityEffL = cityEffL;
-//		this.highwayEffL = highwayEffL;
-//		this.cityEffM = cityEffM;
-//		this.highwayEffM = highwayEffM;
-//		this.fuelUsage = fuelUsage;
-//		this.emissions = emissions;
-//	}
+	private Car(int year, String manufacturer, String model,
+			String vehicleClass, double engineSize, int cylinders,
+			String transmission, int numberofGears, String fuelType, 
+			double cityEffL, double highwayEffL, double cityEffM, 
+			double highwayEffM, double fuelUsage, double emissions) {
+		this.year = year;
+		this.manufacturer = manufacturer;
+		this.model = model;
+		this.vehicleClass = vehicleClass;
+		this.engineSize = engineSize;
+		this.cylinders = cylinders;
+		this.transmission = TransmissionType.valueOf(transmission);
+		this.gears = numberofGears;
+		if (fuelType.trim().equals("D")) this.fuelType = FuelType.Diesel;
+		else if (fuelType.trim().equals("E")) this.fuelType = FuelType.Ethanol;
+		else if (fuelType.trim().equals("N")) this.fuelType = FuelType.Natural;
+		else if (fuelType.trim().equals("X")) this.fuelType = FuelType.Regular;
+		else this.fuelType = FuelType.Premium;
+		this.cityEffL = cityEffL;
+		this.highwayEffL = highwayEffL;
+		this.cityEffM = cityEffM;
+		this.highwayEffM = highwayEffM;
+		this.fuelUsage = fuelUsage;
+		this.emissions = emissions;
+	}
 //
 //	public Car(String[] car) {
 //		year = Integer.parseInt(car[0].trim());
