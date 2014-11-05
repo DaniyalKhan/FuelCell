@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
+import com.fuelcell.util.CarDatabase;
 
 public class HubActivity extends Activity {
 
@@ -20,7 +22,7 @@ public class HubActivity extends Activity {
 	Button findRoute;
 	Button favourite;
 
-	public static List<Car> filtered;
+	public static List<CarFrame> filtered;
 	ArrayList<Car> cars;
 
 	@Override
@@ -37,7 +39,7 @@ public class HubActivity extends Activity {
 		ButtonSettings.pressSize(findRoute, 15);
 		ButtonSettings.pressSize(favourite, 15);
 
-		filtered = new ArrayList<Car>();
+		filtered = new ArrayList<CarFrame>();
 
 		setClick();
 	}
@@ -67,7 +69,7 @@ public class HubActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				startStatsActivity(Car.getSavedCars(HubActivity.this), "Saved",
+				startStatsActivity(CarDatabase.obtain(HubActivity.this).getFavCarFrames(), "Saved",
 						"You do not currently have any car profiles saved.",
 						Car.getSavedCars(HubActivity.this).size() > 0);
 				// Intent intent = new Intent(HubActivity.this,
@@ -78,10 +80,10 @@ public class HubActivity extends Activity {
 		});
 	}
 
-	private void startStatsActivity(List<Car> cars, String title, String hint,
+	private void startStatsActivity(List<CarFrame> list, String title, String hint,
 			boolean showClear) {
 		Intent intent = new Intent(HubActivity.this, StatsActivity.class);
-		filtered = cars;
+		filtered = list;
 		intent.putExtra("title", title);
 		intent.putExtra("hint", hint);
 		intent.putExtra("clear", showClear);

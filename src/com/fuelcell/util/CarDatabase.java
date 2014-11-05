@@ -52,13 +52,16 @@ public class CarDatabase extends SQLiteOpenHelper {
 	private static String QueryColumn = "select distinct ? from ? order by ?"; 
 //	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from " + CAR_TABLE;
 	private static String QueryCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + CAR_TABLE;
+	private static String QueryFavouriteCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + FAVOURITES;
 	private static String QueryCarFull = "select " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
 			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ", " 
 			+ CAR_ATTRIBUTES[0] + ", " + CAR_ATTRIBUTES[1] + ", " + CAR_ATTRIBUTES[2] + ", " + CAR_ATTRIBUTES[3] + ", " + CAR_ATTRIBUTES[4] + ", " + CAR_ATTRIBUTES[5]
 			+ " from " + CAR_TABLE;
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
-    private static String QueryFavCarFrame = "select distinct "+ PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + FAVOURITES;
-//  private static String QueryAddFavourite = "insert into " + CAR_TABLE + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " + ") values (?, ?, ?, ?)";
+    private static String QueryInsertFavourite = "insert into " + FAVOURITES + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
+			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static String QueryRemoveFavourite = "delete from " + FAVOURITES + "WHERE " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
+			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     //construct precompiled query strings
     static {
@@ -186,13 +189,91 @@ public class CarDatabase extends SQLiteOpenHelper {
 		return carFrames;
 	}
 	
+	/**
+	 * Get all favourites car frames in list
+	 * @return carFrame
+	 */
 	public List<CarFrame> getFavCarFrames() {
 		ArrayList<String> selectionArgs = new ArrayList<String>();
-		Cursor c = getReadableDatabase().rawQuery(QueryFavCarFrame,selectionArgs.toArray(new String[selectionArgs.size()]));
+		Cursor c = getReadableDatabase().rawQuery(QueryFavouriteCarFrame,selectionArgs.toArray(new String[selectionArgs.size()]));
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
 		while (c.moveToNext())
 			while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
+	}
+	//QueryAddFavourite
+	public void addFavCarFrames(Car car) {
+//		ArrayList<String> primaryKeys = new ArrayList<String>();
+//		ArrayList<String> selectionArgs = new ArrayList<String>();
+//		if (carFrame.year > 0) {
+//			primaryKeys.add(PRIMARY_KEYS[0]);
+//			selectionArgs.add(Integer.toString(carFrame.year));		
+//		}
+//		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[1]);
+//			selectionArgs.add(carFrame.manufacturer);
+//		}
+//		if (carFrame.model != null && !carFrame.model.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[2]);
+//			selectionArgs.add(carFrame.model);
+//		}
+//		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[3]);
+//			selectionArgs.add(carFrame.vehicleClass);
+//		}
+//		Cursor c = getReadableDatabase().rawQuery(QueryInsertFavourite,selectionArgs.toArray(new String[selectionArgs.size()]));
+		
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryInsertFavourite);
+		
+		//primary keys
+		statement.bindDouble(1, car.year);
+		statement.bindString(2, car.manufacturer);
+		statement.bindString(3, car.model);
+		statement.bindString(4, car.vehicleClass);
+		statement.bindDouble(5, car.engineSize);
+		statement.bindDouble(6, car.cylinders);
+		statement.bindString(7, car.transmission.toString());
+		statement.bindDouble(8, car.gears);
+		statement.bindString(9, car.fuelType.toString());
+		statement.executeInsert();
+	}
+	//Use different query?
+	public void removeFavCarFrames(Car car) {
+//		ArrayList<String> primaryKeys = new ArrayList<String>();
+//		ArrayList<String> selectionArgs = new ArrayList<String>();
+//		if (carFrame.year > 0) {
+//			primaryKeys.add(PRIMARY_KEYS[0]);
+//			selectionArgs.add(Integer.toString(carFrame.year));		
+//		}
+//		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[1]);
+//			selectionArgs.add(carFrame.manufacturer);
+//		}
+//		if (carFrame.model != null && !carFrame.model.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[2]);
+//			selectionArgs.add(carFrame.model);
+//		}
+//		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
+//			primaryKeys.add(PRIMARY_KEYS[3]);
+//			selectionArgs.add(carFrame.vehicleClass);
+//		}
+//		Cursor c = getReadableDatabase().rawQuery(QueryRemoveFavourite,selectionArgs.toArray(new String[selectionArgs.size()]));
+		
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryRemoveFavourite);
+		
+		//primary keys
+		statement.bindDouble(1, car.year);
+		statement.bindString(2, car.manufacturer);
+		statement.bindString(3, car.model);
+		statement.bindString(4, car.vehicleClass);
+		statement.bindDouble(5, car.engineSize);
+		statement.bindDouble(6, car.cylinders);
+		statement.bindString(7, car.transmission.toString());
+		statement.bindDouble(8, car.gears);
+		statement.bindString(9, car.fuelType.toString());
+		statement.executeUpdateDelete();
 	}
 	
 	/**

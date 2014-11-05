@@ -56,7 +56,6 @@ public class CarProfileActivity extends Activity {
 				Intent intentTrip = new Intent(CarProfileActivity.this, DirectionsActivity.class);
 				intentTrip.putExtra("car", car);
 				startActivity(intentTrip);
-				
 			}
 			
 		});
@@ -69,7 +68,16 @@ public class CarProfileActivity extends Activity {
 			public void onClick(View v) {
 				boolean saved = car.saveToProfile(CarProfileActivity.this);
 				Context context = getApplicationContext();
-				CharSequence text = saved ? car.model + " saved to profile" : car.model + " already saved to profile";
+				CharSequence text;
+				if (saved) {
+					text = car.model + " saved to profile";
+					save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
+					CarDatabase.obtain(context).addFavCarFrames(car);
+				} else {
+					text = car.model + " is removed from profile";
+					save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
+					CarDatabase.obtain(context).removeFavCarFrames(car);
+				}
 				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}
