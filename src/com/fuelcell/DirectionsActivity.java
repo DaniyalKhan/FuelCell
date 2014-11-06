@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -91,8 +93,8 @@ public class DirectionsActivity extends FragmentActivity {
 		car = (Car) intent.getParcelableExtra("car");
 		directions = new Directions(this, callback );
 		
-		final EditText origin = (EditText) findViewById(R.id.origin);
-		final EditText destination = (EditText) findViewById(R.id.destination);
+		final MyEditText origin = (MyEditText) findViewById(R.id.origin);
+		final MyEditText destination = (MyEditText) findViewById(R.id.destination);
 		final Button findRoutes = (Button) findViewById(R.id.find_routes);
 		
 		ButtonSettings.pressSize(findRoutes,15);
@@ -123,4 +125,31 @@ public class DirectionsActivity extends FragmentActivity {
         ft.add(R.id.root, firstFragment, "DIRECTION_TAG").addToBackStack(null).commit();
 	}
 
+	public static class MyEditText extends EditText {
+		
+		Context context;
+
+		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
+			super(context, attrs, defStyle);
+			this.context = context;
+		}
+
+		public MyEditText(Context context, AttributeSet attrs) {
+			super(context, attrs);
+			this.context = context;
+		}
+
+		public MyEditText(Context context) {
+			super(context);
+			this.context = context;
+		}
+
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_ENTER) {
+				return true;
+			}
+			return super.onKeyDown(keyCode, event);
+		}
+	}
 }

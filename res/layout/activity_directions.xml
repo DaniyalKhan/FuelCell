@@ -40,7 +40,7 @@
             android:layout_marginTop="15dp"
             android:src="@drawable/origin_header_find_route"/>
     
-    <EditText
+    <view
         android:id="@+id/origin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -50,7 +50,9 @@
         android:layout_below="@+id/searchHeaderOrigin"
         android:textColor="@android:color/black"
         android:contentDescription="desc"
+        class="com.fuelcell.DirectionsActivity$MyEditText"
         android:gravity="center"
+        android:maxLines="1"
         android:textCursorDrawable="@null"  />
 
     <ImageView
@@ -62,7 +64,7 @@
             android:layout_marginTop="15dp"
             android:src="@drawable/destination_header_find_route"/>
     
-    <EditText
+    <view
         android:id="@+id/destination"
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
@@ -72,10 +74,12 @@
         android:background="@drawable/text_input_location"
         android:textColor="@android:color/black"
         android:contentDescription="desc"
+        class="com.fuelcell.DirectionsActivity$MyEditText"
         android:ems="10"
+        android:maxLines="1"
         android:gravity="center"
-        android:textCursorDrawable="@null" >
-    </EditText>
+        android:textCursorDrawable="@null" />
+    
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
