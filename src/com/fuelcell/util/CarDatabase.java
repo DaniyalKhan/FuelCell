@@ -60,8 +60,17 @@ public class CarDatabase extends SQLiteOpenHelper {
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
     private static String QueryInsertFavourite = "insert into " + FAVOURITES + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
 			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static String QueryRemoveFavourite = "delete from " + FAVOURITES + "WHERE " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
-			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static String QueryRemoveFavourite = "delete from " + FAVOURITES 
+    		+ " WHERE " 
+    		+ PRIMARY_KEYS[0] + " = ? AND "
+    		+ PRIMARY_KEYS[1] + " = ? AND " 
+    		+ PRIMARY_KEYS[2] + " = ? AND " 
+    		+ PRIMARY_KEYS[3] + " = ? AND " 
+			+ PRIMARY_KEYS[4] + " = ? AND " 
+    		+ PRIMARY_KEYS[5] + " = ? AND " 
+			+ PRIMARY_KEYS[6] + " = ? AND " 
+    		+ PRIMARY_KEYS[7] + " = ? AND " 
+			+ PRIMARY_KEYS[8] + " = ? ";
     
     //construct precompiled query strings
     static {
@@ -139,8 +148,8 @@ public class CarDatabase extends SQLiteOpenHelper {
 	
 	/**
 	 * Construct a car query for all profile information using where to get certain car
-	 * @param carFrame
-	 * @return
+	 * @param carArgs
+	 * @return query
 	 */
 	private String constructQueryCarFull(String[] carArgs) {
 		StringBuilder builder = new StringBuilder(QueryCarFull);
@@ -153,7 +162,22 @@ public class CarDatabase extends SQLiteOpenHelper {
 		}
 		return "";
 	}
-	
+	/**
+	 * Construct a car query for finding a single favourite car
+	 * @param carArgs
+	 * @return query
+	 */
+	private String constructQueryCarFav(String[] carArgs) {
+		StringBuilder builder = new StringBuilder(QueryFavouriteCarFrame);
+		if (carArgs.length > 0) {
+			builder.append(" where ");
+			for (int i = 0 ; i < carArgs.length ; i++){
+				builder.append(carArgs[i] + " = ? and ");
+			}
+			return builder.subSequence(0, builder.length() - 5).toString();
+		}
+		return "";
+	}
 	/**
 	 * Get distinct carFrame data matching the given arguments (binded to placeholders in the where clause).
 	 * If any parameters are null or empty, they are not included in the where clause
@@ -203,26 +227,6 @@ public class CarDatabase extends SQLiteOpenHelper {
 	}
 	//QueryAddFavourite
 	public void addFavCarFrames(Car car) {
-//		ArrayList<String> primaryKeys = new ArrayList<String>();
-//		ArrayList<String> selectionArgs = new ArrayList<String>();
-//		if (carFrame.year > 0) {
-//			primaryKeys.add(PRIMARY_KEYS[0]);
-//			selectionArgs.add(Integer.toString(carFrame.year));		
-//		}
-//		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[1]);
-//			selectionArgs.add(carFrame.manufacturer);
-//		}
-//		if (carFrame.model != null && !carFrame.model.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[2]);
-//			selectionArgs.add(carFrame.model);
-//		}
-//		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[3]);
-//			selectionArgs.add(carFrame.vehicleClass);
-//		}
-//		Cursor c = getReadableDatabase().rawQuery(QueryInsertFavourite,selectionArgs.toArray(new String[selectionArgs.size()]));
-		
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryInsertFavourite);
 		
@@ -240,26 +244,6 @@ public class CarDatabase extends SQLiteOpenHelper {
 	}
 	//Use different query?
 	public void removeFavCarFrames(Car car) {
-//		ArrayList<String> primaryKeys = new ArrayList<String>();
-//		ArrayList<String> selectionArgs = new ArrayList<String>();
-//		if (carFrame.year > 0) {
-//			primaryKeys.add(PRIMARY_KEYS[0]);
-//			selectionArgs.add(Integer.toString(carFrame.year));		
-//		}
-//		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[1]);
-//			selectionArgs.add(carFrame.manufacturer);
-//		}
-//		if (carFrame.model != null && !carFrame.model.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[2]);
-//			selectionArgs.add(carFrame.model);
-//		}
-//		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
-//			primaryKeys.add(PRIMARY_KEYS[3]);
-//			selectionArgs.add(carFrame.vehicleClass);
-//		}
-//		Cursor c = getReadableDatabase().rawQuery(QueryRemoveFavourite,selectionArgs.toArray(new String[selectionArgs.size()]));
-		
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryRemoveFavourite);
 		
@@ -274,6 +258,29 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.bindDouble(8, car.gears);
 		statement.bindString(9, car.fuelType.toString());
 		statement.executeUpdateDelete();
+	}
+	
+	public boolean isFav(Car car) {
+		ArrayList<String> primaryKeys = new ArrayList<String>();
+		ArrayList<String> selectionArgs = new ArrayList<String>();
+		if (car.year > 0) {
+			primaryKeys.add(PRIMARY_KEYS[0]);	
+			selectionArgs.add(Integer.toString(car.year));
+		}
+		if (car.manufacturer != null && !car.manufacturer.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[1]);
+			selectionArgs.add(car.manufacturer);
+		}
+		if (car.model != null && !car.model.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[2]);
+			selectionArgs.add(car.model);
+		}
+		if (car.vehicleClass != null && !car.vehicleClass.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[3]);
+			selectionArgs.add(car.vehicleClass);
+		}
+		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFav(primaryKeys.toArray(new String[primaryKeys.size()])), selectionArgs.toArray(new String[selectionArgs.size()]));
+		return(c.moveToNext()); 
 	}
 	
 	/**

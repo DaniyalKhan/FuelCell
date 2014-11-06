@@ -66,10 +66,10 @@ public class CarProfileActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				boolean saved = car.saveToProfile(CarProfileActivity.this);
 				Context context = getApplicationContext();
+				boolean alreadySaved = CarDatabase.obtain(context).isFav(car);
 				CharSequence text;
-				if (saved) {
+				if (!alreadySaved) {
 					text = car.model + " saved to profile";
 					save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
 					CarDatabase.obtain(context).addFavCarFrames(car);
