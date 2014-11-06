@@ -40,7 +40,7 @@
         android:orientation="vertical">
 	    <Button
 	        android:id="@+id/saveButton"
-	        android:layout_width="50dp"
+	        android:layout_width="45dp"
 	        android:layout_height="50dp"
 	        android:background="@drawable/favourite_set_off_pressing"/>
     </LinearLayout>

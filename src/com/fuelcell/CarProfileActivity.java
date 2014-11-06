@@ -3,6 +3,7 @@ package com.fuelcell;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,7 +48,7 @@ public class CarProfileActivity extends Activity {
 		
 		ButtonSettings.pressSize(planTrip, 10);
 		ButtonSettings.pressSize(defaultButton, 10);
-		ButtonSettings.pressSize(save, 5);
+		ButtonSettings.pressSize(save, 6);
 				
 		planTrip.setOnClickListener(new OnClickListener(){
 
@@ -68,23 +69,29 @@ public class CarProfileActivity extends Activity {
 			public void onClick(View v) {
 				Context context = getApplicationContext();
 				boolean alreadySaved = CarDatabase.obtain(context).isFav(car);
+				setSavedButtonDrawable(!alreadySaved);
 				CharSequence text;
 				if (!alreadySaved) {
 					text = car.model + " saved to profile";
-					save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
 					CarDatabase.obtain(context).addFavCarFrames(car);
 				} else {
 					text = car.model + " is removed from profile";
-					save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
 					CarDatabase.obtain(context).removeFavCarFrames(car);
 				}
 				Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}
-			
 		});
 	}
 
+	private void setSavedButtonDrawable(boolean isSaved) {
+		if (isSaved) {
+			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
+		} else {
+			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
+		}
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -114,5 +121,26 @@ public class CarProfileActivity extends Activity {
 		efficiencyInfo.setText(Float.toString((float) ((int) (car.highwayEffL*100)/100)));
 		emissionsInfo.setText(Double.toString(car.emissions));
 		gearInfo.setText(Integer.toString(car.gears));
+		
+		Context context = getApplicationContext();
+		boolean alreadySaved = CarDatabase.obtain(context).isFav(car);
+		setSavedButtonDrawable(alreadySaved);
+		
+		defaultButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "This car has been saved as the default car.", Toast.LENGTH_LONG).show();
+				
+				SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+				SharedPreferences.Editor prefEditor = defaultCarPrefs.edit();
+				prefEditor.putBoolean("hasDefault", true);
+				prefEditor.putInt("year", car.year);
+				prefEditor.putString("manufacturer", car.manufacturer);
+				prefEditor.putString("model", car.model);
+				prefEditor.putString("vehicleClass", car.vehicleClass);
+				prefEditor.clear();
+				prefEditor.commit();
+			}
+		});
 	}
 }

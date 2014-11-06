@@ -212,7 +212,6 @@ public class CarDatabase extends SQLiteOpenHelper {
 		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
-	
 	/**
 	 * Get all favourites car frames in list
 	 * @return carFrame
@@ -221,11 +220,11 @@ public class CarDatabase extends SQLiteOpenHelper {
 		ArrayList<String> selectionArgs = new ArrayList<String>();
 		Cursor c = getReadableDatabase().rawQuery(QueryFavouriteCarFrame,selectionArgs.toArray(new String[selectionArgs.size()]));
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
-		while (c.moveToNext())
-			while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
+			while (c.moveToNext()) 
+				carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
-	//QueryAddFavourite
+	
 	public void addFavCarFrames(Car car) {
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryInsertFavourite);
@@ -242,7 +241,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.bindString(9, car.fuelType.toString());
 		statement.executeInsert();
 	}
-	//Use different query?
+	
 	public void removeFavCarFrames(Car car) {
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryRemoveFavourite);

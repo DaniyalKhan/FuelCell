@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -38,6 +39,8 @@ import com.fuelcell.google.Directions.Route;
 import com.fuelcell.google.GMapV2Direction;
 import com.fuelcell.google.GMapV2Direction.DocCallback;
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
+import com.fuelcell.util.CarDatabase;
 import com.fuelcell.util.JSONUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -74,7 +77,13 @@ public class TravelActivity extends FragmentActivity {
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		
 		Intent intent = getIntent();
-		car = (Car) intent.getParcelableExtra("car");
+		SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+		CarFrame defaultCarFrame = new CarFrame(defaultCarPrefs.getInt("year", -1),
+				defaultCarPrefs.getString("manufacturer", null), 
+				defaultCarPrefs.getString("model", null), 
+				defaultCarPrefs.getString("vehicleClass", null));
+		car = ((Car) intent.getParcelableExtra("car") != null) ? 
+				(Car) intent.getParcelableExtra("car") : CarDatabase.obtain(getApplicationContext()).getCarFull(defaultCarFrame) ;
 		route = (Route) intent.getParcelableExtra("route");
 				
 		final ProgressDialog dialog = new ProgressDialog(this);

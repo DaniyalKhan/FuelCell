@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
@@ -59,9 +61,14 @@ public class HubActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+				if (defaultCarPrefs.getBoolean("hasDefault", false)){
 				Intent intent = new Intent(HubActivity.this,
 						DirectionsActivity.class);
 				startActivity(intent);
+				} else {
+					Toast.makeText(HubActivity.this, "A default car is needed to try Find Route. Please select one through the Search or Favourites.", Toast.LENGTH_LONG).show();
+				}
 			}
 
 		});
