@@ -141,7 +141,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		StringBuilder builder = new StringBuilder(QueryCarFrame);
 		builder.append(" where ");
 		for (int i = 0; i < columns.length; i++) {
-			builder.append(columns[i] + " = ? and ");
+			builder.append("UPPER(" + columns[i] + ") LIKE UPPER(?) and ");
 		}
 		return builder.subSequence(0, builder.length() - 5).toString();
 	}
@@ -192,19 +192,19 @@ public class CarDatabase extends SQLiteOpenHelper {
 		ArrayList<String> selectionArgs = new ArrayList<String>();
 		if (year > 0) {
 			primaryKeys.add(PRIMARY_KEYS[0]);
-			selectionArgs.add(Integer.toString(year));		
+			selectionArgs.add("%" + Integer.toString(year) + "%");		
 		}
 		if (manufacturer != null && !manufacturer.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[1]);
-			selectionArgs.add(manufacturer);
+			selectionArgs.add("%" + manufacturer + "%");
 		}
 		if (model != null && !model.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[2]);
-			selectionArgs.add(model);
+			selectionArgs.add("%" + model + "%");
 		}
 		if (vehicleClass != null && !vehicleClass.equals("")) {
 			primaryKeys.add(PRIMARY_KEYS[3]);
-			selectionArgs.add(vehicleClass);
+			selectionArgs.add("%" + vehicleClass + "%");
 		}
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
 		int argSize = selectionArgs.size();
