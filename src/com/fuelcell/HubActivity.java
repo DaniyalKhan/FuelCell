@@ -3,14 +3,16 @@ package com.fuelcell;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fuelcell.action.ButtonSettings;
@@ -18,11 +20,12 @@ import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
 
-public class HubActivity extends Activity {
+public class HubActivity extends NavActivity {
 
 	Button search;
 	Button findRoute;
 	Button favourite;
+	ImageView home;
 
 	public static List<CarFrame> filtered;
 	ArrayList<Car> cars;
@@ -30,12 +33,14 @@ public class HubActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_hub);
-
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.activity_hub,  null, false);
+		mDrawer.addView(contentView,0);
+		
 		search = (Button) findViewById(R.id.search);
 		findRoute = (Button) findViewById(R.id.findRoute);
 		favourite = (Button) findViewById(R.id.favourite);
+		home = (ImageView) findViewById(R.id.banner);
 
 		ButtonSettings.pressSize(search, 15);
 		ButtonSettings.pressSize(findRoute, 15);
@@ -79,9 +84,14 @@ public class HubActivity extends Activity {
 				startStatsActivity(CarDatabase.obtain(HubActivity.this).getFavCarFrames(), "Saved",
 						"You do not currently have any car profiles saved.",
 						Car.getSavedCars(HubActivity.this).size() > 0);
-				// Intent intent = new Intent(HubActivity.this,
-				// StatsActivity.class);
-				// startActivity(intent);
+			}
+
+		});
+		home.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDrawer.openDrawer(Gravity.LEFT);
 			}
 
 		});
