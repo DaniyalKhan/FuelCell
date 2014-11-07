@@ -1,10 +1,13 @@
 package com.fuelcell;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -12,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
@@ -140,6 +142,60 @@ public class CarProfileActivity extends Activity {
 				prefEditor.putString("vehicleClass", car.vehicleClass);
 				prefEditor.clear();
 				prefEditor.commit();
+			}
+		});
+		
+		setOverflowClick();
+	}
+	
+	@SuppressLint("ShowToast")
+	private void setOverflowClick() { 
+		cylinderInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Cylinders: " + cylinderInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		engineInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Engine Size: " + engineInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		fuelInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Fuel Type: " + fuelInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		tranInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Transmission: " + tranInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		vehicleInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Vehicle Type: " + vehicleInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		efficiencyInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Highway Fuel Efficiency: " + efficiencyInfo.getText(), Toast.LENGTH_LONG).show();
+			}
+		});
+		emissionsInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "CO2 Emissions: " + emissionsInfo.getText() + "kg/year", Toast.LENGTH_LONG).show();
+			}
+		});
+		gearInfo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(CarProfileActivity.this, "Gears: " + gearInfo.getText(), Toast.LENGTH_LONG).show();
 			}
 		});
 	}

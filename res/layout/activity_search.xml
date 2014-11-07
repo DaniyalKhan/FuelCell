@@ -204,7 +204,7 @@
         android:layout_height="wrap_content" >
     </TextView>
  <!-- Loading Example -->
-    <ImageView
+<!--     <ImageView
         android:id="@+id/loadingBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -233,6 +233,6 @@
         android:layout_marginBottom="3dp"
         android:gravity="center"
         android:src="@drawable/loading_bar_animation" >
-    </ImageView>
+    </ImageView> -->
 
 </RelativeLayout>
