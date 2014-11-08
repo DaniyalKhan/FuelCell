@@ -3,7 +3,9 @@ package com.fuelcell;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +29,13 @@ public class NavActivity extends FragmentActivity {
 //		ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, entries));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		mDrawer.setScrimColor(getResources().getColor(R.color.black_overlay));
+		//allow headers
+//		LayoutInflater inflater = getLayoutInflater();
+//	    ViewGroup mTop = (ViewGroup)inflater.inflate(R.layout.drawer_header_item, mDrawerList, false);
+//	    mDrawerList.addHeaderView(mTop, null, false);
+	    //override adapter to take know which are titles, which have icons, maybe more
+	    //create nav drawer header
 	}
 }
 

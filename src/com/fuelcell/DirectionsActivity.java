@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +33,7 @@ import com.fuelcell.ui.DirectionsFragment;
 import com.fuelcell.ui.DirectionsFragment.RouteCallback;
 import com.fuelcell.util.JSONUtil;
 
-public class DirectionsActivity extends FragmentActivity {
+public class DirectionsActivity extends NavActivity {
 	
 	private Car car;
 	private Directions directions;
@@ -84,8 +85,9 @@ public class DirectionsActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_directions);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.activity_directions,  null, false);
+		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -15,12 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
 
-public class CarProfileActivity extends Activity {
+public class CarProfileActivity extends NavActivity {
 	Car car;
 	TextView cylinderInfo;
 	TextView engineInfo;
@@ -39,8 +41,9 @@ public class CarProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_car_profile);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.activity_car_profile,  null, false);
+		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		
@@ -88,9 +91,11 @@ public class CarProfileActivity extends Activity {
 
 	private void setSavedButtonDrawable(boolean isSaved) {
 		if (isSaved) {
-			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
+//			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
+			save.setBackgroundDrawable(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
 		} else {
-			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
+//			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
+			save.setBackgroundDrawable(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
 		}
 	}
 	

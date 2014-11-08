@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -35,7 +36,7 @@ import com.fuelcell.util.DynamicArrayAdapter;
 import com.fuelcell.util.DynamicArrayAdapter.CarFilter;
 import com.fuelcell.util.DynamicArrayAdapter.TextCallback;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends NavActivity {
 	
 	List<CarFrame> frames;
 	
@@ -99,8 +100,9 @@ public class SearchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_search);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.activity_search,  null, false);
+		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 

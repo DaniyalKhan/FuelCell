@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
 
-public class StatsActivity extends Activity {
+public class StatsActivity extends NavActivity {
 	
 	ListView resultList;
 	List<CarFrame> searched;
@@ -36,8 +37,9 @@ public class StatsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_stats);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.activity_stats,  null, false);
+		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		

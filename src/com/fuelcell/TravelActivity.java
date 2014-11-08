@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -49,7 +50,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class TravelActivity extends FragmentActivity {
+public class TravelActivity extends NavActivity {
 	
 	private Car car;
 	private Route route;
@@ -71,8 +72,9 @@ public class TravelActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.travel_activity);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View contentView = inflater.inflate(R.layout.travel_activity,  null, false);
+		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
 		
