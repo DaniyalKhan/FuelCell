@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class DirectionsFragment extends ListFragment {
 		View inflate = inflater.inflate(R.layout.directions_fragment, container, false);
 		if (!routes.isEmpty())
 			inflate.findViewById(R.id.hint).setVisibility(View.GONE);
-		ButtonSettings.setHomeButton(((ImageView) this.getActivity().findViewById(R.id.mainicon)),this.getActivity());
+		ButtonSettings.setHomeButton(((ImageView) this.getActivity().findViewById(R.id.mainicon)),(DrawerLayout) this.getActivity().findViewById(R.id.drawer_layout));
 		
 		return inflate;
 	}

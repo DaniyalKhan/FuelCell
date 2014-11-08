@@ -123,7 +123,7 @@ public class SearchActivity extends NavActivity {
 		hint = (TextView) findViewById(R.id.hint);
 		
 		ButtonSettings.pressSize(search, 15);
-		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),mDrawer);
 		search.setOnClickListener(new OnClickListener() {
 			
 			@Override

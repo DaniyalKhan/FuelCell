@@ -232,7 +232,7 @@ public class TravelActivity extends NavActivity {
 			}
 		});
 
-		ButtonSettings.setHomeButton((ImageView) findViewById(R.id.mainicon), this);
+		ButtonSettings.setHomeButton((ImageView) findViewById(R.id.mainicon), mDrawer);
 		
 		expand = (Button) findViewById(R.id.expandButton);
 		isExpanded = false;

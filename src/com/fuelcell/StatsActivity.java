@@ -78,7 +78,7 @@ public class StatsActivity extends NavActivity {
 		}
 		
 		resultList = (ListView) findViewById(R.id.searchedList);
-		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),mDrawer);
 		
 	}
 	

@@ -113,7 +113,7 @@ public class DirectionsActivity extends NavActivity {
 			}
 		});
 		
-		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),mDrawer);
 		
 	}
 	

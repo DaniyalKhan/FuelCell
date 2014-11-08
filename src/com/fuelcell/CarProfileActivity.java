@@ -66,7 +66,7 @@ public class CarProfileActivity extends NavActivity {
 			
 		});
 		
-		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),this);
+		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),mDrawer);
 		
 		save.setOnClickListener(new OnClickListener(){
 
