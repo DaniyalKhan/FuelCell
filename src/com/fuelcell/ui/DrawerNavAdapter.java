@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fuelcell.R;
+import com.fuelcell.ui.DrawerItem.DrawerItemType;
 
 public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 
@@ -32,10 +33,17 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 	    textView.setText(items[position].header);
 	    // change the icon for Windows and iPhone
 	    String s = items[position].header;
-	    if (s.startsWith("iPhone")) {
+	    if (s.startsWith("Home")) {
+	    	
+	    } else if (s.startsWith("Search")){
 	      
-	    } else {
-	      
+	    } else if (s.startsWith("Find Route")) {
+	    	
+	    } else if (s.startsWith("Favourites")) {
+	    	
+	    } 
+	    if (items[position].type == DrawerItemType.Header) {
+	    	imageView.setVisibility(ImageView.GONE);
 	    }
 
 	    return rowView;

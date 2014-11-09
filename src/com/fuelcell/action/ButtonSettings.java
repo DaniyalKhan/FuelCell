@@ -50,6 +50,9 @@ public class ButtonSettings {
 			}
 		});
 	}
+	public static void removePressSize(final Button button) {
+		button.setOnTouchListener(null);
+	}
 	//Set size of button, standard is when it shrinks on press, add (-1) when undoing (action up)
 	private static void setSize(Button button, LinearLayout.LayoutParams lp, int change) {
 		button.setHeight(button.getHeight() - change);

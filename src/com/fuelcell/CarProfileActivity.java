@@ -52,7 +52,7 @@ public class CarProfileActivity extends NavActivity {
 		defaultButton = (Button) findViewById(R.id.defaultButton);
 		
 		ButtonSettings.pressSize(planTrip, 10);
-		ButtonSettings.pressSize(defaultButton, 10);
+		
 		ButtonSettings.pressSize(save, 6);
 				
 		planTrip.setOnClickListener(new OnClickListener(){
@@ -91,10 +91,8 @@ public class CarProfileActivity extends NavActivity {
 
 	private void setSavedButtonDrawable(boolean isSaved) {
 		if (isSaved) {
-//			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
 			save.setBackgroundDrawable(getResources().getDrawable(R.drawable.favourite_set_on_pressing));
 		} else {
-//			save.setBackground(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
 			save.setBackgroundDrawable(getResources().getDrawable(R.drawable.favourite_set_off_pressing));
 		}
 	}
@@ -133,23 +131,39 @@ public class CarProfileActivity extends NavActivity {
 		boolean alreadySaved = CarDatabase.obtain(context).isFav(car);
 		setSavedButtonDrawable(alreadySaved);
 		
-		defaultButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(CarProfileActivity.this, "This car has been saved as the default car.", Toast.LENGTH_LONG).show();
-				
-				SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
-				SharedPreferences.Editor prefEditor = defaultCarPrefs.edit();
-				prefEditor.putBoolean("hasDefault", true);
-				prefEditor.putInt("year", car.year);
-				prefEditor.putString("manufacturer", car.manufacturer);
-				prefEditor.putString("model", car.model);
-				prefEditor.putString("vehicleClass", car.vehicleClass);
-				prefEditor.clear();
-				prefEditor.commit();
-			}
-		});
-		
+		SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+		//If default car is this car, can't set this as default
+		//Disable Click Listener and grey out button
+		if ( (defaultCarPrefs.getInt("year", 0) == car.year) &&
+		defaultCarPrefs.getString("manufacturer", "not").equalsIgnoreCase(car.manufacturer) &&
+		defaultCarPrefs.getString("model", "not").equalsIgnoreCase(car.model) &&
+		defaultCarPrefs.getString("vehicleClass", "not").equalsIgnoreCase(car.vehicleClass)) {
+			defaultButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.is_default_unpress));
+			ButtonSettings.removePressSize(defaultButton);
+		} else {
+			ButtonSettings.pressSize(defaultButton, 10);
+			defaultButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(CarProfileActivity.this, "This car has been saved as the default car.", Toast.LENGTH_LONG).show();
+					
+					SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+					SharedPreferences.Editor prefEditor = defaultCarPrefs.edit();
+					prefEditor.putBoolean("hasDefault", true);
+					prefEditor.putInt("year", car.year);
+					prefEditor.putString("manufacturer", car.manufacturer);
+					prefEditor.putString("model", car.model);
+					prefEditor.putString("vehicleClass", car.vehicleClass);
+					prefEditor.clear();
+					prefEditor.commit();
+					
+					defaultButton.setOnClickListener(null);
+					ButtonSettings.removePressSize(defaultButton);
+					defaultButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.is_default_unpress));
+					//TODO UPDATE THE NAV BAR WITH NEW DEFAULT
+				}
+			});
+		}
 		setOverflowClick();
 	}
 	
