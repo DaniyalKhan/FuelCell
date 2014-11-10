@@ -27,23 +27,29 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 	  public View getView(int position, View convertView, ViewGroup parent) {
 	    LayoutInflater inflater = (LayoutInflater) context
 	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    View rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
-	    TextView textView = (TextView) rowView.findViewById(R.id.label);
-	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-	    textView.setText(items[position].header);
-	    // change the icon for Windows and iPhone
-	    String s = items[position].header;
-	    if (s.startsWith("Home")) {
-	    	
-	    } else if (s.startsWith("Search")){
-	      
-	    } else if (s.startsWith("Find Route")) {
-	    	
-	    } else if (s.startsWith("Favourites")) {
-	    	
-	    } 
+	    //inflate different layout for different type
+	    View rowView;
 	    if (items[position].type == DrawerItemType.Header) {
-	    	imageView.setVisibility(ImageView.GONE);
+	    	rowView = inflater.inflate(R.layout.drawer_header_item, parent, false);
+	    	TextView textView = (TextView) rowView.findViewById(R.id.headerLabel);
+	    	textView.setText(items[position].header);
+//	    	rowView.findViewById(R.id.icon).setVisibility(ImageView.GONE);
+	    } else {
+		    rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+		    TextView textView = (TextView) rowView.findViewById(R.id.label);
+		    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		    textView.setText(items[position].header);
+		    // change the icon for Windows and iPhone
+		    String s = items[position].header;
+		    if (s.startsWith("Home")) {
+		    	
+		    } else if (s.startsWith("Search")){
+		      
+		    } else if (s.startsWith("Find Route")) {
+		    	
+		    } else if (s.startsWith("Favourites")) {
+		    	
+		    } 
 	    }
 
 	    return rowView;

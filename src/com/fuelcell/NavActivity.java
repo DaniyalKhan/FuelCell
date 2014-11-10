@@ -35,18 +35,10 @@ public class NavActivity extends FragmentActivity {
 		mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		setDrawerItems();
-//		DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, R.layout.drawer_list_header, drawerListItems);
-//		ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
-//		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, entries));
-		mDrawerList.setAdapter(new DrawerNavAdapter(this, R.layout.drawer_list_item, R.id.secondLine, items));
+
+		mDrawerList.setAdapter(new DrawerNavAdapter(this, R.layout.drawer_list_item, R.id.label, items));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawer.setScrimColor(getResources().getColor(R.color.black_overlay));
-		//allow headers
-//		LayoutInflater inflater = getLayoutInflater();
-//	    ViewGroup mTop = (ViewGroup)inflater.inflate(R.layout.drawer_header_item, mDrawerList, false);
-//	    mDrawerList.addHeaderView(mTop, null, false);
-	    //override adapter to take know which are titles, which have icons, maybe more
-	    //create nav drawer header
 		
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			  @Override
