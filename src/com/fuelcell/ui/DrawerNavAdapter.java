@@ -49,7 +49,9 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 		    	
 		    } else if (s.startsWith("Favourites")) {
 		    	
-		    } 
+		    } else if (position != 0 && items[position - 1].header.equalsIgnoreCase("Default Car")) {
+		    	
+		    }
 	    }
 
 	    return rowView;

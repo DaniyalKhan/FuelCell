@@ -1,5 +1,7 @@
 package com.fuelcell;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,10 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.ui.DrawerItem;
 import com.fuelcell.ui.DrawerNavAdapter;
 import com.fuelcell.ui.DrawerItem.DrawerItemType;
+import com.fuelcell.util.CarDatabase;
 
 public class NavActivity extends FragmentActivity {
 	protected DrawerLayout mDrawer;
@@ -25,6 +29,8 @@ public class NavActivity extends FragmentActivity {
 	public String[] entries = {"home","search","find route","favourites","default"};
 	public static String[] keys = {"home","search","find route","favourites","default"};
 	public DrawerItem[] items;
+	public static List<CarFrame> filtered;
+	CarFrame defaultCarFrame;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,7 @@ public class NavActivity extends FragmentActivity {
 			    int position, long id) {
 			    if (items[position].header.equalsIgnoreCase("Home")) {
 			    	Intent intent = new Intent(NavActivity.this,
-							SearchActivity.class);
+							HubActivity.class);
 					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
@@ -56,15 +62,20 @@ public class NavActivity extends FragmentActivity {
 					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
-			    } else if (items[position].header.equalsIgnoreCase("Find Routes")) {
+			    } else if (items[position].header.equalsIgnoreCase("Find Route")) {
 			    	Intent intent = new Intent(NavActivity.this,
 							DirectionsActivity.class);
-					startActivity(intent);
+			    	startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
 			    } else if (items[position].header.equalsIgnoreCase("Favourites")) {
 			    	Intent intent = new Intent(NavActivity.this,
 							StatsActivity.class);
+					filtered = CarDatabase.obtain(NavActivity.this).getFavCarFrames();
+					intent.putExtra("title", "Saved");
+					intent.putExtra("hint", "You do not currently have any car profiles saved.");
+					intent.putExtra("clear", Car.getSavedCars(NavActivity.this).size() > 0);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
@@ -72,6 +83,11 @@ public class NavActivity extends FragmentActivity {
 			    	//Check if header is default car
 			    	Intent intent = new Intent(NavActivity.this,
 							CarProfileActivity.class);
+			    	CarFrame defaultCarFrame = getDefaultCar();
+			    	CarFrame.saveCarToIntent(intent, Integer.toString(defaultCarFrame.year), 
+			    			defaultCarFrame.manufacturer, 
+			    			defaultCarFrame.model, 
+			    			defaultCarFrame.vehicleClass);
 					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
@@ -81,23 +97,32 @@ public class NavActivity extends FragmentActivity {
 	}
 	public void setDrawerItems(){
 		items = new DrawerItem[7];
+		items[0] = new DrawerItem("MainHeader", DrawerItemType.MainHeader);
 		items[0] = new DrawerItem("Navigation", DrawerItemType.Header);
 		items[1] = new DrawerItem("Home", DrawerItemType.Item);
 		items[2] = new DrawerItem("Search", DrawerItemType.Item);
 		items[3] = new DrawerItem("Find Route", DrawerItemType.Item);
 		items[4] = new DrawerItem("Favourites", DrawerItemType.Item);
 		
-		SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
-		CarFrame defaultCarFrame = new CarFrame(defaultCarPrefs.getInt("year", -1),
-				defaultCarPrefs.getString("manufacturer", null), 
-				defaultCarPrefs.getString("model", null), 
-				defaultCarPrefs.getString("vehicleClass", null));
+		CarFrame defaultCarFrame = getDefaultCar();
 		
 		items[5] = new DrawerItem("Default Car", DrawerItemType.Header);
 		items[6] = new DrawerItem(defaultCarFrame.year + " " 
 								+ defaultCarFrame.manufacturer + " " 
 								+ defaultCarFrame.model, DrawerItemType.Item);
 		
+	}
+	public CarFrame getDefaultCar(){
+		if (defaultCarFrame == null) {
+		SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+		defaultCarFrame = new CarFrame(defaultCarPrefs.getInt("year", -1),
+				defaultCarPrefs.getString("manufacturer", null), 
+				defaultCarPrefs.getString("model", null), 
+				defaultCarPrefs.getString("vehicleClass", null));
+			return defaultCarFrame;
+		} else{
+			return defaultCarFrame;
+		}
 	}
 }
 

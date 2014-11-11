@@ -1,7 +1,7 @@
 package com.fuelcell.ui;
 
 public class DrawerItem {
-	public static enum DrawerItemType {Header, Item};
+	public static enum DrawerItemType {Header, Item, MainHeader};
 	
 	public String header;
 	public String info;
