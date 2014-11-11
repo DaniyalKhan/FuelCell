@@ -1,6 +1,7 @@
 package com.fuelcell.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 
 	Context context;
 	DrawerItem[] items;
+	static TextView defaultCar;
 	
 	public DrawerNavAdapter(Context context, int resource,
 			int textViewResourceId, DrawerItem[] items) {
@@ -27,34 +29,40 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 	  public View getView(int position, View convertView, ViewGroup parent) {
 	    LayoutInflater inflater = (LayoutInflater) context
 	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    //inflate different layout for different type
 	    View rowView;
 	    if (items[position].type == DrawerItemType.Header) {
 	    	rowView = inflater.inflate(R.layout.drawer_header_item, parent, false);
 	    	TextView textView = (TextView) rowView.findViewById(R.id.headerLabel);
 	    	textView.setText(items[position].header);
-//	    	rowView.findViewById(R.id.icon).setVisibility(ImageView.GONE);
+	    	rowView.setClickable(false);
 	    } else {
 		    rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
 		    TextView textView = (TextView) rowView.findViewById(R.id.label);
-		    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		    ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
 		    textView.setText(items[position].header);
 		    // change the icon for Windows and iPhone
 		    String s = items[position].header;
 		    if (s.startsWith("Home")) {
-		    	
+		    	icon.setImageResource(R.drawable.nav_home_icon);
 		    } else if (s.startsWith("Search")){
-		      
+		    	icon.setImageResource(R.drawable.nav_search_icon);
 		    } else if (s.startsWith("Find Route")) {
-		    	
+		    	icon.setImageResource(R.drawable.nav_find_route_icon);
 		    } else if (s.startsWith("Favourites")) {
-		    	
+		    	icon.setImageResource(R.drawable.nav_favourite_icon);
 		    } else if (position != 0 && items[position - 1].header.equalsIgnoreCase("Default Car")) {
-		    	
+		    	icon.setImageResource(R.drawable.nav_default_icon);
+		    	textView.setTextSize(12);
+		    	defaultCar = textView;
 		    }
 	    }
 
 	    return rowView;
 	  }
+	public static void changeDefaultCarNavDrawer(String carName){
+		if (!((String) defaultCar.getText()).equalsIgnoreCase(carName)){
+			defaultCar.setText(carName);
+		}
+	}
 	
 }

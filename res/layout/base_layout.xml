@@ -17,13 +17,13 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="@android:color/black"
+        android:background="#80000000"
         android:cacheColorHint="@android:color/transparent"
         android:choiceMode="singleChoice"
         android:divider="@android:color/white"
         android:dividerHeight="1dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:scrollingCache="false" />
 
 </android.support.v4.widget.DrawerLayout>

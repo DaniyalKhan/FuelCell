@@ -5,22 +5,22 @@ import java.util.List;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.ui.DrawerItem;
-import com.fuelcell.ui.DrawerNavAdapter;
 import com.fuelcell.ui.DrawerItem.DrawerItemType;
+import com.fuelcell.ui.DrawerNavAdapter;
 import com.fuelcell.util.CarDatabase;
 
 public class NavActivity extends FragmentActivity {
@@ -30,7 +30,7 @@ public class NavActivity extends FragmentActivity {
 	public static String[] keys = {"home","search","find route","favourites","default"};
 	public DrawerItem[] items;
 	public static List<CarFrame> filtered;
-	CarFrame defaultCarFrame;
+	private CarFrame defaultCarFrame;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +38,14 @@ public class NavActivity extends FragmentActivity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.base_layout);
 		
-		mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawer =  (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		//TODO ADD HEADER IMAGE AND XML
+//		View header = getLayoutInflator().inflate(R.layout.nav_header);
+//		mDrawerList.addHeaderView(header);
 		setDrawerItems();
 
 		mDrawerList.setAdapter(new DrawerNavAdapter(this, R.layout.drawer_list_item, R.id.label, items));
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawer.setScrimColor(getResources().getColor(R.color.black_overlay));
 		
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
@@ -94,6 +96,36 @@ public class NavActivity extends FragmentActivity {
 			    } 
 			  }
 			});
+
+		mDrawer.setDrawerListener(new DrawerListener() {
+
+			@Override
+			public void onDrawerClosed(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDrawerOpened(View arg0) {
+				CarFrame car = getDefaultCar();
+				DrawerNavAdapter.changeDefaultCarNavDrawer(car.year + " " 
+						+ car.manufacturer + " " 
+						+ car.model);
+			}
+
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	public void setDrawerItems(){
 		items = new DrawerItem[7];
@@ -113,30 +145,11 @@ public class NavActivity extends FragmentActivity {
 		
 	}
 	public CarFrame getDefaultCar(){
-		if (defaultCarFrame == null) {
 		SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
 		defaultCarFrame = new CarFrame(defaultCarPrefs.getInt("year", -1),
 				defaultCarPrefs.getString("manufacturer", null), 
 				defaultCarPrefs.getString("model", null), 
 				defaultCarPrefs.getString("vehicleClass", null));
 			return defaultCarFrame;
-		} else{
-			return defaultCarFrame;
-		}
-	}
-}
-
-class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		if (NavActivity.keys[position] == NavActivity.keys[0]) {
-			
-		} else if (NavActivity.keys[position] == NavActivity.keys[1]) {
-			
-		} else if (NavActivity.keys[position] == NavActivity.keys[2]) {
-			
-		}
 	}
 }

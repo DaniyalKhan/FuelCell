@@ -1,17 +1,13 @@
 package com.fuelcell;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +16,7 @@ import android.widget.Toast;
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
+import com.fuelcell.ui.DrawerNavAdapter;
 import com.fuelcell.util.CarDatabase;
 
 public class CarProfileActivity extends NavActivity {
@@ -160,7 +157,6 @@ public class CarProfileActivity extends NavActivity {
 					defaultButton.setOnClickListener(null);
 					ButtonSettings.removePressSize(defaultButton);
 					defaultButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.is_default_unpress));
-					//TODO UPDATE THE NAV BAR WITH NEW DEFAULT
 				}
 			});
 		}
