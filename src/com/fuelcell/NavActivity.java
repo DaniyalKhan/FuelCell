@@ -40,9 +40,6 @@ public class NavActivity extends FragmentActivity {
 		
 		mDrawer =  (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		//TODO ADD HEADER IMAGE AND XML
-//		View header = getLayoutInflator().inflate(R.layout.nav_header);
-//		mDrawerList.addHeaderView(header);
 		setDrawerItems();
 
 		mDrawerList.setAdapter(new DrawerNavAdapter(this, R.layout.drawer_list_item, R.id.label, items));
@@ -128,18 +125,18 @@ public class NavActivity extends FragmentActivity {
 		});
 	}
 	public void setDrawerItems(){
-		items = new DrawerItem[7];
+		items = new DrawerItem[8];
 		items[0] = new DrawerItem("MainHeader", DrawerItemType.MainHeader);
-		items[0] = new DrawerItem("Navigation", DrawerItemType.Header);
-		items[1] = new DrawerItem("Home", DrawerItemType.Item);
-		items[2] = new DrawerItem("Search", DrawerItemType.Item);
-		items[3] = new DrawerItem("Find Route", DrawerItemType.Item);
-		items[4] = new DrawerItem("Favourites", DrawerItemType.Item);
+		items[1] = new DrawerItem("Navigation", DrawerItemType.Header);
+		items[2] = new DrawerItem("Home", DrawerItemType.Item);
+		items[3] = new DrawerItem("Search", DrawerItemType.Item);
+		items[4] = new DrawerItem("Find Route", DrawerItemType.Item);
+		items[5] = new DrawerItem("Favourites", DrawerItemType.Item);
 		
 		CarFrame defaultCarFrame = getDefaultCar();
 		
-		items[5] = new DrawerItem("Default Car", DrawerItemType.Header);
-		items[6] = new DrawerItem(defaultCarFrame.year + " " 
+		items[6] = new DrawerItem("Default Car", DrawerItemType.Header);
+		items[7] = new DrawerItem(defaultCarFrame.year + " " 
 								+ defaultCarFrame.manufacturer + " " 
 								+ defaultCarFrame.model, DrawerItemType.Item);
 		

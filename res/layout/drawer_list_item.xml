@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:padding="6dip" 
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <ImageView
         android:id="@+id/icon"

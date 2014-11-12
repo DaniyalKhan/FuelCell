@@ -35,12 +35,14 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 	    	TextView textView = (TextView) rowView.findViewById(R.id.headerLabel);
 	    	textView.setText(items[position].header);
 	    	rowView.setClickable(false);
+	    } else if (items[position].type == DrawerItemType.MainHeader){
+	    	rowView = inflater.inflate(R.layout.drawer_main_header, parent, false);
+	    	rowView.setClickable(false);
 	    } else {
 		    rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
 		    TextView textView = (TextView) rowView.findViewById(R.id.label);
 		    ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
 		    textView.setText(items[position].header);
-		    // change the icon for Windows and iPhone
 		    String s = items[position].header;
 		    if (s.startsWith("Home")) {
 		    	icon.setImageResource(R.drawable.nav_home_icon);
