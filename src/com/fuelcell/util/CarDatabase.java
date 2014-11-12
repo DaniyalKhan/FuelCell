@@ -2,14 +2,13 @@ package com.fuelcell.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-
 import com.fuelcell.models.Car;
 import com.fuelcell.models.Car.FuelType;
 import com.fuelcell.models.Car.TransmissionType;
@@ -71,6 +70,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 			+ PRIMARY_KEYS[6] + " = ? AND " 
     		+ PRIMARY_KEYS[7] + " = ? AND " 
 			+ PRIMARY_KEYS[8] + " = ? ";
+    private static String QueryRemoveAllFavourite = "delete from " + FAVOURITES;
     
     //construct precompiled query strings
     static {
@@ -242,6 +242,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.executeInsert();
 	}
 	
+	@SuppressLint("NewApi")
 	public void removeFavCarFrames(Car car) {
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryRemoveFavourite);
@@ -256,6 +257,13 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.bindString(7, car.transmission.toString());
 		statement.bindDouble(8, car.gears);
 		statement.bindString(9, car.fuelType.toString());
+		statement.executeUpdateDelete();
+	}
+	
+	@SuppressLint("NewApi")
+	public void removeFavCars() {
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryRemoveAllFavourite);
 		statement.executeUpdateDelete();
 	}
 	

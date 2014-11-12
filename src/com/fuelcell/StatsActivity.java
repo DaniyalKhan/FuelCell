@@ -42,21 +42,22 @@ public class StatsActivity extends NavActivity {
 		mDrawer.addView(contentView,0);
 		
 		getWindow().setBackgroundDrawableResource(R.drawable.background);
+		boolean showClear = false;
 		
 		Intent intentLast = getIntent();
 		if (intentLast.getStringExtra("title").equalsIgnoreCase("Results")) {
 			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_results);
 		} else if (intentLast.getStringExtra("title").equalsIgnoreCase("Saved")){
 			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_fav);
+			showClear = true;
 		}
 		
 		clearButton = (Button) findViewById(R.id.clearButton);
 		
 		hint = (TextView) findViewById(R.id.hint);
 		hint.setText(intentLast.getStringExtra("hint"));
-		ButtonSettings.pressSize(clearButton, 15);
+//		ButtonSettings.pressSize(clearButton, 15);
 		
-		boolean showClear = intentLast.getBooleanExtra("clear", false);
 		if (!showClear) {
 			clearButton.setVisibility(View.GONE);
 		} else {
@@ -64,16 +65,11 @@ public class StatsActivity extends NavActivity {
 			clearButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					CarDatabase.reCreate(StatsActivity.this);
-//					Intent homeIntent = new Intent(StatsActivity.this, SearchActivity.class);
-//					homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP+Intent.FLAG_ACTIVITY_SINGLE_TOP );
-//					startActivity(homeIntent);
+					CarDatabase.obtain(StatsActivity.this).removeFavCars();
+					Intent intent = getIntent();
+					startActivity(intent);
 				}
 			});
-//			LinearLayout rl = new LinearLayout(this);
-//			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-//			params.addRule(RelativeLayout.ABOVE, clearButton.getId());
-//			rl.addView(findViewById(R.id.listLayout), params);
 			
 		}
 		
