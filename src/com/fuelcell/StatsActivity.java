@@ -29,11 +29,7 @@ public class StatsActivity extends NavActivity {
 	List<CarFrame> searched;
 	TextView hint;
 	Button clearButton;
-	
-	/**
-	 * TODO: need to differentiate based on # of gears and other car things
-	 * 
-	 */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

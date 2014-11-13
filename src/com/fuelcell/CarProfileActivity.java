@@ -1,22 +1,25 @@
 package com.fuelcell;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
-import com.fuelcell.ui.DrawerNavAdapter;
 import com.fuelcell.util.CarDatabase;
 
 public class CarProfileActivity extends NavActivity {
@@ -84,6 +87,7 @@ public class CarProfileActivity extends NavActivity {
 				toast.show();
 			}
 		});
+
 	}
 
 	private void setSavedButtonDrawable(boolean isSaved) {
@@ -161,6 +165,19 @@ public class CarProfileActivity extends NavActivity {
 			});
 		}
 		setOverflowClick();
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Pick Variation");
+		builder.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.text, CarDatabase.obtain(this).getCarVariations(carFrame) ) , new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+			
+		});
+		builder.create();
+		builder.show();
 	}
 	
 	@SuppressLint("ShowToast")

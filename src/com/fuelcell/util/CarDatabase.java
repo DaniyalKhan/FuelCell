@@ -2,6 +2,7 @@ package com.fuelcell.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+
 import com.fuelcell.models.Car;
 import com.fuelcell.models.Car.FuelType;
 import com.fuelcell.models.Car.TransmissionType;
@@ -129,6 +131,12 @@ public class CarDatabase extends SQLiteOpenHelper {
 			return c.getString(0);
 		}
 	};
+	
+	//Get the variations of each car
+		public String[] getCarVariations(CarFrame carFrame) {
+			String[] x = {"ONE","TWO","THREE"};
+			return x;
+		}
 	
 	/**
 	 * Construct a car frame query with the specified columns in the (optional) where clause
