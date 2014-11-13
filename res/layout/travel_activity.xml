@@ -38,7 +38,7 @@
 		            android:contentDescription="desc"
 		            android:nextFocusLeft="@id/autotext"
 		            android:nextFocusUp="@id/autotext"
-		            android:src="@drawable/header_home_button" />
+		            android:src="@drawable/header_home_button_press" />
 
 		        <ImageView
 			        android:id="@+id/routeicon"
