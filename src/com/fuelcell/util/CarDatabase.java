@@ -133,8 +133,13 @@ public class CarDatabase extends SQLiteOpenHelper {
 	};
 	
 	//Get the variations of each car
-		public String[] getCarVariations(CarFrame carFrame) {
-			String[] x = {"ONE","TWO","THREE"};
+		public String[] getCarVariations(CarFrame carFrame) {			
+			List<Car> variations = getCarsFull(carFrame);
+			String[] x = new String[variations.size()];
+			for (int i = 0 ; variations.size() > i ; i++ ) {
+				//x[i] = Integer.toString(variations.get(i).year) + " " + variations.get(i).manufacturer + " " + variations.get(i).model + " " + variations.get(i).vehicleClass;
+				x[i] = variations.get(i).cylinders + " " + variations.get(i).engineSize + " " + variations.get(i).fuelType + " " + variations.get(i).transmission + " " + variations.get(i).gears;
+			}
 			return x;
 		}
 	
@@ -144,7 +149,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 	 * @param selectionArgCount
 	 * @return
 	 */
-	private String constructQueryCarFrame(String[] columns, boolean hasWhereClause) {
+	private String constructSearchQueryCarFrame(String[] columns, boolean hasWhereClause) {
 		if (!hasWhereClause) return QueryCarFrame;
 		StringBuilder builder = new StringBuilder(QueryCarFrame);
 		builder.append(" where ");
@@ -216,7 +221,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		}
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
 		int argSize = selectionArgs.size();
-		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(primaryKeys.toArray(new String[primaryKeys.size()]), argSize != 0), selectionArgs.toArray(new String[argSize]));
+		Cursor c = getReadableDatabase().rawQuery(constructSearchQueryCarFrame(primaryKeys.toArray(new String[primaryKeys.size()]), argSize != 0), selectionArgs.toArray(new String[argSize]));
 		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
@@ -350,12 +355,65 @@ public class CarDatabase extends SQLiteOpenHelper {
 	}
 	
 	/**
+	 * Get distinct car for car profile
+	 * @param 
+	 * @return
+	 */
+	public List<Car> getCarsFull(CarFrame carFrame) {
+		List<Car> cars = new ArrayList<Car>();
+		ArrayList<String> primaryKeys = new ArrayList<String>();
+		ArrayList<String> selectionArgs = new ArrayList<String>();
+		
+		if (carFrame.year > 0) {
+			primaryKeys.add(PRIMARY_KEYS[0]);	
+			selectionArgs.add(Integer.toString(carFrame.year));
+		}
+		if (carFrame.manufacturer != null && !carFrame.manufacturer.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[1]);
+			selectionArgs.add(carFrame.manufacturer);
+		}
+		if (carFrame.model != null && !carFrame.model.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[2]);
+			selectionArgs.add(carFrame.model);
+		}
+		if (carFrame.vehicleClass != null && !carFrame.vehicleClass.equals("")) {
+			primaryKeys.add(PRIMARY_KEYS[3]);
+			selectionArgs.add(carFrame.vehicleClass);
+		}
+	
+		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFull(primaryKeys.toArray(new String[primaryKeys.size()])), selectionArgs.toArray(new String[selectionArgs.size()]));
+		Car car;
+		while(c.moveToNext()){
+				car = new Car();
+			//Set from Primary Keys
+			car.year=c.getInt(0);
+			car.manufacturer=c.getString(1);
+			car.model=c.getString(2);
+			car.vehicleClass=c.getString(3);
+			car.engineSize=c.getDouble(4);
+			car.cylinders=c.getInt(5);
+			car.transmission=TransmissionType.valueOf(c.getString(6));
+			car.gears=c.getInt(7);
+			car.fuelType=FuelType.valueOf(c.getString(8));
+			//Set for car attributes
+			car.cityEffL=c.getFloat(9);
+			car.highwayEffL=c.getFloat(10);
+			car.cityEffM=c.getFloat(11);
+			car.highwayEffM=c.getFloat(12);
+			car.fuelUsage=c.getDouble(13);
+			car.emissions=c.getDouble(14);
+			cars.add(car);
+		}
+		return cars;
+	}
+	
+	/**
 	 * Get all distinct CarFrame data
 	 * @return
 	 */
 	public List<CarFrame> getCarFrames() {
 		ArrayList<CarFrame> carFrames = new ArrayList<CarFrame>();
-		Cursor c = getReadableDatabase().rawQuery(constructQueryCarFrame(PRIMARY_KEYS_FRAME, false), null);
+		Cursor c = getReadableDatabase().rawQuery(constructSearchQueryCarFrame(PRIMARY_KEYS_FRAME, false), null);
 		while (c.moveToNext()) carFrames.add(new CarFrame(c.getInt(0), c.getString(1), c.getString(2), c.getString(3)));
 		return carFrames;
 	}
