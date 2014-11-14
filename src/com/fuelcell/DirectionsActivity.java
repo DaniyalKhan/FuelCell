@@ -99,8 +99,6 @@ public class DirectionsActivity extends NavActivity {
 		final MyEditText destination = (MyEditText) findViewById(R.id.destination);
 		final Button findRoutes = (Button) findViewById(R.id.find_routes);
 		
-		ButtonSettings.pressSize(findRoutes,15);
-		
 		findRoutes.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

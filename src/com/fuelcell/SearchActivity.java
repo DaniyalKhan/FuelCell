@@ -121,8 +121,7 @@ public class SearchActivity extends NavActivity {
 		search = (Button) findViewById(R.id.searchButton);
 		refresh = (Button) findViewById(R.id.refresh);
 		hint = (TextView) findViewById(R.id.hint);
-		
-		ButtonSettings.pressSize(search, 15);
+
 		ButtonSettings.setHomeButton(((ImageView) findViewById(R.id.mainicon)),mDrawer);
 		search.setOnClickListener(new OnClickListener() {
 			

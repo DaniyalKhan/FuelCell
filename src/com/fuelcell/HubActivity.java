@@ -42,10 +42,6 @@ public class HubActivity extends NavActivity {
 		favourite = (Button) findViewById(R.id.favourite);
 		home = (ImageView) findViewById(R.id.banner);
 
-		ButtonSettings.pressSize(search, 15);
-		ButtonSettings.pressSize(findRoute, 15);
-		ButtonSettings.pressSize(favourite, 15);
-
 		filtered = new ArrayList<CarFrame>();
 
 		setClick();

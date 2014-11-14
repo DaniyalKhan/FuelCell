@@ -50,10 +50,6 @@ public class CarProfileActivity extends NavActivity {
 		planTrip = (Button) findViewById(R.id.tripButton);
 		save = (Button) findViewById(R.id.saveButton);
 		defaultButton = (Button) findViewById(R.id.defaultButton);
-		
-		ButtonSettings.pressSize(planTrip, 10);
-		
-		ButtonSettings.pressSize(save, 6);
 				
 		planTrip.setOnClickListener(new OnClickListener(){
 
@@ -140,9 +136,7 @@ public class CarProfileActivity extends NavActivity {
 		defaultCarPrefs.getString("model", "not").equalsIgnoreCase(car.model) &&
 		defaultCarPrefs.getString("vehicleClass", "not").equalsIgnoreCase(car.vehicleClass)) {
 			defaultButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.is_default_unpress));
-			ButtonSettings.removePressSize(defaultButton);
 		} else {
-			ButtonSettings.pressSize(defaultButton, 10);
 			defaultButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -159,7 +153,6 @@ public class CarProfileActivity extends NavActivity {
 					prefEditor.commit();
 					
 					defaultButton.setOnClickListener(null);
-					ButtonSettings.removePressSize(defaultButton);
 					defaultButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.is_default_unpress));
 				}
 			});
