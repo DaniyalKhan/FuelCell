@@ -68,7 +68,7 @@ public class HubActivity extends NavActivity {
 						DirectionsActivity.class);
 				startActivity(intent);
 				} else {
-					Toast.makeText(HubActivity.this, "A default car is needed to try Find Route. Please select one through the Search or Favourites.", Toast.LENGTH_LONG).show();
+					Toast.makeText(HubActivity.this, "A default car is needed to try Find Route. Please select one through Search or Favourites.", Toast.LENGTH_LONG).show();
 				}
 			}
 

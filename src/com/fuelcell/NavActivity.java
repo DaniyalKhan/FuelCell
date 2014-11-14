@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -62,11 +63,16 @@ public class NavActivity extends FragmentActivity {
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
 			    } else if (items[position].header.equalsIgnoreCase("Find Route")) {
-			    	Intent intent = new Intent(NavActivity.this,
-							DirectionsActivity.class);
-			    	startActivity(intent);
+			    	SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
+					if (defaultCarPrefs.getBoolean("hasDefault", false)){
+						Intent intent = new Intent(NavActivity.this,
+								DirectionsActivity.class);
+					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
+					} else {
+						Toast.makeText(NavActivity.this, "A default car is needed to try Find Route. Please select one through Search or Favourites.", Toast.LENGTH_LONG).show();
+					}
 			    } else if (items[position].header.equalsIgnoreCase("Favourites")) {
 			    	Intent intent = new Intent(NavActivity.this,
 							StatsActivity.class);
@@ -83,13 +89,17 @@ public class NavActivity extends FragmentActivity {
 			    	Intent intent = new Intent(NavActivity.this,
 							CarProfileActivity.class);
 			    	CarFrame defaultCarFrame = getDefaultCar();
+			    	if (defaultCarFrame.year > 0) {
 			    	CarFrame.saveCarToIntent(intent, Integer.toString(defaultCarFrame.year), 
 			    			defaultCarFrame.manufacturer, 
 			    			defaultCarFrame.model, 
 			    			defaultCarFrame.vehicleClass);
-					startActivity(intent);
-					//Close drawer after leaving page
+			    	//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
+					startActivity(intent);
+			    	} else {
+			    		Toast.makeText(NavActivity.this, "There is currently no Default Car to open.", Toast.LENGTH_LONG).show();
+			    	}
 			    } 
 			  }
 			});
@@ -105,9 +115,13 @@ public class NavActivity extends FragmentActivity {
 			@Override
 			public void onDrawerOpened(View arg0) {
 				CarFrame car = getDefaultCar();
+				if (car.year > 0) {
 				DrawerNavAdapter.changeDefaultCarNavDrawer(car.year + " " 
 						+ car.manufacturer + " " 
 						+ car.model);
+				} else {
+					DrawerNavAdapter.changeDefaultCarNavDrawer("No Default Car Set");
+				}
 			}
 
 			@Override
@@ -136,9 +150,13 @@ public class NavActivity extends FragmentActivity {
 		CarFrame defaultCarFrame = getDefaultCar();
 		
 		items[6] = new DrawerItem("Default Car", DrawerItemType.Header);
+		if (defaultCarFrame.year > 0) {
 		items[7] = new DrawerItem(defaultCarFrame.year + " " 
 								+ defaultCarFrame.manufacturer + " " 
-								+ defaultCarFrame.model, DrawerItemType.Item);
+								+ defaultCarFrame.model, DrawerItemType.Item); 
+		} else {
+			items[7] = new DrawerItem("No Default Car Set", DrawerItemType.Item);
+		}
 		
 	}
 	public CarFrame getDefaultCar(){
