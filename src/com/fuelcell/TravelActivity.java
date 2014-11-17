@@ -243,13 +243,13 @@ public class TravelActivity extends NavActivity {
 				if(isExpanded){
 					map.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 					isExpanded = false;
-					expand.setBackgroundResource(R.drawable.expand);
+					expand.setBackgroundResource(R.drawable.route_expand);
 				} else {
 					LayoutParams params = (LayoutParams) map.getLayoutParams();
 					params.height = 500;
 					map.setLayoutParams(params);
 					isExpanded = true;
-					expand.setBackgroundResource(R.drawable.shrink);
+					expand.setBackgroundResource(R.drawable.route_shrink);
 				}
 			}
 		});

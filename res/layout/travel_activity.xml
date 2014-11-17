@@ -51,12 +51,12 @@
 
                 <Button
                     android:id="@+id/expandButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/expand" />
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/route_expand" />
             </RelativeLayout>
 
             <fragment
