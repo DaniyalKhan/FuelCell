@@ -29,6 +29,7 @@ public class StatsActivity extends NavActivity {
 	List<CarFrame> searched;
 	TextView hint;
 	Button clearButton;
+	Boolean isFavourites = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +44,17 @@ public class StatsActivity extends NavActivity {
 		Intent intentLast = getIntent();
 		if (intentLast.getStringExtra("title").equalsIgnoreCase("Results")) {
 			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_results);
+			isFavourites = false;
 		} else if (intentLast.getStringExtra("title").equalsIgnoreCase("Saved")){
 			((ImageView) findViewById(R.id.resulticon)).setImageResource(R.drawable.header_fav);
 			showClear = true;
+			isFavourites = true;
 		}
 		
 		clearButton = (Button) findViewById(R.id.clearButton);
 		
 		hint = (TextView) findViewById(R.id.hint);
 		hint.setText(intentLast.getStringExtra("hint"));
-//		ButtonSettings.pressSize(clearButton, 15);
 		
 		if (!showClear) {
 			clearButton.setVisibility(View.GONE);
@@ -111,23 +113,43 @@ public class StatsActivity extends NavActivity {
 				StatsActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						List<String> resultsOutput = new ArrayList<String>();
+						final List<String> resultsOutput = new ArrayList<String>();
 						for (int i = 0 ; i < searched.size() ; i++) {
 							resultsOutput.add(searched.get(i).year + " " + searched.get(i).manufacturer + " " + searched.get(i).model);
 						}
-						ArrayAdapter<String> resultsAdapter = new ArrayAdapter<String>(StatsActivity.this, R.layout.list_item, resultsOutput) {
+						final ArrayAdapter<String> resultsAdapter = new ArrayAdapter<String>(StatsActivity.this, R.layout.list_item, resultsOutput) {
 							@Override
 							public View getView(final int position, View convertView, ViewGroup parent) {
 								View row = convertView;
 								//Hide message when there are items
 								hint.setVisibility(View.GONE);
-								
-								if (row == null) {
-									LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
-									row = inflater.inflate(R.layout.list_item, null);
-									final ViewHolder viewHolder = new ViewHolder();
-									viewHolder.text = (TextView) row.findViewById(R.id.text);
-									row.setTag(viewHolder);
+								if (isFavourites) {
+									if (row == null) {
+										LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
+										row = inflater.inflate(R.layout.fav_list_item, null);
+										final ViewHolder viewHolder = new ViewHolder();
+										viewHolder.text = (TextView) row.findViewById(R.id.text);
+										viewHolder.delete = (ImageView) row.findViewById(R.id.delete);
+										row.setTag(viewHolder);
+										
+										viewHolder.delete.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+												//Delete from favourite when clicking delete image
+												CarDatabase.obtain(StatsActivity.this).removeFavCarFrames(searched.get(position));
+												resultsOutput.remove(position);
+												notifyDataSetChanged();
+											}
+										}); 
+									}
+								} else {
+									if (row == null) {
+										LayoutInflater inflater = StatsActivity.this.getLayoutInflater();
+										row = inflater.inflate(R.layout.list_item, null);
+										final ViewHolder viewHolder = new ViewHolder();
+										viewHolder.text = (TextView) row.findViewById(R.id.text);
+										row.setTag(viewHolder);
+									}
 								}
 								row.setOnClickListener(new OnClickListener() {
 									@Override
@@ -162,5 +184,6 @@ public class StatsActivity extends NavActivity {
 	
 	static class ViewHolder {
 	    public TextView text;
+	    public ImageView delete;
 	}
 }

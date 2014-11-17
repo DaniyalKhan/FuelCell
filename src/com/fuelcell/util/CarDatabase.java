@@ -34,24 +34,8 @@ public class CarDatabase extends SQLiteOpenHelper {
     
     private static final String[] CAR_ATTRIBUTES = {"City_Efficienty_L_100KM", "Highway_Efficienty_L_100KM", "City_Efficienty_MPG", "Highway_Efficienty_MPG", "Fuel_Usage_L_Year", "Emissions_G_KM" };
     private static final String[] CAR_ATTRIBUTE_TYPES = {"FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
-        
-//    private static final String CAR_DATA_TABLE = "car_data";
-//    private static final String[] CAR_DATA = { "ENGINESIZE", "CYLINDERS", "TRANSMISSION", "FUELTYPE" };
-//    private static final String[] CAR_DATA_TYPES = { "VARCHAR(255)", "INTEGER", "VARCHAR(255)", "VARCHAR(255)" };
-//    
-//    private static final String FUEL_DATA_TABLE = "fuel_data";
-//    private static final String[] FUEL_DATA = { "CITYEFFL", "HIGHWAYEFFL", "CITYEFFM", "HIGHWAYEFFM", "FUELUSAGE", "EMISSIONS" };
-//    private static final String[] FUEL_DATA_TYPES = { "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
-//    
-//    private static final String SAVED_CARS_TABLE = "saved_cars";
-//    private static final String[] SAVED_CARS_DATA = {};
-//    private static final String[] SAVED_CARS_TYPES = {};
-//    
-//    private static final String COLUMN = "<column>";
-//    private static final String TABLE = "<table>";
     
 	private static String QueryColumn = "select distinct ? from ? order by ?"; 
-//	private static String QueryCarFrame = "select distinct ?, ?, ?, ? from " + CAR_TABLE;
 	private static String QueryCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + CAR_TABLE;
 	private static String QueryFavouriteCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + FAVOURITES;
 	private static String QueryCarFull = "select " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
@@ -59,19 +43,17 @@ public class CarDatabase extends SQLiteOpenHelper {
 			+ CAR_ATTRIBUTES[0] + ", " + CAR_ATTRIBUTES[1] + ", " + CAR_ATTRIBUTES[2] + ", " + CAR_ATTRIBUTES[3] + ", " + CAR_ATTRIBUTES[4] + ", " + CAR_ATTRIBUTES[5]
 			+ " from " + CAR_TABLE;
     private static String QueryInsertCarData = "insert into " + CAR_TABLE;
-    private static String QueryInsertFavourite = "insert into " + FAVOURITES + "(" + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + ", " 
-			+ PRIMARY_KEYS[4] + ", " + PRIMARY_KEYS[5] + ", " + PRIMARY_KEYS[6] + ", " + PRIMARY_KEYS[7] + ", " + PRIMARY_KEYS[8] + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static String QueryInsertFavourite = "insert into " + FAVOURITES 
+    		+ "(" + PRIMARY_KEYS[0] + ", " 
+    		+ PRIMARY_KEYS[1] + ", " 
+    		+ PRIMARY_KEYS[2] + ", " 
+    		+ PRIMARY_KEYS[3] + ") values (?, ?, ?, ?)";
     private static String QueryRemoveFavourite = "delete from " + FAVOURITES 
     		+ " WHERE " 
     		+ PRIMARY_KEYS[0] + " = ? AND "
     		+ PRIMARY_KEYS[1] + " = ? AND " 
     		+ PRIMARY_KEYS[2] + " = ? AND " 
-    		+ PRIMARY_KEYS[3] + " = ? AND " 
-			+ PRIMARY_KEYS[4] + " = ? AND " 
-    		+ PRIMARY_KEYS[5] + " = ? AND " 
-			+ PRIMARY_KEYS[6] + " = ? AND " 
-    		+ PRIMARY_KEYS[7] + " = ? AND " 
-			+ PRIMARY_KEYS[8] + " = ? ";
+    		+ PRIMARY_KEYS[3] + " = ? ";
     private static String QueryRemoveAllFavourite = "delete from " + FAVOURITES;
     
     //construct precompiled query strings
@@ -90,10 +72,8 @@ public class CarDatabase extends SQLiteOpenHelper {
     	for (int i = 0; i < PRIMARY_KEYS.length + CAR_ATTRIBUTES.length - 1; i++) {
     		QueryInsertCarData += ", ?";
     	}
-    	QueryInsertCarData += ")";
-    	
-    }
-    
+    	QueryInsertCarData += ")";	
+    }  
     
 	public static CarDatabase obtain(Context c) {
 		if (instance == null) instance = new CarDatabase(c);
@@ -238,7 +218,7 @@ public class CarDatabase extends SQLiteOpenHelper {
 		return carFrames;
 	}
 	
-	public void addFavCarFrames(Car car) {
+	public void addFavCarFrames(CarFrame car) {
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryInsertFavourite);
 		
@@ -247,16 +227,11 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.bindString(2, car.manufacturer);
 		statement.bindString(3, car.model);
 		statement.bindString(4, car.vehicleClass);
-		statement.bindDouble(5, car.engineSize);
-		statement.bindDouble(6, car.cylinders);
-		statement.bindString(7, car.transmission.toString());
-		statement.bindDouble(8, car.gears);
-		statement.bindString(9, car.fuelType.toString());
 		statement.executeInsert();
 	}
 	
 	@SuppressLint("NewApi")
-	public void removeFavCarFrames(Car car) {
+	public void removeFavCarFrames(CarFrame car) {
 		SQLiteDatabase db = getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(QueryRemoveFavourite);
 		
@@ -265,11 +240,6 @@ public class CarDatabase extends SQLiteOpenHelper {
 		statement.bindString(2, car.manufacturer);
 		statement.bindString(3, car.model);
 		statement.bindString(4, car.vehicleClass);
-		statement.bindDouble(5, car.engineSize);
-		statement.bindDouble(6, car.cylinders);
-		statement.bindString(7, car.transmission.toString());
-		statement.bindDouble(8, car.gears);
-		statement.bindString(9, car.fuelType.toString());
 		statement.executeUpdateDelete();
 	}
 	
