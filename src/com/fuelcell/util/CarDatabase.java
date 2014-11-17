@@ -442,21 +442,21 @@ public class CarDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
     	//car data table
-    	db.execSQL(createTable(CAR_ATTRIBUTES, CAR_ATTRIBUTE_TYPES, CAR_TABLE));
+    	db.execSQL(createTable(PRIMARY_KEYS, CAR_ATTRIBUTES, CAR_ATTRIBUTE_TYPES, CAR_TABLE));
     	//table for saved cars (just need primary key to identify car)
-    	db.execSQL(createTable(new String[]{}, new String[]{}, FAVOURITES));
+    	db.execSQL(createTable(new String[]{PRIMARY_KEYS[0],PRIMARY_KEYS[1],PRIMARY_KEYS[2],PRIMARY_KEYS[3]}, new String[]{}, new String[]{}, FAVOURITES));
     }
     
-    public static String createTable(String[] columns, String[] columnsTypes, String tableName) {
+    public static String createTable(String[] primaryKeys, String[] columns, String[] columnsTypes, String tableName) {
     	String createTable = "create table " + tableName + " (";
-    	for (int i = 0 ; i < PRIMARY_KEYS.length; i++) {
-    		createTable += (PRIMARY_KEYS[i] + " " + PRIMARY_KEY_TYPES[i] + " not null, ");
+    	for (int i = 0 ; i < primaryKeys.length; i++) {
+    		createTable += (primaryKeys[i] + " " + primaryKeys[i] + " not null, ");
     	}
     	for (int i = 0 ; i < columns.length; i++) {
     		createTable += (columns[i] + " " + columnsTypes[i] + " not null, ");
     	}
     	createTable += "primary key (";
-    	for (String key: PRIMARY_KEYS) {
+    	for (String key: primaryKeys) {
     		createTable += (key + ", ");
     	}
     	//get rid of ending comma (and ending space)
