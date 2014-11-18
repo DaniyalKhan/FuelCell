@@ -413,9 +413,23 @@ public class SearchActivity extends NavActivity {
 			return false;
 		}
 
+		@SuppressLint("NewApi")
 		@Override
 		public boolean onKeyDown(int keyCode, KeyEvent event) {
 			if (keyCode == KeyEvent.KEYCODE_ENTER) {
+				if (((Activity)this.getContext()).findViewById(R.id.searchCorp).isFocused()){ 
+					((SearchActivity)context).visible();
+					((Activity)this.getContext()).findViewById(R.id.searchYear).requestFocus();
+				} else if (((Activity)this.getContext()).findViewById(R.id.searchYear).isFocused()){ 
+					((SearchActivity)context).visible();
+					((Activity)this.getContext()).findViewById(R.id.searchVType).requestFocus();
+				} else if (((Activity)this.getContext()).findViewById(R.id.searchVType).isFocused()){ 
+					((SearchActivity)context).visible();
+					((Activity)this.getContext()).findViewById(R.id.searchModel).requestFocus();
+				} else if (((Activity)this.getContext()).findViewById(R.id.searchModel).isFocused()) {
+					((Activity)this.getContext()).findViewById(R.id.searchButton).callOnClick();
+					((SearchActivity)context).visible();
+				}
 				return true;
 			}
 			return super.onKeyDown(keyCode, event);

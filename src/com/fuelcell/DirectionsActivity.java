@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -144,9 +146,15 @@ public class DirectionsActivity extends NavActivity {
 			this.context = context;
 		}
 
+		@SuppressLint("NewApi")
 		@Override
 		public boolean onKeyDown(int keyCode, KeyEvent event) {
 			if (keyCode == KeyEvent.KEYCODE_ENTER) {
+				if (((Activity)this.getContext()).findViewById(R.id.origin).isFocused()){ 
+					((Activity)this.getContext()).findViewById(R.id.destination).requestFocus();
+				} else if (((Activity)this.getContext()).findViewById(R.id.destination).isFocused()) {
+					((Activity)this.getContext()).findViewById(R.id.find_routes).callOnClick();
+				}
 				return true;
 			}
 			return super.onKeyDown(keyCode, event);

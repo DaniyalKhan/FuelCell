@@ -92,7 +92,7 @@
     <view
         android:id="@+id/searchCorp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/searchHeaderCorp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
