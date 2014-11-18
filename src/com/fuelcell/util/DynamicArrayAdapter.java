@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
-
 import com.fuelcell.R;
 import com.fuelcell.models.CarFrame;
 
@@ -26,6 +25,18 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 	private List<CarFrame> cars;
 	private Activity context;
 	private TextCallback callback;
+	private CarFrame searchOptions;
+	
+	public void setSearchOptions(int year, String manufacturer, String model, String vehicleClass){
+		if (searchOptions == null) {
+			searchOptions = new CarFrame(year, manufacturer, model, vehicleClass);
+		} else { 
+			searchOptions.year = year;
+			searchOptions.manufacturer = manufacturer;
+			searchOptions.model = model;
+			searchOptions.vehicleClass = vehicleClass;
+		}
+	}
 	
 	final Comparator<String> stringComparator = new Comparator<String>() {
 		@Override
@@ -41,10 +52,6 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		this.context = context;
 		this.cars = cars;
 		this.fields = new ArrayList<String>();
-//		toFields("");
-//		for(String s: fields) {
-//			add(s);
-//	    }
 		sort(stringComparator);
 		notifyDataSetChanged();
 	}
@@ -117,9 +124,16 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 		    fields.addAll(filtered);
 		}
 		
+		@SuppressLint("NewApi")
 		protected boolean shouldContain(CarFrame c) {
-			//TODO better filtering by looking at other fields
-			return true;
+			if ((Integer.toString(c.year).contains(Integer.toString(searchOptions.year)) ||  searchOptions.year < 0)
+					&& (c.model.toLowerCase().contains(searchOptions.model.toLowerCase()) || searchOptions.model.isEmpty() || searchOptions.model.equalsIgnoreCase("") || searchOptions.model == null)
+					&& (c.manufacturer.toLowerCase().contains(searchOptions.manufacturer.toLowerCase()) || searchOptions.manufacturer.isEmpty() || searchOptions.manufacturer.equalsIgnoreCase("") || searchOptions.manufacturer == null)
+					&& (c.vehicleClass.toLowerCase().contains(searchOptions.vehicleClass.toLowerCase()) || searchOptions.vehicleClass.isEmpty() || searchOptions.vehicleClass.equalsIgnoreCase("") || searchOptions.vehicleClass == null)){
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		@Override
