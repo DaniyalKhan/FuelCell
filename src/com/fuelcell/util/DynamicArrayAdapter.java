@@ -133,7 +133,7 @@ public class DynamicArrayAdapter extends ArrayAdapter<String>{
 				return true;
 			} else {
 				return false;
-			}
+			} 
 		}
 		
 		@Override

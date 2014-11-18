@@ -2,6 +2,7 @@ package com.fuelcell;
 
 import java.util.Arrays;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.models.CarFrame;
 import com.fuelcell.util.CarDatabase;
@@ -294,10 +296,18 @@ public class SearchActivity extends NavActivity {
 	
 	@SuppressLint("NewApi")
 	private void refreshSearchOptions() {
-		carAdapter.setSearchOptions(!searchYear.getText().toString().isEmpty() ? (Integer.parseInt(searchYear.getText().toString())) : -1 , 
-		!searchManu.getText().toString().isEmpty() ? searchManu.getText().toString() : "", 
-		!searchModel.getText().toString().isEmpty() ? searchModel.getText().toString() : "", 
-		!searchVType.getText().toString().isEmpty() ? searchVType.getText().toString() : "");
+		//Check if NaN
+		int year = -1;
+		try {
+			year = !searchYear.getText().toString().isEmpty() ? (Integer.parseInt(searchYear.getText().toString())) : -1;
+		} catch(NumberFormatException e) { 
+
+	    }
+			carAdapter.setSearchOptions(year , 
+			!searchManu.getText().toString().isEmpty() ? searchManu.getText().toString() : "", 
+			!searchModel.getText().toString().isEmpty() ? searchModel.getText().toString() : "", 
+			!searchVType.getText().toString().isEmpty() ? searchVType.getText().toString() : "");
+		
 	}
 	
 	protected void setTextChange(MyEditText textField) {

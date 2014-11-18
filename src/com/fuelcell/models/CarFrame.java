@@ -32,7 +32,13 @@ public class CarFrame {
 	}
 	
 	public static CarFrame loadCarFromIntent(Intent intent) {
-		return new CarFrame(intent.getStringExtra(INTENT_YEAR) == null || intent.getStringExtra(INTENT_YEAR).equalsIgnoreCase("") ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR)), 
+		int year = -1;
+		try{
+			year = intent.getStringExtra(INTENT_YEAR) == null || intent.getStringExtra(INTENT_YEAR).equalsIgnoreCase("") ? -1 : Integer.parseInt(intent.getStringExtra(INTENT_YEAR));
+		} catch(NumberFormatException e) { 
+	
+	    }
+		return new CarFrame(year, 
 							intent.getStringExtra(INTENT_MANUFACTURER) == null ? "" : intent.getStringExtra(INTENT_MANUFACTURER), 
 							intent.getStringExtra(INTENT_MODEL) == null ? "" : intent.getStringExtra(INTENT_MODEL), 
 							intent.getStringExtra(INTENT_VCLASS) == null ? "" : intent.getStringExtra(INTENT_VCLASS));
