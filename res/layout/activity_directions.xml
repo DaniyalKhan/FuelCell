@@ -5,6 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:text="To return to the main page, close the keyboard (or press back)."
+        android:textSize="10dp"
+        android:textStyle="italic"
+        android:visibility="invisible" />
+
     <ImageView
         android:id="@+id/mainicon"
         android:layout_width="wrap_content"
@@ -23,76 +38,88 @@
         android:src="@drawable/header_home_button_press" />
 
     <ImageView
-	        android:id="@+id/locationicon"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/mainicon"
-	        android:layout_alignTop="@+id/mainicon"
-	        android:layout_marginTop="3dp"
-	        android:src="@drawable/header_location" />
-        
+        android:id="@+id/locationicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/mainicon"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/mainicon"
+        android:src="@drawable/header_location" />
+
     <ImageView
-            android:id="@+id/searchHeaderOrigin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mainicon"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/origin_header_find_route"/>
-    
+        android:id="@+id/searchHeaderOrigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainicon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/origin_header_find_route" />
+
     <view
         android:id="@+id/origin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/searchHeaderOrigin"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/text_input_location"
-        android:layout_below="@+id/searchHeaderOrigin"
-        android:textColor="@android:color/black"
-        android:contentDescription="desc"
         class="com.fuelcell.DirectionsActivity$MyEditText"
+        android:background="@drawable/text_input_location"
+        android:contentDescription="desc"
         android:gravity="center"
         android:maxLines="1"
-        android:textCursorDrawable="@null"  />
+        android:textColor="@android:color/black"
+        android:textCursorDrawable="@null" />
 
     <ImageView
-            android:id="@+id/searchHeaderDestination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/origin"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginTop="15dp"
-            android:src="@drawable/destination_header_find_route"/>
-    
+        android:id="@+id/searchHeaderDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/origin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/destination_header_find_route" />
+
     <view
         android:id="@+id/destination"
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_height="50dp"
         android:layout_below="@+id/searchHeaderDestination"
-        android:background="@drawable/text_input_location"
-        android:textColor="@android:color/black"
-        android:contentDescription="desc"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         class="com.fuelcell.DirectionsActivity$MyEditText"
+        android:background="@drawable/text_input_location"
+        android:contentDescription="desc"
         android:ems="10"
-        android:maxLines="1"
         android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
         android:textCursorDrawable="@null" />
-    
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_below="@+id/destination">
-    <Button
-        android:id="@+id/find_routes"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/find_route_route_press"
-        android:textSize="12sp"/>
-</LinearLayout>
+        android:layout_below="@+id/destination"
+        android:layout_centerHorizontal="true" >
+
+        <Button
+            android:id="@+id/find_routes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/find_route_route_press"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/searchList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hint"
+        android:layout_below="@+id/destination"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" >
+    </ListView>
+
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.fuelcell.util;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -35,6 +37,10 @@ public class CarDatabase extends SQLiteOpenHelper {
     private static final String[] CAR_ATTRIBUTES = {"City_Efficienty_L_100KM", "Highway_Efficienty_L_100KM", "City_Efficienty_MPG", "Highway_Efficienty_MPG", "Fuel_Usage_L_Year", "Emissions_G_KM" };
     private static final String[] CAR_ATTRIBUTE_TYPES = {"FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT", "FLOAT" };
     
+    private static final String HISTORY_TABLE = "history_table";
+	
+	private static final String[] HISTORY_PRIMARY_KEYS = {"Search", "Time"};
+    
 	private static String QueryColumn = "select distinct ? from ? order by ?"; 
 	private static String QueryCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + CAR_TABLE;
 	private static String QueryFavouriteCarFrame = "select distinct " + PRIMARY_KEYS[0] + ", " + PRIMARY_KEYS[1] + ", " + PRIMARY_KEYS[2] + ", " + PRIMARY_KEYS[3] + " from " + FAVOURITES;
@@ -55,6 +61,17 @@ public class CarDatabase extends SQLiteOpenHelper {
     		+ PRIMARY_KEYS[2] + " = ? AND " 
     		+ PRIMARY_KEYS[3] + " = ? ";
     private static String QueryRemoveAllFavourite = "delete from " + FAVOURITES;
+    private static String QueryHistory =      "select * from " + HISTORY_TABLE + " ORDER BY " + HISTORY_PRIMARY_KEYS[1] + " DESC" ;
+    private static String QueryValueHistory =      "select * from " + HISTORY_TABLE + " WHERE " + HISTORY_PRIMARY_KEYS[0] + " = ?" ;
+    private static String QueryInsertOriginHistory = "insert into " + HISTORY_TABLE 
+    		+ " (" + HISTORY_PRIMARY_KEYS[0] + ", " 
+    		+ HISTORY_PRIMARY_KEYS[1] + ") values (?, ?)";
+    private static String QueryUpdateHistory = "UPDATE " + HISTORY_TABLE + 
+    		" SET " + HISTORY_PRIMARY_KEYS[1] + " = ? " + 
+    		" WHERE " + HISTORY_PRIMARY_KEYS[0] + " = " + " ? ";
+    private static String QueryRemoveHistory = "delete from " + HISTORY_TABLE + " WHERE " 
+    		+ HISTORY_PRIMARY_KEYS[0] + " = ? AND "
+    		+ HISTORY_PRIMARY_KEYS[1] + " = ?";
     
     //construct precompiled query strings
     static {
@@ -113,15 +130,14 @@ public class CarDatabase extends SQLiteOpenHelper {
 	};
 	
 	//Get the variations of each car
-		public String[] getCarVariations(CarFrame carFrame) {			
-			List<Car> variations = getCarsFull(carFrame);
-			String[] x = new String[variations.size()];
-			for (int i = 0 ; variations.size() > i ; i++ ) {
-				//x[i] = Integer.toString(variations.get(i).year) + " " + variations.get(i).manufacturer + " " + variations.get(i).model + " " + variations.get(i).vehicleClass;
-				x[i] = variations.get(i).cylinders + " " + variations.get(i).engineSize + " " + variations.get(i).fuelType + " " + variations.get(i).transmission + " " + variations.get(i).gears;
-			}
-			return x;
+	public String[] getCarVariations(CarFrame carFrame) {			
+		List<Car> variations = getCarsFull(carFrame);
+		String[] x = new String[variations.size()];
+		for (int i = 0 ; variations.size() > i ; i++ ) {
+			x[i] = variations.get(i).cylinders + " " + variations.get(i).engineSize + " " + variations.get(i).fuelType + " " + variations.get(i).transmission + " " + variations.get(i).gears;
 		}
+		return x;
+	}
 	
 	/**
 	 * Construct a car frame query with the specified columns in the (optional) where clause
@@ -445,6 +461,7 @@ public class CarDatabase extends SQLiteOpenHelper {
     	db.execSQL(createTable(PRIMARY_KEYS, CAR_ATTRIBUTES, CAR_ATTRIBUTE_TYPES, CAR_TABLE));
     	//table for saved cars (just need primary key to identify car)
     	db.execSQL(createTable(new String[]{PRIMARY_KEYS[0],PRIMARY_KEYS[1],PRIMARY_KEYS[2],PRIMARY_KEYS[3]}, new String[]{}, new String[]{}, FAVOURITES));
+    	db.execSQL(createTable(HISTORY_PRIMARY_KEYS, new String[]{}, new String[]{}, HISTORY_TABLE));
     }
     
     public static String createTable(String[] primaryKeys, String[] columns, String[] columnsTypes, String tableName) {
@@ -468,6 +485,63 @@ public class CarDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
+	}
+	
+	public ArrayList<HistoryItem> getHistory() {
+		ArrayList<HistoryItem> search = new ArrayList<HistoryItem>();
+		Cursor c = null;
+			c = getReadableDatabase().rawQuery(QueryHistory,null);
+		while (c.moveToNext()) 
+			search.add(new HistoryItem(c.getString(0), c.getString(1)));
+		return search;
+	}
+
+	public HistoryItem setHistory(String value) {
+		//add as origin + destination
+		//TODO clean up any too old (20 entries each)
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryInsertOriginHistory);
+		
+		//primary keys
+		String time = new Timestamp((new Date()).getTime()).toString();
+		
+		statement.bindString(1, value);
+		statement.bindString(2, time);
+		statement.executeInsert();
+		
+		return new HistoryItem(value, time);
+		
+	}
+	
+	@SuppressLint("NewApi")
+	public void removeHistory(HistoryItem item) {
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryRemoveHistory);
+		
+		//primary keys
+		statement.bindString(1, item.value);
+		statement.bindString(2, item.time);
+		statement.executeUpdateDelete();
+	}
+	
+	@SuppressLint("NewApi")
+	public void updateHistory(String item) {
+		SQLiteDatabase db = getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(QueryUpdateHistory);
+		
+		//primary keys
+		statement.bindString(1, new Timestamp((new Date()).getTime()).toString());
+		statement.bindString(2, item);
+		statement.executeUpdateDelete();
+	}
+
+	public boolean isUniqueHistory(String value) {
+
+		Cursor c = getReadableDatabase().rawQuery(QueryValueHistory,new String[]{value});
+
+		while (c.moveToNext()) 
+			return false;
+		return true;
 	}
 	
 }

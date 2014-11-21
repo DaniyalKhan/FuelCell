@@ -1,6 +1,7 @@
 package com.fuelcell;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,33 +13,53 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fuelcell.StatsActivity.ViewHolder;
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.google.Directions;
 import com.fuelcell.google.Directions.DirectionCallback;
 import com.fuelcell.google.Directions.Route;
 import com.fuelcell.models.Car;
+import com.fuelcell.models.CarFrame;
 import com.fuelcell.ui.DirectionsFragment;
 import com.fuelcell.ui.DirectionsFragment.RouteCallback;
+import com.fuelcell.util.CarDatabase;
+import com.fuelcell.util.HistoryItem;
 import com.fuelcell.util.JSONUtil;
 
 public class DirectionsActivity extends NavActivity {
 	
 	private Car car;
 	private Directions directions;
+	MyEditText lastClicked;
+	List<View> invisibleViews;
+	ListView searchList;
+	TextView hint;
+	MyEditText origin;
+	MyEditText destination;
+	Button findRoutes;
+	DynamicArrayAdapter adapter;
+	List<HistoryItem> list;
 	
 	private RouteCallback routeCallback = new RouteCallback() {
 		@Override
@@ -53,7 +74,6 @@ public class DirectionsActivity extends NavActivity {
 			startActivity(intent);
 		}
 	};
-	
 	
 	private DirectionCallback callback = new DirectionCallback() {		
 		@Override
@@ -97,11 +117,59 @@ public class DirectionsActivity extends NavActivity {
 		car = (Car) intent.getParcelableExtra("car");
 		directions = new Directions(this, callback );
 		
-		final MyEditText origin = (MyEditText) findViewById(R.id.origin);
-		final MyEditText destination = (MyEditText) findViewById(R.id.destination);
-		final Button findRoutes = (Button) findViewById(R.id.find_routes);
+		origin = (MyEditText) findViewById(R.id.origin);
+		origin.setTextHeader(findViewById(R.id.searchHeaderOrigin));
+		setTextChange(origin);
+		destination = (MyEditText) findViewById(R.id.destination);
+		destination.setTextHeader(findViewById(R.id.searchHeaderDestination));
+		setTextChange(destination);
+		findRoutes = (Button) findViewById(R.id.find_routes);
+		
+		hint = (TextView) findViewById(R.id.hint);
+		searchList = (ListView) findViewById(R.id.searchList);
+		
+		invisibleViews = Arrays.asList(findRoutes,findViewById(R.id.mainicon),findViewById(R.id.locationicon), origin, destination, origin.textHeader, destination.textHeader);
+		list = CarDatabase.obtain(DirectionsActivity.this).getHistory();
+		adapter = new DynamicArrayAdapter(DirectionsActivity.this, R.layout.fav_list_item , list);
+		searchList.setAdapter(adapter);
+		searchList.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (origin.hasFocus() || origin.textHeader.hasFocus()) {
+					origin.setText(adapter.list.get(position).getValue());
+				} else {
+					destination.setText(adapter.list.get(position).getValue());
+				}
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(destination.getWindowToken(), 0);
+
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(300);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						DirectionsActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								visible();
+							}
+						});
+					}
+				}).start();
+			}
+			
+		});
+		
+		setClick(origin);
+		setClick(destination);
 		
 		findRoutes.setOnClickListener(new OnClickListener() {
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View v) {
 				if (findViewById(R.id.root) != null) {
@@ -109,6 +177,22 @@ public class DirectionsActivity extends NavActivity {
 					directions.makeRequest();
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+					String[] text = new String[]{origin.getText().toString(),destination.getText().toString()};
+
+					//Stop save if it is null/etc
+					if (!(text[0] == null || text[0].equals("") || text[0].isEmpty() ||
+							text[1] == null || text[1].equals("") || text[1].isEmpty())){
+						for (int i = 0 ; i < text.length ; i++){
+							if (CarDatabase.obtain(DirectionsActivity.this).isUniqueHistory(text[i])){
+								list.add(CarDatabase.obtain(DirectionsActivity.this).setHistory(text[i]));
+								adapter.list = list;
+								adapter.notifyDataSetChanged();
+							} else {
+								//update time if already exists
+								CarDatabase.obtain(DirectionsActivity.this).updateHistory(text[i]);
+							}
+						}
+					}
 		        }
 			}
 		});
@@ -126,10 +210,72 @@ public class DirectionsActivity extends NavActivity {
         firstFragment.setArguments(getIntent().getExtras());
         ft.add(R.id.root, firstFragment, "DIRECTION_TAG").addToBackStack(null).commit();
 	}
+	
+	protected void setClick(final MyEditText textField) {
+		textField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				onActionTextField(textField);	
+			}
+		});
+		textField.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onActionTextField(textField);
+			}
+		});
+	}
 
+	private void onActionTextField(MyEditText editText) {
+		if (editText.hasFocus() || editText.textHeader.hasFocus()) {
+			makeInvisible(editText);
+			lastClicked = editText;
+			adapter.notifyDataSetChanged();
+		}
+	}
+	
+	public void makeInvisible(MyEditText t) {
+		if (t.hasFocus() || t.textHeader.hasFocus()) {
+			for (View v: invisibleViews) {
+				//only turn invisible the views that are not in focus! (the ones that are not clicked)
+				if (!v.equals(t) &&  !v.equals(t.textHeader)) v.setVisibility(View.GONE);
+			}
+			searchList.setVisibility(View.VISIBLE);
+			hint.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void visible() {
+		for (View v: invisibleViews) v.setVisibility(View.VISIBLE);
+		searchList.setVisibility(View.GONE);
+		hint.setVisibility(View.GONE);
+	}
+	
+	protected void setTextChange(MyEditText textField) {
+		textField.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				//adapter.getFilter().filter(s);
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				//adapter.getFilter().filter(s);
+			}
+
+
+		});
+	}
+	
 	public static class MyEditText extends EditText {
 		
 		Context context;
+		View textHeader;
 
 		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
@@ -141,9 +287,35 @@ public class DirectionsActivity extends NavActivity {
 			this.context = context;
 		}
 
+		public void setTextHeader(View header) {
+			this.textHeader = header;
+		}
+		
 		public MyEditText(Context context) {
 			super(context);
 			this.context = context;
+		}
+		
+		public boolean onKeyPreIme(final int keyCode, KeyEvent event) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					((Activity) context).runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							if (keyCode == KeyEvent.KEYCODE_BACK) {
+								((DirectionsActivity)context).visible();
+							}
+						}
+					});
+				}
+			}).start();
+			return false;
 		}
 
 		@SuppressLint("NewApi")
@@ -151,8 +323,10 @@ public class DirectionsActivity extends NavActivity {
 		public boolean onKeyDown(int keyCode, KeyEvent event) {
 			if (keyCode == KeyEvent.KEYCODE_ENTER) {
 				if (((Activity)this.getContext()).findViewById(R.id.origin).isFocused()){ 
+					((DirectionsActivity)context).visible();
 					((Activity)this.getContext()).findViewById(R.id.destination).requestFocus();
 				} else if (((Activity)this.getContext()).findViewById(R.id.destination).isFocused()) {
+					((DirectionsActivity)context).visible();
 					((Activity)this.getContext()).findViewById(R.id.find_routes).callOnClick();
 				}
 				return true;
@@ -160,4 +334,55 @@ public class DirectionsActivity extends NavActivity {
 			return super.onKeyDown(keyCode, event);
 		}
 	}
+	
+	public class DynamicArrayAdapter extends ArrayAdapter<HistoryItem>{
+
+		Context context;
+		List<HistoryItem> list;
+		
+		public DynamicArrayAdapter(Context context, int resource,
+				List<HistoryItem> objects) {
+			super(context, resource, objects);
+			this.context = context;
+			this.list = objects;
+		}
+		
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {			
+			View rowView = convertView;
+			if (rowView == null) {
+				LayoutInflater inflater = (LayoutInflater) context
+				        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    ViewHolder viewHolder = new ViewHolder();
+			    rowView = inflater.inflate(R.layout.fav_list_item, parent, false);
+			    viewHolder.text = (TextView) rowView.findViewById(R.id.text);
+			    viewHolder.text.setText(list.get(position).getValue());
+			    viewHolder.delete = (ImageView) rowView.findViewById(R.id.delete);
+			    rowView.setTag(viewHolder);
+			    viewHolder.delete.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						CarDatabase.obtain(context).removeHistory(list.get(position));
+						list.remove(position);
+						notifyDataSetChanged();
+					}
+			    	
+			    });
+			}
+			ViewHolder holder = (ViewHolder) rowView.getTag();
+		    HistoryItem s = getItem(position);
+	    	holder.text.setText(s.getValue());
+		    
+		    return rowView;
+
+		}
+	
+	}
+	
+	static class ViewHolder {
+	    public TextView text;
+	    public ImageView delete;
+	}
+
 }
