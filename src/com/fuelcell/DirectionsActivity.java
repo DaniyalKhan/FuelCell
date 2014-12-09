@@ -22,11 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,7 +32,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fuelcell.StatsActivity.ViewHolder;
 import com.fuelcell.action.ButtonSettings;
 import com.fuelcell.google.Directions;
 import com.fuelcell.google.Directions.DirectionCallback;
@@ -44,6 +41,9 @@ import com.fuelcell.models.CarFrame;
 import com.fuelcell.ui.DirectionsFragment;
 import com.fuelcell.ui.DirectionsFragment.RouteCallback;
 import com.fuelcell.util.CarDatabase;
+import com.fuelcell.util.HistoryArrayAdapter;
+import com.fuelcell.util.DynamicArrayAdapter.CarFilter;
+import com.fuelcell.util.HistoryArrayAdapter.HistoryFilter;
 import com.fuelcell.util.HistoryItem;
 import com.fuelcell.util.JSONUtil;
 
@@ -58,8 +58,10 @@ public class DirectionsActivity extends NavActivity {
 	MyEditText origin;
 	MyEditText destination;
 	Button findRoutes;
-	DynamicArrayAdapter adapter;
+	HistoryArrayAdapter adapter;
 	List<HistoryItem> list;
+	HistoryFilter originFilter;
+	HistoryFilter destinationFilter;
 	
 	private RouteCallback routeCallback = new RouteCallback() {
 		@Override
@@ -130,17 +132,24 @@ public class DirectionsActivity extends NavActivity {
 		
 		invisibleViews = Arrays.asList(findRoutes,findViewById(R.id.mainicon),findViewById(R.id.locationicon), origin, destination, origin.textHeader, destination.textHeader);
 		list = CarDatabase.obtain(DirectionsActivity.this).getHistory();
-		adapter = new DynamicArrayAdapter(DirectionsActivity.this, R.layout.fav_list_item , list);
+		adapter = new HistoryArrayAdapter(DirectionsActivity.this, R.layout.fav_list_item , list);
 		searchList.setAdapter(adapter);
+		
+		originFilter = adapter.new HistoryFilter(){};
+		destinationFilter = adapter.new HistoryFilter(){};
+
+		origin.setFilter(originFilter);
+		destination.setFilter(destinationFilter);
+		
 		searchList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (origin.hasFocus() || origin.textHeader.hasFocus()) {
-					origin.setText(adapter.list.get(position).getValue());
+					origin.setText(adapter.getItem(position).getValue());
 				} else {
-					destination.setText(adapter.list.get(position).getValue());
+					destination.setText(adapter.getItem(position).getValue());
 				}
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(destination.getWindowToken(), 0);
@@ -184,8 +193,10 @@ public class DirectionsActivity extends NavActivity {
 							text[1] == null || text[1].equals("") || text[1].isEmpty())){
 						for (int i = 0 ; i < text.length ; i++){
 							if (CarDatabase.obtain(DirectionsActivity.this).isUniqueHistory(text[i])){
-								list.add(CarDatabase.obtain(DirectionsActivity.this).setHistory(text[i]));
-								adapter.list = list;
+								HistoryItem newItem = CarDatabase.obtain(DirectionsActivity.this).setHistory(text[i]);
+								adapter.list.add(newItem);
+								adapter.all.add(newItem);
+								adapter.getFilter().filter(adapter.filter.constraint);
 								adapter.notifyDataSetChanged();
 							} else {
 								//update time if already exists
@@ -230,6 +241,7 @@ public class DirectionsActivity extends NavActivity {
 		if (editText.hasFocus() || editText.textHeader.hasFocus()) {
 			makeInvisible(editText);
 			lastClicked = editText;
+			adapter.setFilter(editText.filter, editText.getText().toString());
 			adapter.notifyDataSetChanged();
 		}
 	}
@@ -260,12 +272,12 @@ public class DirectionsActivity extends NavActivity {
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				//adapter.getFilter().filter(s);
+				adapter.getFilter().filter(s.toString());
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				//adapter.getFilter().filter(s);
+				adapter.getFilter().filter(s.toString());
 			}
 
 
@@ -276,6 +288,7 @@ public class DirectionsActivity extends NavActivity {
 		
 		Context context;
 		View textHeader;
+		HistoryFilter filter;
 
 		public MyEditText(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
@@ -333,56 +346,14 @@ public class DirectionsActivity extends NavActivity {
 			}
 			return super.onKeyDown(keyCode, event);
 		}
-	}
-	
-	public class DynamicArrayAdapter extends ArrayAdapter<HistoryItem>{
-
-		Context context;
-		List<HistoryItem> list;
 		
-		public DynamicArrayAdapter(Context context, int resource,
-				List<HistoryItem> objects) {
-			super(context, resource, objects);
-			this.context = context;
-			this.list = objects;
+		public void setFilter(HistoryFilter filter) {
+			this.filter = filter;
 		}
 		
-		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {			
-			View rowView = convertView;
-			if (rowView == null) {
-				LayoutInflater inflater = (LayoutInflater) context
-				        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			    ViewHolder viewHolder = new ViewHolder();
-			    rowView = inflater.inflate(R.layout.fav_list_item, parent, false);
-			    viewHolder.text = (TextView) rowView.findViewById(R.id.text);
-			    viewHolder.text.setText(list.get(position).getValue());
-			    viewHolder.delete = (ImageView) rowView.findViewById(R.id.delete);
-			    rowView.setTag(viewHolder);
-			    viewHolder.delete.setOnClickListener(new OnClickListener(){
-
-					@Override
-					public void onClick(View v) {
-						CarDatabase.obtain(context).removeHistory(list.get(position));
-						list.remove(position);
-						notifyDataSetChanged();
-					}
-			    	
-			    });
-			}
-			ViewHolder holder = (ViewHolder) rowView.getTag();
-		    HistoryItem s = getItem(position);
-	    	holder.text.setText(s.getValue());
-		    
-		    return rowView;
-
+		public HistoryFilter getFilter() {
+			return filter;
 		}
-	
-	}
-	
-	static class ViewHolder {
-	    public TextView text;
-	    public ImageView delete;
 	}
 
 }
