@@ -101,7 +101,7 @@
         android:gravity="center"
         android:hint="Any"
         android:textColor="@android:color/black"
-        android:textCursorDrawable="@null"  />
+        android:textCursorDrawable="@null" />
 
     <ImageView
         android:id="@+id/searchHeaderYear"
@@ -124,7 +124,7 @@
         android:gravity="center"
         android:hint="Any"
         android:textColor="@android:color/black"
-        android:textCursorDrawable="@null"  />
+        android:textCursorDrawable="@null" />
 
     <ImageView
         android:id="@+id/searchHeaderVType"
@@ -170,7 +170,7 @@
         android:gravity="center"
         android:hint="Any"
         android:textColor="@android:color/black"
-        android:textCursorDrawable="@null"  />
+        android:textCursorDrawable="@null" />
 
     <ListView
         android:id="@+id/searchList"
@@ -203,36 +203,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
     </TextView>
- <!-- Loading Example -->
-<!--     <ImageView
-        android:id="@+id/loadingBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:src="@drawable/loading_bar_back" >
-    </ImageView>
+    <!-- Loading Box -->
 
-    <ImageView
-        android:id="@+id/loadingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/loadingAnim"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:src="@drawable/loading_text" />
-    
-    <ImageView
-        android:id="@+id/loadingAnim"
+    <RelativeLayout
+        android:id="@+id/loadingFull"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:src="@drawable/loading_bar_animation" >
-    </ImageView> -->
+        android:gravity="center|bottom" >
+
+        <ImageView
+            android:id="@+id/loadingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:src="@drawable/loading_bar_back" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/loadingAnim"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:src="@drawable/loading_text" />
+
+        <ImageView
+            android:id="@+id/loadingAnim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:src="@drawable/loading_bar_animation" >
+        </ImageView>
+    </RelativeLayout>
 
 </RelativeLayout>

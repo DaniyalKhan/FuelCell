@@ -209,15 +209,17 @@ public class SearchActivity extends NavActivity {
 
 				@Override
 				protected void onPreExecute() {
-					progress = new ProgressDialog(SearchActivity.this);
-					progress.setMessage("Loading car data onto Fuel Cell.");
-					progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-					progress.show();
+//					progress = new ProgressDialog(SearchActivity.this);
+//					progress.setMessage("Loading car data onto Fuel Cell.");
+//					progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//					progress.show();
+					findViewById(R.id.loadingFull).setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				protected void onPostExecute(Boolean result) {
-					progress.dismiss();
+//					progress.dismiss();
+					findViewById(R.id.loadingFull).setVisibility(View.GONE);
 					if (result == false) {
 						AlertDialog.Builder failure = new AlertDialog.Builder(SearchActivity.this);
 						failure.setMessage("Loading Failed");
