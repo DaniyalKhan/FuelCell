@@ -320,11 +320,13 @@ public class SearchActivity extends NavActivity {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				filter(s);
+				refreshSearchOptions();
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				filter(s);
+				refreshSearchOptions();
 				//TODO fix this up so we don't have 4 if statements
 				if (searchManu.getVisibility() == View.VISIBLE)
 					searchManu.setBackgroundResource(R.drawable.text_input_search);
