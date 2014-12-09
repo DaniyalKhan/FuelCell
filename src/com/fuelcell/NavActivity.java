@@ -51,18 +51,18 @@ public class NavActivity extends FragmentActivity {
 			  public void onItemClick(AdapterView<?> parent, View view,
 			    int position, long id) {
 			    if (items[position].header.equalsIgnoreCase("Home")) {
-			    	Intent intent = new Intent(NavActivity.this,
-							HubActivity.class);
-					startActivity(intent);
+			    	setHome();
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
 			    } else if (items[position].header.equalsIgnoreCase("Search")) {
+			    	setHome();
 			    	Intent intent = new Intent(NavActivity.this,
 							SearchActivity.class);
 					startActivity(intent);
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
 			    } else if (items[position].header.equalsIgnoreCase("Find Route")) {
+			    	setHome();
 			    	SharedPreferences defaultCarPrefs = getSharedPreferences("default", MODE_PRIVATE);
 					if (defaultCarPrefs.getBoolean("hasDefault", false)){
 						Intent intent = new Intent(NavActivity.this,
@@ -74,6 +74,7 @@ public class NavActivity extends FragmentActivity {
 						Toast.makeText(NavActivity.this, "A default car is needed to try Find Route. Please select one through Search or Favourites.", Toast.LENGTH_LONG).show();
 					}
 			    } else if (items[position].header.equalsIgnoreCase("Favourites")) {
+			    	setHome();
 			    	Intent intent = new Intent(NavActivity.this,
 							StatsActivity.class);
 					filtered = CarDatabase.obtain(NavActivity.this).getFavCarFrames();
@@ -85,6 +86,7 @@ public class NavActivity extends FragmentActivity {
 					//Close drawer after leaving page
 					mDrawer.closeDrawer(Gravity.LEFT);
 			    } else if (position != 0 && items[position - 1].header.equalsIgnoreCase("Default Car")) {
+			    	setHome();
 			    	//Check if header is default car
 			    	Intent intent = new Intent(NavActivity.this,
 							CarProfileActivity.class);
@@ -166,5 +168,12 @@ public class NavActivity extends FragmentActivity {
 				defaultCarPrefs.getString("model", null), 
 				defaultCarPrefs.getString("vehicleClass", null));
 			return defaultCarFrame;
+	}
+	//Open a new home page so go back to when using Quick Nav
+	private void setHome(){
+		Intent intent = new Intent(NavActivity.this,
+				HubActivity.class);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 }
