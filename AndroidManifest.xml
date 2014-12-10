@@ -41,7 +41,7 @@
         <activity android:screenOrientation="portrait" android:name="CarProfileActivity"></activity>
         <meta-data
     android:name="com.google.android.maps.v2.API_KEY"
-    android:value="AIzaSyARO52tQSDpSfwhyL1B_2zpfuAYV-zz3MM"/>
+    android:value="AIzaSyBo4o1nU4E-1EsNNxT2oGYBRfPxblsVGT8"/>
         <meta-data android:name="com.google.android.gms.version"
            android:value="@integer/google_play_services_version" />
     </application>

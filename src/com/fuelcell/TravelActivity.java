@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -24,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -94,7 +92,8 @@ public class TravelActivity extends NavActivity {
 		dialog.show();
 		
 		md = new GMapV2Direction();
-		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+		final SupportMapFragment myMAPF = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
+		map = myMAPF.getMap();
 		final LatLng src = new LatLng(intent.getDoubleExtra("srcLat", 0), intent.getDoubleExtra("srcLng", 0));
 		final LatLng dst = new LatLng(intent.getDoubleExtra("dstLat", 0), intent.getDoubleExtra("dstLng", 0));
 		md.getDocument(src, dst, GMapV2Direction.MODE_DRIVING, new DocCallback() {
@@ -201,7 +200,9 @@ public class TravelActivity extends NavActivity {
 		double hEffM = car.highwayEffL/100.0;
 		double cEffL = car.cityEffL/100.0;
 		
-		double emissions = car.emissions * 1000.0 * (citySeconds + highwaySeconds) / 31557600.0 * (36000.0 / 31557600.0);
+//		double emissions = car.emissions * 1000.0 * (citySeconds + highwaySeconds) / 31557600.0 * (36000.0 / 31557600.0);
+		//convert kg/s  > g ===== (kg/s * 1000g/kg * s) / (s in yr) 
+		double emissions = (car.emissions * 1000.0 * (citySeconds + highwaySeconds)) / 31557600.0;
 		
 		final double litresSpent = twoDecimalPlaces(hEffM * highwayKM + cEffL * cityKM);
 		
@@ -241,7 +242,9 @@ public class TravelActivity extends NavActivity {
 			public void onClick(View v) {
 				View map = TravelActivity.this.findViewById(R.id.map);
 				if(isExpanded){
-					map.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					LayoutParams params = (LayoutParams) map.getLayoutParams();
+					params.height = 200;
+					map.setLayoutParams(params);
 					isExpanded = false;
 					expand.setBackgroundResource(R.drawable.route_expand);
 				} else {
