@@ -69,9 +69,11 @@ public class HistoryArrayAdapter extends ArrayAdapter<HistoryItem> {
 		if (filter != null || !filter.constraint.equals("") || lower.contains(filter.constraint.toString())){
 			int indexStart = lower.indexOf(filter.constraint.toString(), 0);
 	    	int indexEnd = indexStart + filter.constraint.length();
-	    	holder.text.setText(Html.fromHtml(s.getValue().substring(0, indexStart) + 
+	    	if (indexStart >= 0 && indexEnd >= indexStart && indexEnd <= s.getValue().length()) {
+	    		holder.text.setText(Html.fromHtml(s.getValue().substring(0, indexStart) + 
 	    			"<b>" + s.getValue().substring(indexStart, indexEnd) + "</b>" + 
 	    			s.getValue().substring(indexEnd, s.getValue().length())));
+	    	}
 		} else {
 			holder.text.setText(s.getValue());
 		}

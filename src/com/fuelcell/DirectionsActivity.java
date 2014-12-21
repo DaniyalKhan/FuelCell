@@ -62,6 +62,7 @@ public class DirectionsActivity extends NavActivity {
 	List<HistoryItem> list;
 	HistoryFilter originFilter;
 	HistoryFilter destinationFilter;
+	TextView historyHint;
 	
 	private RouteCallback routeCallback = new RouteCallback() {
 		@Override
@@ -129,6 +130,7 @@ public class DirectionsActivity extends NavActivity {
 		
 		hint = (TextView) findViewById(R.id.hint);
 		searchList = (ListView) findViewById(R.id.searchList);
+		historyHint = (TextView) findViewById(R.id.history_hint);
 		
 		invisibleViews = Arrays.asList(findRoutes,findViewById(R.id.mainicon),findViewById(R.id.locationicon), origin, destination, origin.textHeader, destination.textHeader);
 		list = CarDatabase.obtain(DirectionsActivity.this).getHistory();
@@ -254,6 +256,7 @@ public class DirectionsActivity extends NavActivity {
 			}
 			searchList.setVisibility(View.VISIBLE);
 			hint.setVisibility(View.VISIBLE);
+			historyHint.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -261,6 +264,8 @@ public class DirectionsActivity extends NavActivity {
 		for (View v: invisibleViews) v.setVisibility(View.VISIBLE);
 		searchList.setVisibility(View.GONE);
 		hint.setVisibility(View.GONE);
+		historyHint.setVisibility(View.GONE);
+		
 	}
 	
 	protected void setTextChange(MyEditText textField) {

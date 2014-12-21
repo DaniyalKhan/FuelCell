@@ -65,6 +65,7 @@
         class="com.fuelcell.DirectionsActivity$MyEditText"
         android:background="@drawable/text_input_location"
         android:contentDescription="desc"
+        android:hint="Enter starting location of desired route"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@android:color/black"
@@ -88,6 +89,7 @@
         android:layout_marginRight="10dp"
         class="com.fuelcell.DirectionsActivity$MyEditText"
         android:background="@drawable/text_input_location"
+        android:hint="Enter ending location of desired route"
         android:contentDescription="desc"
         android:ems="10"
         android:gravity="center"
@@ -112,12 +114,28 @@
             android:textSize="12sp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/history_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/destination"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:text="Below is the entry history for locations previously entered."
+        >
+    </TextView>
+    
     <ListView
         android:id="@+id/searchList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/hint"
-        android:layout_below="@+id/destination"
+        android:layout_below="@+id/history_hint"
         android:layout_marginTop="10dp"
         android:visibility="gone" >
     </ListView>
