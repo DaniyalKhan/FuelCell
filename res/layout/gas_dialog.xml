@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/pricePickerContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal">
+
+        <TextView 
+            android:id="@+id/dollar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+        
+        <NumberPicker
+            android:id="@+id/dollars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView 
+            android:id="@+id/decimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+        
+        <NumberPicker
+            android:id="@+id/centTens"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <NumberPicker
+            android:id="@+id/centOnes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+        <TextView 
+            android:id="@+id/per"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" /"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+        
+        <Spinner 
+            android:id="@+id/units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/buttonDivider"
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_marginBottom="0dp"
+    android:background="?android:attr/dividerVertical" 
+    android:layout_below="@+id/pricePickerContent"/> 
+    
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+    style="?android:attr/buttonBarStyle"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:measureWithLargestChild="true"
+    android:orientation="horizontal"
+    android:paddingTop="0dip" 
+    android:layout_below="@+id/buttonDivider">
+
+    <Button
+        android:id="@+id/accept"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text= "Set Price" />
+
+    <Button
+        android:id="@+id/reject"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Cancel" />
+</LinearLayout>
+
+</RelativeLayout>

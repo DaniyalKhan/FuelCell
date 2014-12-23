@@ -24,9 +24,11 @@ public class Car extends CarFrame implements Parcelable{
 	public int gears;
 	public FuelType fuelType;
 	
+	//L per KM
 	public double cityEffL;
 	public double highwayEffL;
 
+	//MPG
 	public double cityEffM;
 	public double highwayEffM;
 	
