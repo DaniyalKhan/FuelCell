@@ -45,15 +45,15 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 		    textView.setText(items[position].header);
 		    String s = items[position].header;
 		    if (s.startsWith("Home")) {
-		    	icon.setImageResource(R.drawable.nav_home_icon);
+		    	icon.setImageResource(R.drawable.icon_home);
 		    } else if (s.startsWith("Search")){
-		    	icon.setImageResource(R.drawable.nav_search_icon);
+		    	icon.setImageResource(R.drawable.icon_search);
 		    } else if (s.startsWith("Find Route")) {
-		    	icon.setImageResource(R.drawable.nav_find_route_icon);
+		    	icon.setImageResource(R.drawable.icon_find_route);
 		    } else if (s.startsWith("Favourites")) {
-		    	icon.setImageResource(R.drawable.nav_favourite_icon);
+		    	icon.setImageResource(R.drawable.icon_favourite);
 		    } else if (position != 0 && items[position - 1].header.equalsIgnoreCase("Default Car")) {
-		    	icon.setImageResource(R.drawable.nav_default_icon);
+		    	icon.setImageResource(R.drawable.icon_default_car);
 		    	textView.setTextSize(12);
 		    	defaultCar = textView;
 		    }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
@@ -13,9 +13,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fuelcell.models.Car;
 import com.fuelcell.models.CarFrame;
@@ -45,6 +45,7 @@ public class NavActivity extends FragmentActivity {
 
 		mDrawerList.setAdapter(new DrawerNavAdapter(this, R.layout.drawer_list_item, R.id.label, items));
 		mDrawer.setScrimColor(getResources().getColor(R.color.black_overlay));
+		mDrawerList.setBackgroundColor(Color.WHITE);
 		
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			  @Override
@@ -141,23 +142,22 @@ public class NavActivity extends FragmentActivity {
 		});
 	}
 	public void setDrawerItems(){
-		items = new DrawerItem[8];
-		items[0] = new DrawerItem("MainHeader", DrawerItemType.MainHeader);
-		items[1] = new DrawerItem("Navigation", DrawerItemType.Header);
-		items[2] = new DrawerItem("Home", DrawerItemType.Item);
-		items[3] = new DrawerItem("Search", DrawerItemType.Item);
-		items[4] = new DrawerItem("Find Route", DrawerItemType.Item);
-		items[5] = new DrawerItem("Favourites", DrawerItemType.Item);
+		items = new DrawerItem[7];
+		items[0] = new DrawerItem("NAVIGATION", DrawerItemType.Header);
+		items[1] = new DrawerItem("Home", DrawerItemType.Item);
+		items[2] = new DrawerItem("Search", DrawerItemType.Item);
+		items[3] = new DrawerItem("Find Route", DrawerItemType.Item);
+		items[4] = new DrawerItem("Favourites", DrawerItemType.Item);
 		
 		CarFrame defaultCarFrame = getDefaultCar();
 		
-		items[6] = new DrawerItem("Default Car", DrawerItemType.Header);
+		items[5] = new DrawerItem("DEFAULT CAR", DrawerItemType.Header);
 		if (defaultCarFrame.year > 0) {
-		items[7] = new DrawerItem(defaultCarFrame.year + " " 
+			items[6] = new DrawerItem(defaultCarFrame.year + " " 
 								+ defaultCarFrame.manufacturer + " " 
 								+ defaultCarFrame.model, DrawerItemType.Item); 
 		} else {
-			items[7] = new DrawerItem("No Default Car Set", DrawerItemType.Item);
+			items[6] = new DrawerItem("No Default Car Set", DrawerItemType.Item);
 		}
 		
 	}
@@ -175,5 +175,9 @@ public class NavActivity extends FragmentActivity {
 				HubActivity.class);
     	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
+	}
+	
+	protected void setIndicator(String pageName){
+		//findViewById(R.id.indicator).setVisibility(View.VISIBLE);
 	}
 }
