@@ -56,9 +56,9 @@ public class HistoryArrayAdapter extends ArrayAdapter<HistoryItem> {
 			@Override
 			public void onClick(View v) {
 				CarDatabase.obtain(context).removeHistory(
-						all.get(position));
-				list.remove(all.get(position));
-				all.remove(position);
+						getItem(position));
+				list.remove(getItem(position));
+				all.remove(getItem(position));
 				notifyDataSetChanged();
 				getFilter().filter(filter.constraint);
 			}
