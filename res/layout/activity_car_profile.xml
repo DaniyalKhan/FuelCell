@@ -216,8 +216,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Highway Fuel Efficiency (L/100km):"
-                android:maxLines="1"
+                android:text="Highway Fuel \n Efficiency (L/100km):"
+                android:maxLines="2"
                 android:textStyle="bold" 
                 android:textColor="@android:color/white"/>
 
@@ -348,7 +348,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Unknown" 
-                android:maxLines="1"
+                android:lines="2"
                 android:textColor="@android:color/white"/>
 
             <View

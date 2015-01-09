@@ -43,6 +43,8 @@ public class HubActivity extends NavActivity {
 		home = (ImageView) findViewById(R.id.banner);
 
 		filtered = new ArrayList<CarFrame>();
+		
+		setIndicator("NavActivity");
 
 		setClick();
 	}
