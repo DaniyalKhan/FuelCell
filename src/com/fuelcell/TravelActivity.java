@@ -58,6 +58,7 @@ public class TravelActivity extends NavActivity implements OnFocusChangeListener
 	
 	// m/s
 	private static final double HIGHWAY_LIMIT = 80.0 * 1000.0/3600.0; 
+	private static final double L_TO_GAL = 0.264172;
 	
 	private double highwayMetres;
 	private double cityMetres;
@@ -381,7 +382,7 @@ public class TravelActivity extends NavActivity implements OnFocusChangeListener
 	        ((TextView)v.findViewById(R.id.distance_key)).setText(s.distance);
 	        ((TextView)v.findViewById(R.id.time_key)).setText(s.time);
 	        if (outputUnit == GasUnit.GALLON) {
-	        	((TextView)v.findViewById(R.id.fuel_usage_key)).setText(Double.toString(twoDecimalPlaces(s.fuel)) + " gallons");
+	        	((TextView)v.findViewById(R.id.fuel_usage_key)).setText(Double.toString(twoDecimalPlaces(s.fuel * L_TO_GAL)) + " gallons");
 	        } else {
 	        	((TextView)v.findViewById(R.id.fuel_usage_key)).setText(Double.toString(twoDecimalPlaces(s.fuel)) + " litres");
 	        }
