@@ -44,13 +44,13 @@ public class DrawerNavAdapter extends ArrayAdapter<DrawerItem> {
 		    ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
 		    textView.setText(items[position].header);
 		    String s = items[position].header;
-		    if (s.startsWith("Home")) {
+		    if (s.startsWith("HOME")) {
 		    	icon.setImageResource(R.drawable.icon_home);
-		    } else if (s.startsWith("Search")){
+		    } else if (s.startsWith("SEARC")){
 		    	icon.setImageResource(R.drawable.icon_search);
-		    } else if (s.startsWith("Find Route")) {
+		    } else if (s.startsWith("FIND ROUTE")) {
 		    	icon.setImageResource(R.drawable.icon_find_route);
-		    } else if (s.startsWith("Favourites")) {
+		    } else if (s.startsWith("FAVOURITES")) {
 		    	icon.setImageResource(R.drawable.icon_favourite);
 		    } else if (position != 0 && items[position - 1].header.equalsIgnoreCase("Default Car")) {
 		    	icon.setImageResource(R.drawable.icon_default_car);

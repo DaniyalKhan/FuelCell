@@ -144,10 +144,10 @@ public class NavActivity extends FragmentActivity {
 	public void setDrawerItems(){
 		items = new DrawerItem[7];
 		items[0] = new DrawerItem("NAVIGATION", DrawerItemType.Header);
-		items[1] = new DrawerItem("Home", DrawerItemType.Item);
-		items[2] = new DrawerItem("Search", DrawerItemType.Item);
-		items[3] = new DrawerItem("Find Route", DrawerItemType.Item);
-		items[4] = new DrawerItem("Favourites", DrawerItemType.Item);
+		items[1] = new DrawerItem("HOME", DrawerItemType.Item);
+		items[2] = new DrawerItem("SEARCH", DrawerItemType.Item);
+		items[3] = new DrawerItem("FIND ROUTE", DrawerItemType.Item);
+		items[4] = new DrawerItem("FAVOURITES", DrawerItemType.Item);
 		
 		CarFrame defaultCarFrame = getDefaultCar();
 		
